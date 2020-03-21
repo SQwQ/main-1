@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const keys = require('../config/keys');
+const keys = require('../../config/keys');
 const { Pool } = require('pg');
 
 // Create pool to communicate with database
