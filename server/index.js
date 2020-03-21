@@ -10,7 +10,7 @@ app.use(express.json()); // express.json() is a method inbuilt in express to rec
 
 // Setup route handling
 const listingRoutes = require('./routes/sampleCodes/listingRoutes.js');
-const customerRoutes = require('./routes/sampleCodes/customerRoutes.js');
+const customerRoutes = require('./routes/customerRoutes.js');
 app.use(listingRoutes);
 app.use(customerRoutes);
 
