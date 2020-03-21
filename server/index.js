@@ -1,7 +1,6 @@
 
 const express = require('express');
 const cors = require("cors");
-const projectDDL = require("/sql/projectDDL");
 
 // Generate a application that runs expressnpm
 const app = express();
@@ -14,9 +13,13 @@ app.use(express.json()); // express.json() is a method inbuilt in express to rec
 const listingRoutes = require('./routes/sampleCodes/listingRoutes.js');
 const customerRoutes = require('./routes/customerRoutes.js');
 const riderRoutes = require('./routes/riders/riderRoutes.js');
+const partTimerRoutes = require('./routes/riders/partTimerRoutes.js');
+const fullTimerRoutes = require('./routes/riders/fullTimerRoutes.js');
 app.use(listingRoutes);
 app.use(customerRoutes);
 app.use(riderRoutes);
+app.use(partTimerRoutes);
+app.use(fullTimerRoutes);
 
 
 // Start server
