@@ -24,13 +24,7 @@ CREATE TABLE Food (
 	flimit INT NOT NULL CHECK (flimit >= 0),
 	fimage TEXT,
 	rid SERIAL NOT NULL,
-	FOREIGN KEY (rid) REFERENCES Restaurant(rid)
-);
-
-CREATE TABLE food_categorized (
-	fid SERIAL NOT NULL,
-	cid SERIAL NOT NULL,
-	FOREIGN KEY (fid) REFERENCES Food(fid),
+	FOREIGN KEY (rid) REFERENCES Restaurant(rid),
 	FOREIGN KEY (cid) REFERENCES Category(cid)
 );
 
@@ -50,7 +44,10 @@ CREATE TABLE Order_List (
 	ofinal_price NUMERIC NOT NULL CHECK (ofinal_price >= 0),
 	opayment_type TEXT,
 	orating INTEGER,
-	ostatus TEXT
+	ostatus TEXT,
+	delivery_address TEXT NOT NULL,
+	zipcode VARCHAR(20) NOT NULL,
+	area TEXT NOT NULL,
 );
 
 CREATE TABLE order_contains (
@@ -121,7 +118,7 @@ CREATE TABLE Offer_On (
 CREATE TABLE Customer (
 	cid SERIAL NOT NULL PRIMARY KEY,
 	cname VARCHAR(50) NOT NULL,
-	ccontact_number INT,
+	ccontact_number VARCHAR(30),
 	cusername VARCHAR(50) NOT NULL UNIQUE,
 	cpassword VARCHAR(50) NOT NULL,
 	cjoin_time TIMESTAMP NOT NULL,
@@ -136,18 +133,11 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE Credit_Card (
-	card_number BIGINT NOT NULL,
+	ccid SERIAL NOT NULL PRIMARY KEY,
+	card_number VARCHAR(16) NOT NULL,
 	expiry_date DATE NOT NULL,
-	cvv INT NOT NULL,
-	PRIMARY KEY(card_number, expiry_date, cvv)
-);
-
-CREATE TABLE register_cc (
-	card_number BIGINT NOT NULL,
-	expiry_date DATE NOT NULL,
-	cvv INT NOT NULL,
-	cid SERIAL,
-	FOREIGN KEY (card_number, expiry_date, cvv) REFERENCES Credit_Card(card_number, expiry_date, cvv),
+	cvv VARCHAR(10) NOT NULL,
+	cid INT NOT NULL,
 	FOREIGN KEY (cid) REFERENCES Customer(cid)
 );
 
