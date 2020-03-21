@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const keys = require('./keys');
 
 // Create pool to communicate with database
 module.exports = new Pool({

@@ -1,19 +1,5 @@
 const router = require('express').Router();
-const keys = require('../../config/keys');
-const { Pool } = require('pg');
-
-// Create pool to communicate with database
-const pool = new Pool({
-  // TODO: change to environment variable before deployment
-  user: 'postgres',
-  password: keys.postgresPW,
-  host: 'localhost',
-  port: '5432',
-  database: 'myTestDB',
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 20000
-});
+const pool = require('../../config/pool');
 
 // Get all listings
 router.route('/api/all_listings').get(async (req, res) => {
