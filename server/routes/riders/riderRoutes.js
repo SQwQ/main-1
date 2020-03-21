@@ -2,21 +2,22 @@ const router = require('express').Router();
 const pool = require('../../config/pool');
 
 // Get a specific rider
-router.route('/api/profile/rider/:riderId').get(async (req, res) => {
-  const riderId = req.params.riderId;
+router.route('/api/profile/rider/:rid').get(async (req, res) => {
+  const rid = req.params.rid;
+  const queryString = `SELECT * FROM Rider WHERE rid = ${rid}`;
 
-  const result = await pool.query(
-    `SELECT * FROM [Riders] WHERE ["riderId" = '${riderId}']`
-  );
+  const result = await pool.query(queryString);
   res.setHeader('content-type', 'application/json');
   res.send(JSON.stringify(result.rows[0]));
 });
 
 // Get all riders
 router.route('/api/profiles/rider').get(async (req, res) => {
-  const result = await pool.query(`SELECT * FROM [Riders]`);
+  const queryString = 'SELECT * FROM Rider';
+
+  const result = await pool.query(queryString);
   res.setHeader('content-type', 'application/json');
-  res.send(JSON.stringify(result.rows[0]));
+  res.send(JSON.stringify(result.rows));
 });
 
 module.exports = router;
