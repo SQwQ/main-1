@@ -36,7 +36,7 @@ export default class UserRegisterForm extends Component {
   };
 
   _handleRegister = () => {
-    let joinTime = moment(new Date()).format('YYYY-MM-DD');
+    let joinTime = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
     console.log ('This is my joinTime: ', joinTime);
     let user = {
       cname: this.state.fullName,
