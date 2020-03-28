@@ -8,8 +8,8 @@ module.exports = new Pool({
   password: keys.postgresPW,
   host: 'localhost',
   port: '5432',
-  database: 'myTestDB',
+  database: 'mytestdb',
   max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 20000
+  idleTimeoutMillis: 300,
+  connectionTimeoutMillis: 200
 });
