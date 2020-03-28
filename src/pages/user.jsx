@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function PermanentDrawerLeft() {
   const classes = useStyles();
-
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
