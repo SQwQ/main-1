@@ -42,4 +42,31 @@ router.route ('/api/restaurantStaff').post ((req, res) => {
     .catch (err => res.status (400).json ('Error' + err));
 });
 
+//Login
+// router.route ('/api/restaurantStaff/login').post ((req, res) => {
+//   const queryString = `SELECT rs FROM Restaurant_Staff WHERE rsusername = '${req.body.rsusername}' AND rspassword = '${req.body.rspassword}'`;
+
+//   const result = pool.query (queryString);
+//   res.setHeader ('content-type', 'application/json');
+//   if (result) {
+//     res.send (JSON.stringify (result.rows[0]));
+//     return res.status (200).json ();
+//   } else {
+//     return res.status (404).json ('Invalid login credentials');
+//   }
+// });
+router.route ('/api/restaurantStaff/login').post ((req, res) => {
+  console.log ('Request', req.body);
+
+  let result = pool.query (
+    `SELECT rs FROM Restaurant_Staff WHERE rsusername = '${req.body.rsusername}' AND rspassword = '${req.body.rspassword}'`
+  );
+  if (result) {
+    res.send (JSON.stringify (result.rows[0]));
+    return res.status (200).json ();
+  } else {
+    return res.status (404).json ('Invalid login credentials');
+  }
+});
+
 module.exports = router;
