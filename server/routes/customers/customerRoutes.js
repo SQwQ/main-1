@@ -18,25 +18,21 @@ router.route ('/api/customers').get (async (req, res) => {
 });
 
 //Post an customer
-router.route ('/api/customer').post ((req, res) => {
-  console.log ('ran');
-  const cname = req.body.cname;
-  const ccontact_number = req.body.ccontact_number;
-  const cusername = req.body.cusername;
-  const cpassword = req.body.cpassword;
-  const cjoin_time = req.body.cjoin_time;
-  const crewards_points = req.body.crewards_points;
+router.route ('/api/customer').post (async (req, res) => {
 
   console.log (req.body);
 
-  pool
-    .query (
+  try {
+    await pool.query (
       `INSERT INTO Customer (cname, ccontact_number, cusername, cpassword, cjoin_time, crewards_points) 
-      VALUES('${cname}', ${ccontact_number}, '${cusername}',
-         '${cpassword}', ${cjoin_time}, ${crewards_points});`
-    )
-    .then (res.status (201).json ())
-    .catch (err => res.status (400).json ('Error' + err));
+      VALUES('${req.body.cname}', ${req.body.ccontact_number}, '${req.body.cusername}',
+         '${req.body.cpassword}', '${req.body.cjoin_time}', ${req.body.crewards_points});`
+    );
+    return res.status (201).json ();
+  } catch (err) {
+    console.log (err);
+    return res.status (500).json ('Error' + err);
+  }
 });
 
 //Update an order
