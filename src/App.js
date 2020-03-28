@@ -8,7 +8,7 @@ import MainPage from "./pages/index";
 import UserPage from "./pages/user";
 import StaffPage from "./pages/staff";
 import RiderPage from "./pages/rider";
-import ManagerPage from "./pages/manager";
+import ManagerPage from "./pages/manager/manager";
 
 class App extends Component {
     // componentDidMount() {
