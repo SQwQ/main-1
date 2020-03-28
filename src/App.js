@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {BrowserRouter as Router, Route, Switch, Link, Redirect} from 'react-router-dom';
+
+//Pages
+import MainPage from "./pages/index";
+import UserPage from "./pages/user";
+import StaffPage from "./pages/staff";
+import RiderPage from "./pages/rider";
+import ManagerPage from "./pages/manager";
+
+class App extends Component {
+    // componentDidMount() {
+    //     fetch('https://localhost:3004/restaurants')
+    //         .then(restaurants => this.setState(restaurants))
+    // }
+
+    render() {
+        return (
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={MainPage}/>
+                    <Route exact path="/user" component={UserPage}/>
+                    <Route exact path="/staff" component={StaffPage}/>
+                    <Route exact path="/rider" component={RiderPage}/>
+                    <Route exact path="/manager" component={ManagerPage}/>
+                </Switch>
+            </Router>
+        );
+    }
 }
 
 export default App;
