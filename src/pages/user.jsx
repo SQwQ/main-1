@@ -1,3 +1,4 @@
+//import React, { Component } from 'react';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,10 +18,10 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import './css/user.css';
 
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useParams} from 'react-router-dom';
 
 const drawerWidth = 240;
-const samplePoints = 999;
+// const samplePoints = 999;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,8 +47,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PermanentDrawerLeft() {
+export default function PermanentDrawerLeft(props) {
   const classes = useStyles();
+  let { id } = useParams();
   
   return (
     <div className={classes.root}>
@@ -55,7 +57,7 @@ export default function PermanentDrawerLeft() {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            tapau. User Menu
+            Hungry, User {id}? Have your meal delivered to you.
           </Typography>
         </Toolbar>
       </AppBar>
@@ -85,7 +87,9 @@ export default function PermanentDrawerLeft() {
                 <ListItemIcon><MonetizationOnIcon /></ListItemIcon>
                 <ListItemText primary="Points" />
             </ListItem>
-            <ListItem button key="Logout" component={RouterLink} to="/">
+            <ListItem button key="Logout" component={RouterLink} to="/"
+                onClick={props.unauthenticate}
+            >
                 <ListItemIcon><LogoutIcon /></ListItemIcon>
                 <ListItemText primary="Logout"/>
             </ListItem>
