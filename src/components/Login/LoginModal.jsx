@@ -1,29 +1,29 @@
 import React, {Component} from 'react';
-import {Modal} from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import {FormControlLabel} from '@material-ui/core';
-import ScheduleSelector from 'react-schedule-selector';
 
-export default class RiderRegisterForm extends Component {
-  constructor () {
-    super ();
+import * as apiRoute from '../Api/route.js';
+import Axios from 'axios';
+import { DialogContentText } from '@material-ui/core';
+
+import './LoginModal.css';
+
+class LoginModal extends Component {
+  constructor (props) {
+    super (props);
     this.state = {
-      //schedule: [],
       setOpen: false,
+      showInvalidCredentialsWarning: false
     };
 
     //this._handleChange = this._handleChange.bind(this);
     this._handleClickOpen = this._handleClickOpen.bind (this);
     this._handleClose = this._handleClose.bind (this);
-    this._handleLogin = this._handleLogin.bind (this);
     this._handleSubmit = this._handleSubmit.bind (this);
   }
 
@@ -39,33 +39,69 @@ export default class RiderRegisterForm extends Component {
     });
   }
 
-  // _handleChange = newSchedule => {
-  //     this.setState({ schedule: newSchedule })
-  // }
-
   _handleClickOpen = () => {
-    this.setState ({setOpen: true});
+    this.setState({
+        setOpen: true,
+        showInvalidCredentialsWarning: false
+    });
   };
 
   _handleClose = () => {
-    this.setState ({setOpen: false});
+    this.setState({
+        setOpen: false,
+        showInvalidCredentialsWarning: false
+    });
   };
 
-  _handleLogin = () => {
-    this.setState ({setOpen: false});
+  handleLogin(route, user) {
+    Axios.post(route, user, {
+        withCredentials: false,
+    })
+        .then (
+            response => {
+                if (response.data.cid == null) {
+                    console.log(this.state.title + " credentials not recognized!");
+                    this.showInvalidCredentials();
+                } else {
+                    console.log(this.state.title + " with userID " + response.data.cid + " logged in.");
+                    // 1. Set states for id, auth and close dialog
+                    this.setState({id: response.data.cid});
+                    this.props.authenticate();
+                    this.setState ({setOpen: false});
+
+                    // 2. Push history (set states first before pushing history:
+                    // https://stackoverflow.com/a/57572888)
+                    this.handleLink("user");
+                }
+            }
+        ).catch (error => {
+            console.log(error);
+        });
   };
 
   _handleSubmit = () => {
+    let user = {
+        cusername: this.state.username,
+        cpassword: this.state.password
+    };
+
+    // Debugging : print user login details
+    console.log("Login attempt with details", user)
+
     if (this.state.title === 'Customer') {
-        
+        this.handleLogin(apiRoute.CUSTOMER_LOGIN_API, user);
     } else if (this.state.title === 'Rider') {
-
+        this.handleLogin(apiRoute.RIDER_LOGIN_API, user);
     } else if (this.state.title === 'Staff') {
-
+        this.handleLogin(apiRoute.STAFF_LOGIN_API, user);
     } else if (this.state.title === 'Manager') {
-
+        this.handleLogin(apiRoute.MANAGER_LOGIN_API, user);
     }
   };
+
+  showInvalidCredentials() {
+      this.setState({showInvalidCredentialsWarning: true});
+  }
 
   handleLink (reroute) {
     this.props.history.push ({
@@ -115,10 +151,15 @@ export default class RiderRegisterForm extends Component {
           <DialogTitle id="form-dialog-title">
               <p>{this.state.title} Login</p>
           </DialogTitle>
+            {this.state.showInvalidCredentialsWarning && 
+                <DialogContentText className="invalidWarning">
+                    Wrong username/password!
+                </DialogContentText>
+            }
           <DialogContent>
             <TextField
               margin="dense"
-              value={this.state.username}
+              value={this.state.username || ''}
               onChange={e => this.updateUsername (e)}
               id="username"
               label="Username"
@@ -128,7 +169,7 @@ export default class RiderRegisterForm extends Component {
             />
             <TextField
               margin="dense"
-              value={this.state.password}
+              value={this.state.password || ''}
               onChange={e => this.updatePassword (e)}
               id="password"
               label="Password"
@@ -142,7 +183,7 @@ export default class RiderRegisterForm extends Component {
             <Button onClick={this._handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this._handleLogin} color="primary">
+            <Button onClick={this._handleSubmit} color="primary">
               Login
             </Button>
           </DialogActions>
@@ -151,3 +192,5 @@ export default class RiderRegisterForm extends Component {
     );
   }
 }
+
+export default withRouter(LoginModal);
