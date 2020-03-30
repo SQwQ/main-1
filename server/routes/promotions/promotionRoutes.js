@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const pool = require('../../config/pool');
 
-//Post a promotion
+//Create a promotion
 router.route('/api/promotion/new/:type').post((req, res) => {
   const type = req.params.type;
   const pisPercentage = req.body.pisPercentage;
@@ -48,55 +48,65 @@ router.route('/api/promotion/new/:type').post((req, res) => {
       res.status(201).json();
     })
     .catch(err => res.status(400).json('Error' + err));
-
-  //   pool
-  //     .query(
-  //       `INSERT INTO Customer (cname, ccontact_number, cusername, cpassword, cjoin_time, crewards_points)
-  //       VALUES('${cname}', ${ccontact_number}, '${cusername}',
-  //          '${cpassword}', ${cjoin_time}, ${crewards_points}) returning cid;`
-  //     )
-  //     .then(res => {
-  //       pool.query(
-  //         `INSERT INTO Customer (cname, ccontact_number, cusername, cpassword, cjoin_time, crewards_points)
-  //           ALUES('worked', 98123, 'yayitworked2',
-  //           'anisdkjnaskdja', null, ${res.rows[0].cid});`
-  //       );
-  //       res.status(201).json();
-  //     })
-  //     .catch(err => res.status(400).json('Error' + err));
 });
 
-//Update reward
-router.route('/api/customer/:cid').patch((req, res) => {
-  const cid = req.params.cid;
-  const crewards_points = req.body.crewards_points;
+//Delete a promotion
+router.route('/api/promotion/delete/:type/:pid').delete((req, res) => {
+  const pid = req.params.pid;
+  const type = req.params.type;
 
-  console.log(req.body);
+  if (type == 'coupon') {
+    pool
+      .query(
+        `BEGIN;
+         DELETE FROM Promotion WHERE pid = ${pid};
+         DELETE FROM Coupon WHERE cid = ${pid};
+         COMMIT;`
+      )
+      .then(res.status(201).json())
+      .catch(err => res.status(400).json('Error' + err));
+  } else {
+    pool
+      .query(
+        `BEGIN;
+         DELETE FROM Promotion WHERE pid = ${pid};
+         DELETE FROM Campaign WHERE pid = ${pid};
+         COMMIT;`
+      )
+      .then(res.status(201).json())
+      .catch(err => res.status(400).json('Error' + err));
+  }
+});
+
+// Update a Promotion
+router.route('/api/promotion/update/:pid').patch((req, res) => {
+  const pid = req.params.pid;
+  console.log('pid', pid);
+
+  const pisPercentage = req.body.pisPercentage;
+  const pdatetime_active_from = req.body.pdatetime_active_from;
+  const pdatetime_active_to = req.body.pdatetime_active_to;
+  const pminSpend = req.body.pminSpend;
+  const pdiscount_val = req.body.pdiscount_val;
+  const pname = req.body.pname;
+  const pdescription = req.body.pdescription;
+  console.log('pname', pname);
 
   pool
     .query(
-      `UPDATE Customer 
-       SET crewards_points=${crewards_points}
-       WHERE cid = ${cid};`
+      `UPDATE Promotion
+         SET pisPercentage=${pisPercentage}, pdatetime_active_from=${pdatetime_active_from}, pdatetime_active_to=${pdatetime_active_to}, 
+         pminSpend=${pminSpend}, pdiscount_val=${pdiscount_val}, pname='${pname}', pdescription='${pdescription}'
+         WHERE pid = ${pid};`
     )
     .then(res.status(204).json())
     .catch(err => res.status(400).json('Error' + err));
 });
 
-// Get a specific customer
-router.route('/api/customer/:cid').get(async (req, res) => {
-  const cid = req.params.cid;
+// Update a Coupon
 
-  const result = await pool.query(`SELECT * FROM Customer WHERE id=${cid}`);
-  res.setHeader('content-type', 'application/json');
-  res.send(JSON.stringify(result.rows[0]));
-});
+// Update a Campaign
 
-// Get a list of all customer
-router.route('/api/customers').get(async (req, res) => {
-  const result = await pool.query(`SELECT * FROM Customer`);
-  res.setHeader('content-type', 'application/json');
-  res.send(JSON.stringify(result.rows[0]));
-});
+// Get a Promotion
 
 module.exports = router;
