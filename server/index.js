@@ -9,17 +9,18 @@ app.use (cors ()); // CORS is a node.js package to allow cross site request.
 app.use (express.json ()); // express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object
 
 // Setup route handling
-const listingRoutes = require ('./routes/sampleCodes/listingRoutes.js');
-const customerRoutes = require ('./routes/customers/customerRoutes.js');
-const foodRoutes = require ('./routes/foods/foodRoutes.js');
-const categoryRoutes = require ('./routes/foods/categoryRoutes.js');
-const restaurantRoutes = require ('./routes/restaurants/restaurantRoutes.js');
-const restaurantStaffRoutes = require ('./routes/restaurantStaffs/restaurantStaffRoutes.js');
-const orderListRoutes = require ('./routes/orderLists/orderListRoutes.js');
-const creditCardRoutes = require ('./routes/customers/creditCardRoutes.js');
-const riderRoutes = require('./routes/riders/riderRoutes.js');
-const partTimerRoutes = require('./routes/riders/partTimerRoutes.js');
-const fullTimerRoutes = require('./routes/riders/fullTimerRoutes.js');
+const listingRoutes = require ('./routes/sampleCodes/listingRoutes');
+const customerRoutes = require ('./routes/customers/customerRoutes');
+const foodRoutes = require ('./routes/foods/foodRoutes');
+const categoryRoutes = require ('./routes/foods/categoryRoutes');
+const restaurantRoutes = require ('./routes/restaurants/restaurantRoutes');
+const restaurantStaffRoutes = require ('./routes/restaurantStaffs/restaurantStaffRoutes');
+const orderListRoutes = require ('./routes/orderLists/orderListRoutes');
+const creditCardRoutes = require ('./routes/customers/creditCardRoutes');
+const riderRoutes = require('./routes/riders/riderRoutes');
+const partTimerRoutes = require('./routes/riders/partTimerRoutes');
+const fullTimerRoutes = require('./routes/riders/fullTimerRoutes');
+const promotionRoutes = require('./routes/promotions/promotionRoutes');
 app.use (listingRoutes);
 app.use (customerRoutes);
 app.use (riderRoutes);
@@ -32,6 +33,7 @@ app.use (creditCardRoutes);
 app.use(riderRoutes);
 app.use(partTimerRoutes);
 app.use(fullTimerRoutes);
+app.use(promotionRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
