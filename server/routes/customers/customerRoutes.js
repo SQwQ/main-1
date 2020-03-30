@@ -5,7 +5,7 @@ const pool = require ('../../config/pool');
 router.route ('/api/customer/:cid').get (async (req, res) => {
   const cid = req.params.cid;
 
-  const result = await pool.query (`SELECT * FROM Customer WHERE id=${cid}`);
+  const result = await pool.query (`SELECT * FROM Customer WHERE cid=${cid}`);
   res.setHeader ('content-type', 'application/json');
   res.send (JSON.stringify (result.rows[0]));
 });
