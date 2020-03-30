@@ -20,6 +20,7 @@ const creditCardRoutes = require ('./routes/customers/creditCardRoutes.js');
 const riderRoutes = require ('./routes/riders/riderRoutes.js');
 const partTimerRoutes = require ('./routes/riders/partTimerRoutes.js');
 const fullTimerRoutes = require ('./routes/riders/fullTimerRoutes.js');
+const promotionRoutes = require('./routes/promotions/promotionRoutes');
 const login = require ('./routes/login/login.js');
 app.use (login);
 
@@ -32,9 +33,10 @@ app.use (restaurantRoutes);
 app.use (restaurantStaffRoutes);
 app.use (orderListRoutes);
 app.use (creditCardRoutes);
-app.use (riderRoutes);
-app.use (partTimerRoutes);
-app.use (fullTimerRoutes);
+app.use(riderRoutes);
+app.use(partTimerRoutes);
+app.use(fullTimerRoutes);
+app.use(promotionRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
