@@ -8,6 +8,80 @@
   INSERT INTO Full_Timer (rid, base_salary, mth)
   SELECT T_RID, 45, 0 FROM ins1;
 
+/* TESTING FULL-TIME RIDERS SCHEDULING */
+
+SELECT * FROM Schedule_FT_Hours
+
+DELETE FROM Schedule_FT_Hours
+
+/* Not consecutive days */
+BEGIN;
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-25 18:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-27 18:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-22 18:00:25-07', True, False, 1);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-23 18:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-26 18:00:25-07', True, True, 2);
+
+COMMIT;
+
+/* Success without warning */
+BEGIN;
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(5, '2016-06-25 18:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(5, '2016-06-27 23:59:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(5, '2016-06-24 18:00:25-07', True, False, 1);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(5, '2016-06-23 00:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(5, '2016-06-26 18:00:25-07', True, True, 2);
+
+COMMIT;
+
+/* More than 5 days */
+BEGIN;
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-25 18:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-27 23:59:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-24 18:00:25-07', True, False, 1);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-23 00:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-22 00:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-21 00:00:25-07', True, False, 2);
+
+INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
+VALUES(1, '2016-06-26 18:00:25-07', True, True, 2);
+
+COMMIT;
+
+
+/* Full time schedule DDL changes */
 CREATE TABLE Schedule_FT_Hours (
     sfid SERIAL NOT NULL PRIMARY KEY,
     rid SERIAL NOT NULL,
@@ -16,63 +90,38 @@ CREATE TABLE Schedule_FT_Hours (
     is_last_shift BOOLEAN NOT NULL,
     shift INT NOT NULL,
     FOREIGN KEY (rid) REFERENCES Full_Timer, 
-    CHECK (0 < shift <= 4)
+    CHECK (0 < shift AND shift < 5)
 );
-
-/* Trigger to ensure 5-consecutive day work week
- * NEED DATES TO BE IN ORDER FROM EARLIEST TO LATEST */
-
-CREATE OR REPLACE FUNCTION check_consecutive()
-  RETURNS trigger AS
-
-$BODY$
-DECLARE prev_date TIMESTAMP
-DECLARE id INT
-BEGIN
-    SELECT sfid, wkdate INTO id, prev_date FROM Schedule_FT_Hours 
-    WHERE is_prev = True;
-
-    IF NEW.wkdate - prev_date > INTERVAL '1 days' THEN
-    RAISE EXCEPTION USING MESSAGE = 'WORK DAYS MUST BE CONSECUTIVE';
-
-    ELSEIF NEW.wkdate - prev_date <= INTERVAL '1 days' THEN
-    UPDATE Schedule_FT_Hours WHERE sfid = id
-    SET is_prev = False
-
-    END IF;
-    RETURN NULL;
-
-END;
-$BODY$
-LANGUAGE plpgsql ;
-
-DROP TRIGGER IF EXISTS check_consecutive ON Schedule_FT_Hours;
-CREATE TRIGGER check_consecutive
-  AFTER INSERT
-  ON Schedule_FT_Hours
-  FOR EACH ROW
-  EXECUTE PROCEDURE check_consecutive();
 
 /* Trigger to ensure 5 day work week */
 
 CREATE OR REPLACE FUNCTION check_day_num()
   RETURNS trigger AS
 $BODY$
+DECLARE total_days_in_range INT;
 DECLARE total_days INT;
+DECLARE latest_day TIMESTAMP;
 BEGIN
-    SELECT SUM(sfid) INTO total_days FROM Schedule_FT_Hours 
-    WHERE rid = NEW.rid AND NEW.mth = mth;
+    SELECT MAX(wkdate) INTO latest_day FROM (SELECT * FROM Schedule_FT_Hours
+    WHERE rid = NEW.rid) AS curr_wk;
+
+    SELECT COUNT(sfid) INTO total_days_in_range FROM Schedule_FT_Hours 
+    WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '5 days';
+
+    SELECT COUNT(sfid) INTO total_days FROM Schedule_FT_Hours 
+    WHERE rid = NEW.rid AND latest_day- wkdate <= INTERVAL '7 days';
 
     IF NEW.is_last_shift = True AND 
-    (total_days != 5) THEN
+    ((total_days_in_range != 5) OR (total_days > 5)) THEN
     DELETE FROM Schedule_FT_Hours 
-    WHERE rid = NEW.rid AND NEW.wkdate - wkdate <= INTERVAL '7 days';
+    WHERE rid = NEW.rid AND latest_day - wkdate <= INTERVAL '7 days';
 
-    RAISE WARNING USING MESSAGE = 'You can only work 5 days a week!';
+    RAISE WARNING USING MESSAGE = 'Your work schedule must be 5 consecutive days!';
 
     ELSEIF NEW.is_last_shift = True THEN
-    UPDATE Full_Timer WHERE rid = NEW.rid
-    SET mth = mth + 1;
+    UPDATE Full_Timer 
+    SET mth = mth + 1
+    WHERE rid = NEW.rid;
 
     END IF;
 
@@ -88,13 +137,3 @@ CREATE TRIGGER check_day_num
   ON Schedule_FT_Hours
   FOR EACH ROW
   EXECUTE PROCEDURE check_day_num();
-
-
-/* TESTING FULL-TIME RIDERS SCHEDULING */
-
-SELECT * FROM Schedule_FT_Hours
-
-DELETE FROM Schedule_FT_Hours
-
-INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, shift)
-VALUES(2, '2016-06-22 18:00:25-07', True, 1);

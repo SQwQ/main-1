@@ -149,6 +149,7 @@ CREATE TABLE Rider (
 	rtotal_salary NUMERIC NOT NULL
 );
 
+/* added wks */
 CREATE TABLE Part_Timer (
 	rid SERIAL NOT NULL PRIMARY KEY,
 	base_salary NUMERIC NOT NULL,
@@ -164,6 +165,7 @@ CREATE TABLE Weekly_Past_Salaries (
 	FOREIGN KEY (rid) REFERENCES Part_Timer ON DELETE CASCADE
 );
 
+/* added mth */
 CREATE TABLE Full_Timer (
 	rid SERIAL NOT NULL PRIMARY KEY,
 	base_salary NUMERIC NOT NULL,

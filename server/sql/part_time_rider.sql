@@ -8,7 +8,32 @@
   INSERT INTO Part_Timer (rid, base_salary, wks)
   SELECT T_RID, 33, 0 FROM ins1;
 
-/* PART-TIME RIDER SCHEDULING */
+/* PART-TIME RIDER SCHEDULING TEST CASE COMMANDS */
+
+SELECT * FROM Schedule_PT_Hours
+
+DELETE FROM Schedule_PT_Hours
+
+INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
+VALUES(1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-22 16:00:25-07',
+      '2016-06-22 18:00:25-07', False);
+
+/* EXPECTED RESULT: ONLY 1 ROW IN TABLE WITH START-TIME 16:00 AND END TIME 20:00 */
+INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
+VALUES(1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-22 18:00:25-07',
+      '2016-06-22 20:00:25-07', False);
+
+/* EXPECTED RESULT: ERROR ABOUT WORKING TOO LONG */
+INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
+VALUES(1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-22 20:00:25-07',
+      '2016-06-22 21:00:25-07', False);
+
+/* EXPECTED RESULT: WARNING ABOUT NOT ENOUGH TOTAL HOURS AND DELETE PREVIOUS INSERTIONS FOR SAME WK/RIDER*/
+INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
+VALUES(1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-27 20:00:25-07',
+      '2016-06-27 21:00:25-07', True);
+
+/* PART-TIME RIDER SCHEDULING DDL CHANGES */
 
 CREATE TABLE Schedule_PT_Hours (
     spid SERIAL NOT NULL PRIMARY KEY,
@@ -73,8 +98,9 @@ BEGIN
     RAISE WARNING USING MESSAGE = 'Your working hours per week must be between 10 and 48!';
 
     ELSEIF NEW.is_last_shift = True THEN
-    UPDATE Part_Timer WHERE rid = NEW.rid
+    UPDATE Part_Timer 
     SET wks = wks + 1;
+    WHERE rid = NEW.rid
 
     END IF;
 
@@ -90,29 +116,3 @@ CREATE TRIGGER net_total_hrs
   ON Schedule_PT_Hours
   FOR EACH ROW
   EXECUTE PROCEDURE net_total_hrs();
-
-
-/* PART-TIME RIDER SCHEDULING TEST CASE COMMANDS */
-
-SELECT * FROM Schedule_PT_Hours
-
-DELETE FROM Schedule_PT_Hours
-
-INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
-VALUES(1, 1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-22 16:00:25-07',
-      '2016-06-22 18:00:25-07', False);
-
-/* EXPECTED RESULT: ONLY 1 ROW IN TABLE WITH START-TIME 16:00 AND END TIME 20:00 */
-INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
-VALUES(1, 1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-22 18:00:25-07',
-      '2016-06-22 20:00:25-07', False);
-
-/* EXPECTED RESULT: ERROR ABOUT WORKING TOO LONG */
-INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
-VALUES(1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-22 20:00:25-07',
-      '2016-06-22 21:00:25-07', False);
-
-/* EXPECTED RESULT: WARNING ABOUT NOT ENOUGH TOTAL HOURS AND DELETE PREVIOUS INSERTIONS FOR SAME WK/RIDER*/
-INSERT INTO Schedule_PT_Hours(rid, wkday, start_time, end_time, is_last_shift)
-VALUES(1, EXTRACT(DOW FROM TIMESTAMP '2016-06-22 16:00:25-07'), '2016-06-27 20:00:25-07',
-      '2016-06-27 21:00:25-07', True);
