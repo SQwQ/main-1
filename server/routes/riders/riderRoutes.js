@@ -20,8 +20,8 @@ router.route('/api/profiles/rider').get(async (req, res) => {
   res.send(JSON.stringify(result.rows));
 });
 
-// Create a rider (gg not working)
-router.route('/api/profiles/rider/create').post(async (req, res) => {
+// Create a rider
+  router.route('/api/profiles/rider/create').post(async (req, res) => {
     const rname = req.body.rname;
     const rusername = req.body.rusername;
     const rpassword = req.body.rpassword;
@@ -29,19 +29,18 @@ router.route('/api/profiles/rider/create').post(async (req, res) => {
     const type = req.body.type;
     const base_salary = 0;
 
-    const type_table_name = type="full_time" ? "Full_Timer" : "Part_Timer";
+    console.log(rname);
+
+    const type_table_name = type == "full_time" ? "Full_Timer" : "Part_Timer";
     
 
     const queryString = 
-    `begin;
-
-    INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary) 
-    VALUES (${rname}, ${rusername}, ${rpassword}, ${rtotal_salary});
-
-    INSERT INTO  ${type_table_name}
-    VALUES (${rusername}, ${base_salary});
-    
-    commit;`;
+    `WITH ins1 AS 
+     (INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary) 
+     VALUES ('${rname}', '${rusername}', '${rpassword}', ${rtotal_salary})
+     RETURNING rid AS T_RID)
+     INSERT INTO  ${type_table_name}
+     SELECT T_RID, ${base_salary} FROM ins1;`;
   
     const result = await pool.query(queryString);
     res.setHeader('content-type', 'application/json');
