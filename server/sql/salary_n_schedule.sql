@@ -16,7 +16,7 @@ CREATE TABLE Current_Schedule (
     curr_wk INT NOT NULL DEFAULT 0,
     curr_mth INT NOT NULL DEFAULT 0,
     FOREIGN KEY (rid) REFERENCES Rider ON DELETE CASCADE, 
-    FOREIGN KEY (rid) REFERENCES Schedule_Count
+    FOREIGN KEY (scid) REFERENCES Schedule_Count
 );
 
 CREATE OR REPLACE FUNCTION update_schedule()
@@ -26,7 +26,6 @@ BEGIN
    UPDATE Schedule_Count SET num_avail = num_avail - 1
    WHERE scid = OLD.scid;
    
-   END IF;
    RETURN NULL;
 END;
 $BODY$
@@ -50,12 +49,16 @@ AND wkday =  EXTRACT(DOW FROM TIMESTAMP '2016-06-25 18:00:25-07') SET num_avail 
 DELETE FROM Current_Schedule WHERE rid = 1;
 
 INSERT INTO Current_Schedule (rid, scid, curr_wk)
-SELECT 2, (SELECT scid FROM Schedule_Count WHERE start_time = EXTRACT(HOUR FROM TIMESTAMP '2016-06-25 18:00:25-07'), 
-wks FROM Part_Timer WHERE rid = 2;
+SELECT 2, scid, 
+(SELECT wks FROM Part_Timer WHERE rid = 2)
+FROM Schedule_Count WHERE start_time = EXTRACT(HOUR FROM TIMESTAMP '2016-06-25 18:00:25-07')
+AND wkday =  EXTRACT(DOW FROM TIMESTAMP '2016-06-25 18:00:25-07');
 
-INSERT INTO Current_Schedule (rid, scid, curr_wk)
-SELECT 1, (SELECT scid FROM Schedule_Count WHERE start_time = EXTRACT(HOUR FROM TIMESTAMP '2016-06-25 18:00:25-07'), 
-mth FROM Full_Timer WHERE rid = 1;
+INSERT INTO Current_Schedule (rid, scid, curr_mth)
+SELECT 1, scid, 
+(SELECT mth FROM Full_Timer WHERE rid = 1) 
+FROM Schedule_Count WHERE shift = 'shift' 
+AND wkday =  EXTRACT(DOW FROM TIMESTAMP '2016-06-25 18:00:25-07'); 
 
 
 

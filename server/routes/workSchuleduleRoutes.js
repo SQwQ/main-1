@@ -31,7 +31,7 @@ router.route('/api/schedule/part_time').post((req, res) => {
 
     /* the 3 blobs below are to ensure we still have at least 5 person per hr */
 
-    
+    /* update schedule_count which is a catalougue of timeslots + number of available riders at that slot */
     for (var i = 0; i < time_array.length; i++) {
 
         pool
@@ -43,14 +43,14 @@ router.route('/api/schedule/part_time').post((req, res) => {
         
     }
     
-
+     /* triggers schedule_count to decrease the number of available riders at the old slots */
     pool
     .query(
     `DELETE FROM Current_Schedule WHERE rid = ${rid};`)
     .then(() => console.log("Successfully deleted old schedule"))
     .catch(err => res.status(400).json('Error' + err));
 
-    
+    /* renews entries in Current_Schedule for this rider */
     for (var i = 0; i < time_array.length; i++) {
 
         pool
@@ -73,7 +73,7 @@ router.route('/api/schedule/full_time').post((req, res) => {
     const rid = req.params.rid;
     
 
-    /* insert each time block into Schedule_PT_Hours */
+    /* insert each time block into Schedule_FT_Hours */
     for (var i = 0; i < time_array.length; i++) {
         if (i <  time_array.length -1) {
             pool
@@ -95,7 +95,7 @@ router.route('/api/schedule/full_time').post((req, res) => {
 
     /* the 3 blobs below are to ensure we still have at least 5 person per hr */
 
-    
+    /* update schedule_count which is a catalougue of timeslots + number of available riders at that slot */
     for (var i = 0; i < time_array.length; i++) {
 
         pool
@@ -107,21 +107,22 @@ router.route('/api/schedule/full_time').post((req, res) => {
         
     }
     
-
+    /* triggers schedule_count to decrease the number of available riders at the old slots */
     pool
     .query(
     `DELETE FROM Current_Schedule WHERE rid = ${rid};`)
     .then(() => console.log("Successfully deleted old schedule"))
     .catch(err => res.status(400).json('Error' + err));
 
-    
+    /* renews entries in Current_Schedule for this rider */
     for (var i = 0; i < time_array.length; i++) {
 
         pool
         .query(
         `INSERT INTO Current_Schedule (rid, scid, curr_wk)
-        SELECT ${rid}, (SELECT scid FROM Schedule_Count WHERE start_time = EXTRACT(HOUR FROM TIMESTAMP '${time_array[i][0]}'), 
-        wks FROM Part_Timer WHERE rid = ${rid};`)
+        SELECT ${rid}, scid, (SELECT mth FROM Full_Timer WHERE rid = 1) 
+        FROM Schedule_Count WHERE shift = '${time_array[i][1]}' 
+        AND wkday =  EXTRACT(DOW FROM TIMESTAMP '${time_array[i][0]}');`)
         .then(() => console.log("Successfully updated schedule"))
         .catch(err => res.status(400).json('Error' + err));
         
