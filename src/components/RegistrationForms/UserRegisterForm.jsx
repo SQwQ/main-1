@@ -44,7 +44,7 @@ export default class UserRegisterForm extends Component {
       cpassword: this.state.password,
       ccontact_number: parseInt(this.state.contactNumber),
       cjoin_time: joinTime,
-      crewards_points: 1,
+      crewards_points: 0,
     };
     Axios.post (apiRoute.CUSTOMER_API, user, {
       withCredentials: false,
