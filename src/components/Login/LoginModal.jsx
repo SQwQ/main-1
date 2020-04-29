@@ -164,6 +164,11 @@ class LoginModal extends Component {
               id="username"
               label="Username"
               variant="outlined"
+              onKeyPress={(ev) => {
+                  if (ev.key === 'Enter') {
+                      this._handleSubmit()
+                  }
+              }}
               required
               fullWidth
             />
@@ -175,6 +180,11 @@ class LoginModal extends Component {
               label="Password"
               type="password"
               variant="outlined"
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                    this._handleSubmit()
+                }
+              }}
               required
               fullWidth
             />

@@ -17,16 +17,18 @@ import MailIcon from '@material-ui/icons/Mail';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
-import banner from '../images/food.jpeg';
 
 // Styles
 import CssBaseline from '@material-ui/core/CssBaseline';
-import './css/user.css';
+import '../css/user.css';
 
 // Routing
 import {Link as RouterLink, withRouter} from 'react-router-dom';
-import * as apiRoute from '../components/Api/route.js';
+import * as apiRoute from '../../components/Api/route.js';
 import Axios from 'axios';
+
+// Subpages
+import UserRestaurantSearch from './userRestaurantSearch';
 
 const drawerWidth = 240;
 
@@ -98,6 +100,7 @@ class UserPage extends Component {
         const { classes }= this.props;
 
         return (
+            <div className="pageContainer">
             <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
@@ -145,14 +148,11 @@ class UserPage extends Component {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {/* Conditional iframe */}
-                {/* ORDER PAGE */}
-                <img className="banner" src={banner} alt="banner" />
-                <div className="mainContent">
-                    {/* Search Bar */}
 
-                    {/* Card List */}
-                </div>
+                {/* ORDER PAGE */}
+                <UserRestaurantSearch />
             </main>
+            </div>
             </div>
         );
     }

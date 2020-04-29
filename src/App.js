@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
 
 //Pages
 import MainPage from "./pages/index";
-import UserPage from "./pages/user";
+import UserPage from "./pages/user/user";
 import StaffPage from "./pages/staff";
 import RiderPage from "./pages/rider";
 import ManagerPage from "./pages/manager/manager";
