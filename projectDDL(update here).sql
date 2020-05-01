@@ -58,6 +58,8 @@ CREATE TABLE Order_List (
 	oorder_arrives_customer TIMESTAMP,
 	odelivery_fee NUMERIC NOT NULL CHECK (odelivery_fee >= 0),
 	ofinal_price NUMERIC NOT NULL CHECK (ofinal_price >= 0),
+	ozipcode NUMERIC NOT NULL,
+	odelivery_address TEXT,
 	opayment_type TEXT,
 	orating INTEGER,
 	ostatus TEXT,

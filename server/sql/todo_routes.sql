@@ -134,6 +134,8 @@ SELECT SUM(dlvry_rating)/COUNT(ocid) FROM make_order WHERE ocid IN
 
 /*For each hour and for each delivery location area, the total number of orders placed at that
 hour for that location area.*/
+SELECT COUNT(ocid) FROM Order_List WHERE oorder_place_time - "TIMESTAMP" <= INTERVAL '1 hour' AND 
+ozipcode/10000 = "sector code"
 
 /*INCOMPLETE NEED TO SETTLE AREA*/
 
