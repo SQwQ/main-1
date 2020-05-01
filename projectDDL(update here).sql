@@ -50,6 +50,7 @@ CREATE TABLE food_categorized (
 */
 CREATE TABLE Order_List (
 	ocid SERIAL NOT NULL PRIMARY KEY,
+	rid SERIAL,
 	oorder_place_time TIMESTAMP,
 	oorder_enroute_restaurant TIMESTAMP,
 	oorder_arrives_restaurant TIMESTAMP,
@@ -57,9 +58,12 @@ CREATE TABLE Order_List (
 	oorder_arrives_customer TIMESTAMP,
 	odelivery_fee NUMERIC NOT NULL CHECK (odelivery_fee >= 0),
 	ofinal_price NUMERIC NOT NULL CHECK (ofinal_price >= 0),
+	ozipcode NUMERIC NOT NULL,
+	odelivery_address TEXT,
 	opayment_type TEXT,
 	orating INTEGER,
-	ostatus TEXT
+	ostatus TEXT,
+	FOREIGN KEY (rid) REFERENCES Rider(rid)
 );
 
 CREATE TABLE order_contains (
@@ -83,13 +87,13 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE make_order (
-	rest_rating INTEGER,
+	dlvry_rating INTEGER,
 	review_text TEXT,
 	ocid SERIAL NOT NULL UNIQUE,
 	rid SERIAL NOT NULL,
 	cid SERIAL NOT NULL,
 	FOREIGN KEY (ocid) REFERENCES Order_List(ocid),
-	FOREIGN KEY (rid) REFERENCES Restaurant(rid),
+	FOREIGN KEY (rid) REFERENCES Rider(rid),
 	FOREIGN KEY (cid) REFERENCES Customer(cid)
 );
 
