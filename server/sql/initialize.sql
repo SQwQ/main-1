@@ -1,5 +1,14 @@
 /* Modify DDL to new changes */
-
+/* Modify DDL to new changes */
+ALTER TABLE make_order DROP FOREIGN KEY make_order_rid_fkey;
+ALTER TABLE make_order ADD FOREIGN KEY (rid) REFERENCES Rider(rid);
+ALTER TABLE make_order DROP COLUMN rest_rating;
+ALTER TABLE make_order ADD COLUMN dlvry_rating INT;
+ALTER TABLE Order_List ADD COLUMN rid SERIAL;
+ALTER TABLE Order_List ADD COLUMN ozipcode NUMERIC;
+ALTER TABLE Order_List ADD COLUMN odelivery_address TEXT;
+ALTER TABLE Order_List ADD FOREIGN KEY (rid) REFERENCES Rider(rid);
+/* Rider changes */
 ALTER TABLE Full_Timer ADD COLUMN mth INT;
 ALTER TABLE Part_Timer ADD COLUMN wks INT;
 
