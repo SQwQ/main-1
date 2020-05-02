@@ -26,13 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-<<<<<<< HEAD
-    "server": "cd server && yarn start",
-    "dev": "concurrently \"npm start\" \"npm server\""
-=======
     "server": "cd server && yarn dev",
     "dev": "concurrently \"yarn start\" \"yarn server\""
->>>>>>> 36e0b65e066b68c9c1c379b636483e097924e05f
   },
   "eslintConfig": {
     "extends": "react-app"
