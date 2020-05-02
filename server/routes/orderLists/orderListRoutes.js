@@ -3,10 +3,9 @@ const pool = require('../../config/pool');
 
 // Create an orderList
 router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
-  console.log('ran');
+  console.log("run create order")
   const rid = req.params.rid;
   const cid = req.params.cid;
-
   const oorder_place_time = req.body.oorder_place_time;
   const oorder_enroute_restaurant = req.body.oorder_enroute_restaurant;
   const oorder_arrives_restaurant = req.body.oorder_arrives_restaurant;
@@ -19,6 +18,9 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
   const ostatus = req.body.ostatus;
   const rest_rating = null;
   const review_text = null;
+  const foodIdArray = req.body.foodIdArray;
+  const foodPriceArray = req.body.foodPriceArray;
+  const foodCountArray = req.body.foodCountArray;
 
   // 1) Insert into Order_List
   // 2) Insert into make_order
@@ -36,12 +38,26 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
       )
       
       INSERT INTO make_order (ocid, rid, cid, rest_rating, review_text) 
-      SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1;
+      SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1 returning ocid;
       COMMIT;`
     )
-    .then((data) => {console.log(data); res.status(200).json();})
+    .then(returnedData => {
+      let currentOcid = returnedData[1].rows[0].ocid;
+      for (let i = 0; i < foodIdArray.length; i++) {
+        if (foodCountArray[i] !== 0) {
+          pool
+            .query(
+              `INSERT INTO order_contains (ocid, fid, total_price, quantity, unit_price) 
+                VALUES(${currentOcid}, ${foodIdArray[i]}, ${foodCountArray[i] * foodPriceArray[i]}, ${foodCountArray[i]}, ${foodPriceArray[i]});`
+            )
+            .then(() => res.status(200).json())
+            .catch(err => res.status(400).json('Error' + err));
+        }
+      }
+    })
     .catch(err => res.status(400).json('Error' + err));
 });
+
 
 // Get a specific orderList
 router.route('/api/orderList/:ocid').get(async (req, res) => {

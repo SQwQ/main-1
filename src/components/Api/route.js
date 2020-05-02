@@ -6,3 +6,5 @@ export const MANAGER_LOGIN_API = "http://localhost:5000/api/login/manager";
 export const SEARCH_RESTAURANT_API = "http://localhost:5000/api/search";
 export const GET_RESTAURANT_FOOD_API = "http://localhost:5000/api/restaurant_food";
 export const GET_RESTAURANT_API = "http://localhost:5000/api/restaurant";
+export const GET_CUSTOMER_DETAIL_API = "http://localhost:5000/api/customer";
+export const CREATE_ORDER_API = "http://localhost:5000/api/orderList/create";

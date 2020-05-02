@@ -42,7 +42,7 @@ class userRestaurantSearch extends Component {
   }
 
   renderRestaurant() {
-    return this.state.searchResults.map(result => < RestaurantItem key={result.fid} result={result}/>);
+    return this.state.searchResults.map(result => < RestaurantItem key={result.fid} result={result} userId={this.props.userId}/>);
   }
 
   render() {

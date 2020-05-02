@@ -122,7 +122,7 @@ class UserPage extends Component {
                 <div className={classes.toolbar} />
                 <Divider />
                 <List>
-                    <ListItem button key="Profile">
+                    <ListItem button key="Profile"component={RouterLink} to={`/profile/${this.id}`} >
                         <ListItemIcon><ProfileIcon /></ListItemIcon>
                         <ListItemText primary="Profile" />
                     </ListItem>
@@ -150,7 +150,7 @@ class UserPage extends Component {
                 {/* Conditional iframe */}
 
                 {/* ORDER PAGE */}
-                <UserRestaurantSearch />
+                <UserRestaurantSearch userId={this.id} />
             </main>
             </div>
             </div>
