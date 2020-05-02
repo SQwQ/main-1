@@ -48,6 +48,17 @@ CREATE TABLE food_categorized (
 /*
 	Orders and Customer
 */
+
+CREATE TABLE Customer (
+	cid SERIAL NOT NULL PRIMARY KEY,
+	cname VARCHAR(50) NOT NULL,
+	ccontact_number INT,
+	cusername VARCHAR(50) NOT NULL UNIQUE,
+	cpassword VARCHAR(50) NOT NULL,
+	cjoin_time TIMESTAMP NOT NULL,
+	crewards_points INT NOT NULL
+);
+
 CREATE TABLE Order_List (
 	ocid SERIAL NOT NULL PRIMARY KEY,
 	oorder_place_time TIMESTAMP,
@@ -66,28 +77,18 @@ CREATE TABLE order_contains (
 	unit_price NUMERIC NOT NULL CHECK (unit_price >= 0),
 	quantity INTEGER NOT NULL CHECK (quantity > 0),
 	total_price NUMERIC NOT NULL CHECK (total_price >= 0),
-	fid SERIAL NOT NULL,
-	ocid SERIAL NOT NULL,
+	fid INTEGER NOT NULL,
+	ocid INTEGER NOT NULL,
 	FOREIGN KEY (fid) REFERENCES Food(fid),
 	FOREIGN KEY (ocid) REFERENCES Order_List(ocid)
-);
-
-CREATE TABLE Customer (
-	cid SERIAL NOT NULL PRIMARY KEY,
-	cname VARCHAR(50) NOT NULL,
-	ccontact_number INT,
-	cusername VARCHAR(50) NOT NULL UNIQUE,
-	cpassword VARCHAR(50) NOT NULL,
-	cjoin_time TIMESTAMP NOT NULL,
-	crewards_points INT NOT NULL
 );
 
 CREATE TABLE make_order (
 	rest_rating INTEGER,
 	review_text TEXT,
-	ocid SERIAL NOT NULL UNIQUE,
-	rid SERIAL NOT NULL,
-	cid SERIAL NOT NULL,
+	ocid INTEGER NOT NULL UNIQUE,
+	rid INTEGER NOT NULL,
+	cid INTEGER NOT NULL,
 	FOREIGN KEY (ocid) REFERENCES Order_List(ocid),
 	FOREIGN KEY (rid) REFERENCES Restaurant(rid),
 	FOREIGN KEY (cid) REFERENCES Customer(cid)
