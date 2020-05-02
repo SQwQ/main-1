@@ -24,16 +24,10 @@ router.route ('/api/restaurants').get (async (req, res) => {
 
 //Post a restaurant
 router.route ('/api/restaurant').post ((req, res) => {
-    console.log('ran');
   const rname = req.body.rname;
   const raddress = req.body.raddress;
   const rmincost = req.body.rmincost;
   const rimage = req.body.rimage;
-
-  console.log(rname);
-  console.log(raddress);
-  console.log(rmincost);
-  console.log(rimage);
 
   pool
     .query (
