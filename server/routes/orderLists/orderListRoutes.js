@@ -6,7 +6,6 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
   console.log("run create order")
   const rid = req.params.rid;
   const cid = req.params.cid;
-  const oorder_place_time = req.body.oorder_place_time;
   const oorder_enroute_restaurant = req.body.oorder_enroute_restaurant;
   const oorder_arrives_restaurant = req.body.oorder_arrives_restaurant;
   const oorder_enroute_customer = req.body.oorder_enroute_customer;
@@ -31,7 +30,7 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
       WITH instance1 AS (
         INSERT INTO Order_List (oorder_place_time, oorder_enroute_restaurant, oorder_arrives_restaurant, 
         oorder_enroute_customer, oorder_arrives_customer, odelivery_fee, ofinal_price, opayment_type, orating, ostatus) 
-        VALUES(${oorder_place_time}, ${oorder_enroute_restaurant}, ${oorder_arrives_restaurant},
+        VALUES(NOW(), ${oorder_enroute_restaurant}, ${oorder_arrives_restaurant},
           ${oorder_enroute_customer}, ${oorder_arrives_customer}, ${odelivery_fee}, ${ofinal_price}, 
           '${opayment_type}', ${orating}, '${ostatus}') 
         RETURNING ocid AS orderIdCreated

@@ -72,7 +72,6 @@ export default function RestaurantPage({ match }) {
 
 
     const details = {
-      "oorder_place_time" : null,
       "oorder_enroute_restaurant" : null,
       "oorder_arrives_restaurant" : null,
       "oorder_enroute_customer" : null,

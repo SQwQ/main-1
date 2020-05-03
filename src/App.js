@@ -11,6 +11,7 @@ import RiderPage from "./pages/rider";
 import ManagerPage from "./pages/manager/manager";
 import RestaurantPage from "./pages/restaurant/RestaurantPage";
 import UserProfile from "./pages/user/UserProfile";
+import OrderDetailsPage from "./pages/orderdetails/OrderDetailsPage";
 
 // PrivateRoute to implement trivial auth with callbacks
 const PrivateRoute = ({ component: Component, 
@@ -101,6 +102,13 @@ class App extends Component {
 
                     {/* User's profile Page*/}
                     <PrivateRoute exact path="/profile/:userid" component={UserProfile} 
+                        authenticateState={this.state.isAuthenticated}
+                        authenticate={this.setAuth}
+                        unauthenticate={this.setUnAuth}
+                        />
+
+                     {/* User's Order Page for a certain order*/}
+                     <PrivateRoute exact path="/profile/:userid/order/:ocid" component={OrderDetailsPage} 
                         authenticateState={this.state.isAuthenticated}
                         authenticate={this.setAuth}
                         unauthenticate={this.setUnAuth}
