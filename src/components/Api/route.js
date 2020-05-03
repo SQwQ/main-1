@@ -11,3 +11,4 @@ export const CREATE_ORDER_API = "http://localhost:5000/api/orderList/create";
 export const GET_PAST_ORDER_API = "http://localhost:5000/api/all_order";
 export const GET_ORDER_REVIEW_AND_RATING = "http://localhost:5000/api/makeOrder/rating_review";
 export const UPDATE_RATING = "http://localhost:5000/api/makeOrder/rating/update";
+export const UPDATE_REVIEW = "http://localhost:5000/api/makeOrder/review/update";
