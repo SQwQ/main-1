@@ -1,9 +1,12 @@
 /* Modify DDL to new changes */
 ALTER TABLE Promotion ADD COLUMN prid SERIAL;
 ALTER TABLE Promotion ADD FOREIGN KEY (prid) REFERENCES Restaurant(rid);
+ALTER TABLE Promotion DROP COLUMN pisPercentage;
+ALTER TABLE Promotion ADD COLUMN percentage NUMERIC NOT NULL;
 ALTER TABLE Order_List ADD COLUMN ozipcode NUMERIC;
 ALTER TABLE Order_List ADD COLUMN odelivery_address TEXT;
-
+ALTER TABLE Order_List DROP COLUMN orating;
+ALTER TABLE Order_List DROP COLUMN ostatus;
 
 /* Rider changes */
 ALTER TABLE Full_Timer ADD COLUMN mth INT;
