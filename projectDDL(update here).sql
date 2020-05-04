@@ -59,9 +59,7 @@ CREATE TABLE Order_List (
 	ofinal_price NUMERIC NOT NULL CHECK (ofinal_price >= 0),
 	ozipcode NUMERIC NOT NULL,
 	odelivery_address TEXT,
-	opayment_type TEXT,
-	orating INTEGER,
-	ostatus TEXT
+	opayment_type TEXT
 );
 
 CREATE TABLE order_contains (
@@ -145,7 +143,7 @@ CREATE TABLE delivered_by (
 CREATE TABLE Promotion (
 	pid SERIAL NOT NULL PRIMARY KEY,
 	prid SERIAL NOT NULL,
-	pisPercentage BOOLEAN NOT NULL,
+	percentage NUMERIC NOT NULL,
 	pdatetime_active_from TIMESTAMP NOT NULL,
 	pdatetime_active_to TIMESTAMP NOT NULL CHECK (pdatetime_active_to > pdatetime_active_from),
 	pminSpend NUMERIC NOT NULL CHECK (pminSpend >= 0),
