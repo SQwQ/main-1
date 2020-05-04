@@ -8,7 +8,7 @@
 
 /* Apply restaurant percentage discount if applicable */
    UPDATE Order_List SET ofinal_price = ofinal_price * 
-   (1 - (SELECT SUM(pisPercentage)/100 FROM Promotion WHERE prid = 'restaurant_id' 
+   (1 - (SELECT SUM(percentage)/100 FROM Promotion WHERE prid = 'restaurant_id' 
    AND CURRENT_TIMESTAMP >= pdatetime_active_from 
 	 AND CURRENT_TIMESTAMP <= pdatetime_active_to)) WHERE ocid = 'ocid';
 
