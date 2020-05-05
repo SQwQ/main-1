@@ -1,3 +1,4 @@
+Create Schema public;
 /*
 	Restaurant
 */
@@ -118,11 +119,11 @@ BEGIN
     SELECT flimit INTO order_limit FROM Food WHERE fid = NEW.fid;
     
     IF NEW.quantity > order_limit THEN
-    DELETE * FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
+    DELETE FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
     RAISE EXCEPTION USING MESSAGE = 'You ordered too much food!';
     
     ELSEIF (SELECT favailable FROM Fodd WHERE fid = NEW.fid) = False THEN
-    DELETE * FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
+    DELETE FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
     RAISE EXCEPTION USING MESSAGE = 'The item is currently unavailable';	
     
     END IF;
@@ -161,15 +162,6 @@ CREATE TABLE make_order (
 	FOREIGN KEY (cid) REFERENCES Customer(cid)
 );
 
-CREATE TABLE delivered_by (
-	drating INTEGER,
-	ocid SERIAL NOT NULL UNIQUE,
-	rid SERIAL NOT NULL,
-	cid SERIAL NOT NULL,
-	FOREIGN KEY (ocid) REFERENCES Order_List(ocid),
-	FOREIGN KEY (rid) REFERENCES Rider(rid),
-	FOREIGN KEY (cid) REFERENCES Customer(cid)
-);
 
 /*
 	Promotions and coupons
@@ -189,7 +181,7 @@ CREATE TABLE Promotion (
 );
 
 CREATE TABLE Coupon (
-	cid NOT NULL,
+	cid SERIAL NOT NULL,
 	PRIMARY KEY (cid),
 	couponCode VARCHAR(10) NOT NULL UNIQUE,
 	FOREIGN KEY (cid) REFERENCES Promotion(pid) ON DELETE CASCADE
@@ -203,7 +195,7 @@ CREATE TABLE coupon_wallet (
 );
 
 CREATE TABLE Campaign (
-	pid NOT NULL PRIMARY KEY,
+	pid SERIAL NOT NULL PRIMARY KEY,
 	FOREIGN KEY (pid) REFERENCES Promotion(pid) ON DELETE CASCADE,
 	cMon BOOLEAN NOT NULL,
 	cTue BOOLEAN NOT NULL,
@@ -554,8 +546,8 @@ BEGIN
 
     ELSEIF NEW.is_last_shift = True THEN
     UPDATE Part_Timer 
-    SET wks = wks + 1;
-    WHERE rid = NEW.rid
+    SET wks = wks + 1
+    WHERE rid = NEW.rid;
 
     END IF;
 
@@ -600,7 +592,6 @@ BEGIN
    UPDATE Schedule_Count SET num_avail = num_avail - 1
    WHERE scid = OLD.scid;
    
-   END IF;
    RETURN NULL;
 END;
 $BODY$
@@ -612,3 +603,14 @@ CREATE TRIGGER update_schedule
   ON Current_Schedule
   FOR EACH ROW
   EXECUTE PROCEDURE update_schedule();
+ 
+ CREATE TABLE delivered_by (
+	drating INTEGER,
+	ocid SERIAL NOT NULL UNIQUE,
+	rid SERIAL NOT NULL,
+	cid SERIAL NOT NULL,
+	FOREIGN KEY (ocid) REFERENCES Order_List(ocid),
+	FOREIGN KEY (rid) REFERENCES Rider(rid),
+	FOREIGN KEY (cid) REFERENCES Customer(cid)
+);
+
