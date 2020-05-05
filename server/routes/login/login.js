@@ -1,39 +1,37 @@
 const router = require ('express').Router ();
 const pool = require ('../../config/pool');
 
-// Login
-// router.route ('/api/restaurantStaff/login').post ((req, res) => {
-//   const queryString = `SELECT rs FROM Restaurant_Staff WHERE rsusername = '${req.body.rsusername}' AND rspassword = '${req.body.rspassword}'`;
-
-//   const result = pool.query (queryString);
-//   res.setHeader ('content-type', 'application/json');
-//   if (result) {
-//     res.send (JSON.stringify (result.rows[0]));
-//     return res.status (200).json ();
-//   } else {
-//     return res.status (404).json ('Invalid login credentials');
-//   }
-// });
-
 // User Login
 router.route ('/api/login/user').post (async (req, res) => {
-  console.log ('Request', req.body.cusername, req.body.cpassword);
+  console.log ('Request', req.body.username, req.body.password, req.body.type);
 
-  const queryString = `SELECT cid FROM Customer WHERE cusername = '${req.body.cusername}' AND cpassword = '${req.body.cpassword}'`;
+  // Evaluate query based on user type
+  var queryString = ''
+  switch (req.body.type) {
+    case 'Customer':
+      queryString = `SELECT cid FROM Customer WHERE cusername = '${req.body.username}' AND cpassword = '${req.body.password}';`;
+    break;
+    case 'Rider':
+      queryString = `SELECT rid FROM Rider WHERE rusername = '${req.body.username}' AND rpassword = '${req.body.password}';`;
+    break;
+    case 'Staff':
+      queryString = `SELECT rsid FROM Restaurant_Staff WHERE rsusername = '${req.body.username}' AND rspassword = '${req.body.password}';`;
+    break;
+    default:
+      queryString = `SELECT fmid FROM FDS_Manager WHERE fmusername = '${req.body.username}' AND fmpassword = '${req.body.password}';`;
+  }
 
-  const result = await pool.query(queryString);
-  console.log(result);
-  res.setHeader('content-type', 'application/json');
-  res.send(JSON.stringify(result.rows[0]));
-  res.status(200).json();
-
-  //   if (result) {
-  //     console.log ('Result', result);
-  //     res.send (JSON.stringify (result.rows[0]));
-  //     return res.status (200).json ();
-  //   } else {
-  //     return res.status (404).json ('Invalid login credentials');
-  //   }
+  try {
+    const result = await pool.query(queryString);
+    console.log(result);
+    res.setHeader('content-type', 'application/json');
+    res.send(JSON.stringify(result.rows[0]));
+    console.log ("I am sending: " + res.json());
+    res.status(200).json();
+  } catch (err) {
+    console.log(err);
+    res.status(404).json('Unable to connect to server.');
+  }
 });
 
 module.exports = router;
