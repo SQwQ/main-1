@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
-import banner from '../../images/food.jpeg';
 import TextField from '@material-ui/core/TextField';
 import * as apiRoute from '../../components/Api/route.js';
 import Axios from 'axios';
@@ -49,7 +48,6 @@ class userRestaurantSearch extends Component {
     return (
       <div>
         <div className='searchBarBanner'>
-          <img className='banner' src={banner} alt='banner' />
           <div className='searchBarTitle'>
             <Typography variant='h4' noWrap>
               Search for your next meal!
