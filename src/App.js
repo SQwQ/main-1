@@ -7,7 +7,7 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
 import MainPage from "./pages/index";
 import UserPage from "./pages/user/user";
 import StaffPage from "./pages/staff";
-import RiderPage from "./pages/rider";
+import RiderPage from "./pages/rider/rider";
 import ManagerPage from "./pages/manager/manager";
 import RestaurantPage from "./pages/restaurant/RestaurantPage";
 import UserProfile from "./pages/user/UserProfile";
