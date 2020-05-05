@@ -66,4 +66,4 @@ To get our project up and running please clone the repository and follow the fol
 
 ## License :pencil:
 
- This project is licensed under the MIT License - see the [LICENSE](https://github.com/CS3249-gabrielfrancis/dorm-dashboard/blob/master/LICENSE) file for details.
+ This project is licensed under the MIT License - see the [LICENSE](https://github.com/CS2102-Team-51/main/blob/master/LICENSE) file for details.
