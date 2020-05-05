@@ -135,7 +135,7 @@ LANGUAGE plpgsql ;
 
 DROP TRIGGER IF EXISTS food_limit ON order_contains;
 CREATE TRIGGER food_limit
-  AFTER INSERT, UPDATE
+  AFTER INSERT
   ON order_contains
   FOR EACH ROW
   EXECUTE PROCEDURE food_limit();
