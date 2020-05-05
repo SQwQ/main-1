@@ -26,7 +26,6 @@ router.route ('/api/login/user').post (async (req, res) => {
     console.log(result);
     res.setHeader('content-type', 'application/json');
     res.send(JSON.stringify(result.rows[0]));
-    console.log ("I am sending: " + res.json());
     res.status(200).json();
   } catch (err) {
     console.log(err);
