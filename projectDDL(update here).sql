@@ -68,6 +68,7 @@ CREATE TABLE order_contains (
 	total_price NUMERIC NOT NULL CHECK (total_price >= 0),
 	fid SERIAL NOT NULL,
 	ocid SERIAL NOT NULL,
+	PRIMARY KEY (fid, ocid),
 	FOREIGN KEY (fid) REFERENCES Food(fid),
 	FOREIGN KEY (ocid) REFERENCES Order_List(ocid)
 );
@@ -105,6 +106,39 @@ CREATE TRIGGER apply_promo
   ON order_contains
   FOR EACH ROW
   EXECUTE PROCEDURE apply_promo();
+
+/* Enforce quantity/availability constraint */
+
+CREATE OR REPLACE FUNCTION food_limit()
+  RETURNS trigger AS
+
+$BODY$
+DECLARE order_limit INT;
+BEGIN
+    SELECT flimit INTO order_limit FROM Food WHERE fid = NEW.fid;
+    
+    IF NEW.quantity > order_limit THEN
+    DELETE * FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
+    RAISE EXCEPTION USING MESSAGE = 'You ordered too much food!';
+    
+    ELSEIF (SELECT favailable FROM Fodd WHERE fid = NEW.fid) = False THEN
+    DELETE * FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
+    RAISE EXCEPTION USING MESSAGE = 'The item is currently unavailable';	
+    
+    END IF;
+
+    RETURN NULL;
+
+END; 
+$BODY$
+LANGUAGE plpgsql ;
+
+DROP TRIGGER IF EXISTS food_limit ON order_contains;
+CREATE TRIGGER food_limit
+  AFTER INSERT, UPDATE
+  ON order_contains
+  FOR EACH ROW
+  EXECUTE PROCEDURE food_limit();
 
 CREATE TABLE Customer (
 	cid SERIAL NOT NULL PRIMARY KEY,
