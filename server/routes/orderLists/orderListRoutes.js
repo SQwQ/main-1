@@ -23,10 +23,16 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
 
   // 1) Insert into Order_List
   // 2) Insert into make_order
-  // 3) Insert into order_contains
+  // 3) Update reward points
+  // 4) Insert into order_contains
   pool
     .query(
       `BEGIN;
+      
+      UPDATE Customer
+      SET crewards_points=Customer.crewards_points + ${ofinal_price}
+      WHERE cid = ${cid};
+
       WITH instance1 AS (
         INSERT INTO Order_List (oorder_place_time, oorder_enroute_restaurant, oorder_arrives_restaurant, 
         oorder_enroute_customer, oorder_arrives_customer, odelivery_fee, ofinal_price, opayment_type, orating, ostatus) 
@@ -35,13 +41,15 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
           '${opayment_type}', ${orating}, '${ostatus}') 
         RETURNING ocid AS orderIdCreated
       )
-      
+
       INSERT INTO make_order (ocid, rid, cid, rest_rating, review_text) 
       SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1 returning ocid;
+    
       COMMIT;`
     )
     .then(returnedData => {
-      let currentOcid = returnedData[1].rows[0].ocid;
+      // Inserting into order_contains
+      let currentOcid = returnedData[2].rows[0].ocid;
       for (let i = 0; i < foodIdArray.length; i++) {
         if (foodCountArray[i] !== 0) {
           pool
