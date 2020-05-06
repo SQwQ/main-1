@@ -40,29 +40,35 @@ router.route('/api/profiles/rider').get(async (req, res) => {
 });
 
 // Create a rider
-  router.route('/api/profiles/rider/create').post(async (req, res) => {
+  router.route('/api/rider/create').post(async (req, res) => {
     const rname = req.body.rname;
     const rusername = req.body.rusername;
     const rpassword = req.body.rpassword;
     const rtotal_salary = 0;
-    const type = req.body.type;
+    const type = req.body.rtype;
     const base_salary = 0;
 
-    console.log(rname);
+    console.log(type);
 
-    const type_table_name = type == "full_time" ? "Full_Timer" : "Part_Timer";
+    const type_table_name = type === "full_time" ? "Full_Timer" : "Part_Timer";
+    const duration_type = type === "full_time" ? "mth" : "wks"
     
     const queryString = 
     `WITH ins1 AS 
      (INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary) 
      VALUES ('${rname}', '${rusername}', '${rpassword}', ${rtotal_salary})
      RETURNING rid AS T_RID)
-     INSERT INTO  ${type_table_name}
-     SELECT T_RID, ${base_salary} FROM ins1;`;
-  
-    const result = await pool.query(queryString);
-    res.setHeader('content-type', 'application/json');
-    res.send(JSON.stringify(result.rows));
+     INSERT INTO ${type_table_name} (rid, base_salary, ${duration_type})
+     SELECT T_RID, ${base_salary}, 0 FROM ins1;`;
+
+    console.log(queryString)
+    
+    pool.query(queryString)
+        .then((result) => {
+        res.setHeader('content-type', 'application/json');
+        res.send(JSON.stringify(result.rows));
+        })
+        .catch (err => res.status (400).json('Error' + err));
   });
 
 module.exports = router;
