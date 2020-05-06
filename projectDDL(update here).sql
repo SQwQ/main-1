@@ -144,11 +144,12 @@ BEGIN
     DELETE FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
     RAISE EXCEPTION USING MESSAGE = 'You ordered too much food!';
     
-    ELSEIF (SELECT favailable FROM Fodd WHERE fid = NEW.fid) = False THEN
+    ELSEIF (SELECT favailable FROM Food WHERE fid = NEW.fid) = False THEN
     DELETE FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
     RAISE EXCEPTION USING MESSAGE = 'The item is currently unavailable';	
     
     END IF;
+    UPDATE Food SET flimit = order_limit - NEW.quantity WHERE fid = NEW.fid;
 
     RETURN NULL;
 
@@ -162,6 +163,27 @@ CREATE TRIGGER food_limit
   ON order_contains
   FOR EACH ROW
   EXECUTE PROCEDURE food_limit();
+
+/* Update food order_limit if order is cancelled */
+CREATE OR REPLACE FUNCTION cancel_order()
+  RETURNS trigger AS
+
+$BODY$
+DECLARE order_limit INT;
+BEGIN
+    SELECT flimit INTO order_limit FROM Food WHERE fid = OLD.fid;
+    UPDATE Food SET flimit = order_limit + OLD.quantity WHERE fid = OLD.fid;
+    RETURN NULL;
+END; 
+$BODY$
+LANGUAGE plpgsql ;
+
+DROP TRIGGER IF EXISTS cancel_order ON order_contains;
+CREATE TRIGGER cancel_order
+  AFTER DELETE
+  ON order_contains
+  FOR EACH ROW
+  EXECUTE PROCEDURE cancel_order();
 
 CREATE TABLE Customer (
 	cid SERIAL NOT NULL PRIMARY KEY,
