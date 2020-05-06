@@ -16,15 +16,19 @@ export default class UserRegisterForm extends Component {
     super ();
     this.state = {
       setOpen: false,
+      success: false,
+      showError: '',
       fullName: '',
       username: '',
       password: '',
       contactNumber: '',
     };
 
-    this._handleClickOpen = this._handleClickOpen.bind (this);
-    this._handleClose = this._handleClose.bind (this);
-    this._handleRegister = this._handleRegister.bind (this);
+    this._handleClickOpen = this._handleClickOpen.bind(this);
+    this._handleClose = this._handleClose.bind(this);
+    this._handleRegister = this._handleRegister.bind(this);
+    this._showError = this._showError.bind(this);
+    this._showSuccess = this._showSuccess.bind(this);
   }
 
   _handleClickOpen = () => {
@@ -32,17 +36,40 @@ export default class UserRegisterForm extends Component {
   };
 
   _handleClose = () => {
-    this.setState ({setOpen: false});
+    this.setState ({
+        setOpen: false,
+        showError: '',
+        fullName: '',
+        username: '',
+        password: '',
+        contactNumber: '',
+        success: false,
+    });
   };
 
   _handleRegister = () => {
+    // Check if unspecified or empty
+    if (!this.state.fullName.trim()) {
+        this._showError("nameEmpty")
+        return
+    } else if (!this.state.username.trim()) {
+        this._showError("usernameEmpty")
+        return
+    } else if (!this.state.password.trim()) {
+        this._showError("passwordEmpty")
+        return
+    } else if (!this.state.contactNumber.trim()) {
+        this._showError("contactNumberEmpty")
+        return
+    }
+
     let joinTime = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
-    console.log ('This is my joinTime: ', joinTime);
+    console.log ('User registered at: ', joinTime);
     let user = {
-      cname: this.state.fullName,
-      cusername: this.state.username,
-      cpassword: this.state.password,
-      ccontact_number: parseInt(this.state.contactNumber),
+      cname: this.state.fullName.trim(),
+      cusername: this.state.username.trim(),
+      cpassword: this.state.password.trim(),
+      ccontact_number: parseInt(this.state.contactNumber.trim()),
       cjoin_time: joinTime,
       crewards_points: 0,
     };
@@ -51,12 +78,55 @@ export default class UserRegisterForm extends Component {
     })
       .then (response => {
         console.log (response);
+        this._showSuccess();
       })
       .catch (error => {
         console.log (error);
+        this._showError("usernameTaken")
       });
-    this.setState ({setOpen: false});
   };
+
+  _showError(errorStr) {
+    switch(errorStr) {
+        case "nameEmpty":
+            this.setState({
+                showError: "Please specify a name.",
+                success: false
+            });
+        break;
+        case "usernameEmpty":
+            this.setState({
+                showError: "Please specify a username.",
+                success: false
+            });
+        break;
+        case "passwordEmpty":
+            this.setState({
+                showError: "Please specify a password.",
+                success: false
+            });
+        break;
+        case "contactNumberEmpty":
+            this.setState({
+                showError: "Please specify a contact number.",
+                success: false
+            });
+        break;
+        default:
+            this.setState({
+                showError: "Username taken! Please try another username.",
+                success: false
+            });
+        break;
+    }
+  }
+
+  _showSuccess() {
+      this.setState({
+          success: true,
+          showError: ""
+      })
+  }
 
   updateFullName (event) {
     this.setState ({
@@ -104,6 +174,8 @@ export default class UserRegisterForm extends Component {
             <DialogContentText>
               You're one step away from enjoying the convenience of food right at your doorstep!
             </DialogContentText>
+            {this.state.showError ? <DialogContentText className="registrationError">{this.state.showError}</DialogContentText> : ""}
+            {this.state.success ? <DialogContentText className="registrationSuccess">Registration success!</DialogContentText> : ""}
             <TextField
               autoFocus
               margin="dense"
@@ -112,6 +184,7 @@ export default class UserRegisterForm extends Component {
               id="fullname"
               label="Full Name"
               variant="outlined"
+              inputProps={{ maxLength: 50 }}
               required
               fullWidth
             />
@@ -122,6 +195,7 @@ export default class UserRegisterForm extends Component {
               id="username"
               label="Username"
               variant="outlined"
+              inputProps={{ maxLength: 50 }}
               required
               fullWidth
             />
@@ -133,6 +207,7 @@ export default class UserRegisterForm extends Component {
               label="Password"
               type="password"
               variant="outlined"
+              inputProps={{ maxLength: 50 }}
               required
               fullWidth
             />
@@ -142,7 +217,7 @@ export default class UserRegisterForm extends Component {
               onChange={e => this.updateContactNumber (e)}
               id="contact_number"
               label="Contact Number"
-              type="number"
+              type="tel"
               variant="outlined"
               required
               fullWidth
