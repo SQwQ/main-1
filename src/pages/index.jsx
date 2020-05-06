@@ -17,22 +17,29 @@ export default class MainPage extends Component {
 
   render () {
     return (
-      <div className="MainPageBody">
-        <h1>tapau.</h1>
-        <h3>Main Page</h3>
-        <div>
-          <LoginModal 
-            authenticate={this.props.authenticate} 
-            unauthenticate={this.props.unauthenticate}
-          />
+    <center>
+        <div className="MainPageBody">
+            <div className="title">
+                <center><div className="logo"></div></center>
+                <h1>tapau.</h1>
+            </div>
+            <div className="caption"><h3>Enjoy food brought right up to your doorstep.</h3></div>
+            <div>
+            <LoginModal 
+                authenticate={this.props.authenticate} 
+                unauthenticate={this.props.unauthenticate}
+            />
+            </div>
+            <br /><br />
+            <center>
+            <div className="registrationSection">
+            <UserRegisterForm />
+            <RiderRegisterForm />
+            <StaffRegisterForm />
+            </div>
+            </center>
         </div>
-        <br /><br />
-        <div>
-          <UserRegisterForm />
-          <RiderRegisterForm />
-          <StaffRegisterForm />
-        </div>
-      </div>
+      </center>
     );
   }
 }
