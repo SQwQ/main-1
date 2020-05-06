@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as apiRoute from '../../components/Api/route.js';
+import * as apiRoute from '../../../components/Api/route.js';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -46,7 +46,7 @@ export default function UserProfile({ match }) {
   }
 
   return (
-    <div>
+    <div className="wrapper_content_section">
       <h1>userID: {userDetails.cid}</h1>
       <h1>customer name: {userDetails.cname}</h1>
       <h1>join time: {userDetails.cjoin_time}</h1>

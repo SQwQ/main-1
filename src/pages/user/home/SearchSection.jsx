@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import * as apiRoute from '../../components/Api/route.js';
+import * as apiRoute from '../../../components/Api/route.js';
 import Axios from 'axios';
-import RestaurantItem from '../../components/Search/RestaurantItem';
+import RestaurantItem from '../../../components/Search/RestaurantItem';
 
-class userRestaurantSearch extends Component {
+class SearchSection extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,4 +79,4 @@ class userRestaurantSearch extends Component {
   }
 }
 
-export default userRestaurantSearch;
+export default SearchSection;

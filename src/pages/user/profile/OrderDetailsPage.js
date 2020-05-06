@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as apiRoute from '../../components/Api/route.js';
+import * as apiRoute from '../../../components/Api/route.js';
 import Axios from 'axios';
 
 // match.params = {userid, ocid}
@@ -79,7 +79,7 @@ export default function OrderDetailsPage({ match }) {
   }
 
   return (
-    <div>
+    <div className="wrapper_content_section">
       <p>this is order detail page(can list all order details here, fetch data from list_order)</p>
       <p>order id: {match.params.ocid}</p>
       <p>restaurant id: {rid}</p>
