@@ -146,7 +146,12 @@ BEGIN
     
     ELSEIF (SELECT favailable FROM Food WHERE fid = NEW.fid) = False THEN
     DELETE FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
-    RAISE EXCEPTION USING MESSAGE = 'The item is currently unavailable';	
+    RAISE EXCEPTION USING MESSAGE = 'The item is currently unavailable';
+    
+    ELSEIF (SELECT rid FROM Food WHERE fid = NEW.fid) NOT IN 
+    (SELECT rid FROM Food WHERE fid IN (SELECT fid FROM order_contains WHERE ocid = NEW.ocid)) THEN
+    DELETE FROM order_contains WHERE ocid = NEW.ocid AND fid = NEW.fid; 
+    RAISE EXCEPTION USING MESSAGE = 'You can only order food from the same restaurant';			
     
     END IF;
     UPDATE Food SET flimit = order_limit - NEW.quantity WHERE fid = NEW.fid;
