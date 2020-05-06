@@ -177,17 +177,9 @@ the total number of orders received during the campaign duration to the number o
 in the campaign duration).*/
 
 /* returns tuple of duration, average number of orders */
-SELECT
-  (p0.datetime_active_to - p0.pdatetime_active_from) AS duration,
-  (
-    SELECT
-      SUM(o.ocid)
-    FROM
-      Order_List o,
-      Promotions p1
-    WHERE
-      o.oorder_place_time < p1.pdatetime_active_to
-      AND o.oorder_place_time > p1.pdatetime_active_from
-  ) / duration
-FROM
-  Promotion p0
+SELECT (p0.datetime_active_to - p0.pdatetime_active_from) AS duration,
+(SELECT SUM(o.ocid) FROM Order_List o, Promotions p1
+WHERE o.oorder_place_time < p1.pdatetime_active_to
+AND o.oorder_place_time > p1.pdatetime_active_from
+AND p1.pid = 1) / duration
+FROM Promotion p0 WHERE p0.pid = 1

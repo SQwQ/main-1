@@ -1,6 +1,9 @@
 export const CUSTOMER_API = "http://localhost:5000/api/customer";
 export const CUSTOMER_LOGIN_API = "http://localhost:5000/api/login/user";
+export const RIDER_API = "http://localhost:5000/api/rider";
 export const RIDER_LOGIN_API = "http://localhost:5000/api/login/rider";
+export const PT_RIDER_API = "http://localhost:5000/api/profiles/rider/part_timer";
+export const FT_RIDER_API = "http://localhost:5000/api/profiles/rider/full_timer";
 export const STAFF_LOGIN_API = "http://localhost:5000/api/login/staff";
 export const MANAGER_LOGIN_API = "http://localhost:5000/api/login/manager";
 export const SEARCH_RESTAURANT_API = "http://localhost:5000/api/search";
