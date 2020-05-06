@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
 //Pages
 import MainPage from "./pages/index";
 import UserPage from "./pages/user/user";
+import RiderPage from "./pages/rider/rider";
 import StaffPage from "./pages/staff";
 import ManagerPage from "./pages/manager/manager";
 
@@ -71,7 +72,7 @@ class App extends Component {
                         authenticate={this.setAuth}
                         unauthenticate={this.setUnAuth}
                         />
-                    <PrivateRoute exact path="/rider/:id" 
+                    <PrivateRoute exact path="/rider/:id" component={RiderPage}
                         authenticateState={this.state.isAuthenticated}
                         authenticate={this.setAuth}
                         unauthenticate={this.setUnAuth}
