@@ -227,7 +227,7 @@ class RiderPage extends Component {
                 { !this.state.scheduleSet && "Schedule not set! Please set your schedule before fulfilling orders" }
                 {/* PAGES */}
                 { this.state.showProfilePage && <RiderProfile id={this.id} name={this.state.rname } username={this.state.rusername} password={this.state.rpassword} /> }
-                { this.state.showOrdersPage && <RiderOrders id={this.id} /> }
+                { this.state.scheduleSet && this.state.showOrdersPage && <RiderOrders id={this.id} /> }
                 { this.state.showSchedulePage && <RiderScheduler id={this.id} /> }
                 { this.state.showStatsPage && <RiderStats id={this.id} /> } 
             </main>
