@@ -504,12 +504,11 @@ BEGIN
     WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '5 days';
     
     IF prev_last IS NULL THEN
-    SELECT MIN(wkdate) INTO prev_last FROM (SELECT * FROM Schedule_FT_Hours
-    WHERE rid = NEW.rid);
+    prev_last := '2000-06-25 18:00:25-07';
     END IF;	
     
     SELECT COUNT(sfid) INTO total_days FROM Schedule_FT_Hours 
-    WHERE rid = NEW.rid AND latest_day- wkdate <= INTERVAL '7 days'
+    WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '7 days'
     AND wkdate > prev_last;
 
     IF NEW.is_last_shift = True AND 
@@ -602,17 +601,18 @@ $BODY$
 DECLARE total_hrs INT;
 DECLARE prev_last TIMESTAMP;
 BEGIN
-    SELECT SUM(EXTRACT(HOURS FROM end_time) - EXTRACT(HOURS FROM start_time)) INTO total_hrs FROM Schedule_PT_Hours 
-    WHERE rid = NEW.rid AND NEW.end_time - start_time <= INTERVAL '7 days';
     
     SELECT MAX(end_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
     WHERE rid = NEW.rid AND is_last_shift = True) ;
     
     IF prev_last IS NULL THEN
-    SELECT MIN(end_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
-    WHERE rid = NEW.rid);
-    END IF;					      
-
+    SELECT MIN(start_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
+    WHERE rid = NEW.rid); 
+    END IF;
+				 
+    SELECT SUM(EXTRACT(HOURS FROM end_time) - EXTRACT(HOURS FROM start_time)) INTO total_hrs FROM Schedule_PT_Hours 
+    WHERE rid = NEW.rid AND start_time >= prev_last;
+				    
     IF NEW.is_last_shift = True AND 
     (total_hrs > 48 OR total_hrs < 10) THEN
     DELETE FROM Schedule_PT_Hours 
