@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -16,7 +16,8 @@ import RestaurantPage from "./restaurant/RestaurantPage";
 import HomePage from "./home/HomePage";
 import UserProfile from "./profile/UserProfile";
 import OrderDetailsPage from "./profile/OrderDetailsPage";
-
+import RestaurantReviewsPage from "./restaurant/reviews/RestaurantReviewsPage";
+import { useEffect } from 'react';
 
 const drawerWidth = 240;
 const styles = (theme) => ({
@@ -34,73 +35,49 @@ const styles = (theme) => ({
   toolbar: theme.mixins.toolbar
 });
 
-class UserPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.id = this.props.match.params.id;
-    this.fetchUserData();
-  }
+function UserPage({match, classes, unauthenticate}) {
+  const [id, setId] = useState();
+  const [userDetails, setUserDetails] = useState({});
+  const [rewardPoints, setRewardPoints] = useState({});
 
-  // Fetch user information upon login
-  fetchUserData() {
-    Axios.get(apiRoute.CUSTOMER_API + '/' + this.id, {
-      withCredentials: false,
+
+  useEffect(() => {
+    setId(match.params.id);
+
+    Axios
+    .get(apiRoute.CUSTOMER_API + '/' + match.params.id, {withCredentials: false})
+    .then((res) => {
+      setUserDetails(res.data);
     })
-      .then((response) => {
-        let {
-          cname,
-          ccontact_number,
-          crewards_points,
-          cusername,
-          cpassword,
-          cjoin_time,
-        } = response.data;
+    .catch((error) => {
+      console.log('Error getting customer details!');
+      console.log(error);
+    });
 
-        // Add user details to state
-        this.setState({
-          cname: cname,
-          ccontact_number: ccontact_number,
-          crewards_points: crewards_points,
-          cusername: cusername,
-          cpassword: cpassword,
-          cjoin_time: cjoin_time,
-        });
-      })
-      .catch((error) => {
-        console.log('Error getting customer details!');
-        console.log(error);
-      });
-  }
+  }, []);
 
-  render() {
-
-    return (
-      <div className='pageContainer'>
-        <div className={this.props.classes.root}>
-          <Router>
-              <SideBar
-                classes={this.props.classes}
-                userid={this.id}
-                rewardPoints={this.state.crewards_points}
-                unauthenticate={this.props.unauthenticate}
-              />
-              <CssBaseline />
-              <Switch>
-                <Route exact path='/user/:id' render={() => <HomePage userid={this.id} cname={this.state.cname} /> } />
-                <Route exact path='/restaurant/:rid/:fid/:userId' render={() => <RestaurantPage incrementRewardPoints={(points) => {
-                   this.setState({
-                    crewards_points: this.state.crewards_points + points,
-                  });
-                }} />} />
-                <Route exact path='/profile/:userid' component={UserProfile} />
-                <Route exact path='/profile/:userid/order/:ocid' component={OrderDetailsPage} />
-              </Switch>
-          </Router>
-        </div>
+  return (
+    <div className='pageContainer'>
+      <div className={classes.root}>
+        <Router>
+            <SideBar
+              classes={classes}
+              userid={id}
+              rewardPoints={userDetails.crewards_points}
+              unauthenticate={unauthenticate}
+            />
+            <CssBaseline />
+            <Switch>
+              <Route exact path='/user/:id' render={() => <HomePage userid={id} cname={userDetails.cname} /> } />
+              <Route exact path='/restaurant/:rid/:fid/:userId' render={() => <RestaurantPage incrementRewardPoints={(points) => setRewardPoints(rewardPoints + points)} />} />
+              <Route exact path='/profile/:userid' render={() => <UserProfile userDetails={userDetails} /> } />
+              <Route exact path='/profile/:userid/order/:ocid' component={OrderDetailsPage} />
+              <Route exact path='/restaurant/reviews/:rid' component={RestaurantReviewsPage} />
+            </Switch>
+        </Router>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default withStyles(styles, { withTheme: true })(UserPage);

@@ -2,25 +2,15 @@ import React, { useEffect, useState } from 'react';
 import * as apiRoute from '../../../components/Api/route.js';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router'
 
 // match.params = {rid, fid}
 // userDetails = { cid, cname, ccontact_number, cusername, cpassword, cjoin_time, crewards_points }
-export default function UserProfile({ match }) {
-  const [userDetails, setUserDetails] = useState([]);
+function UserProfile({ match, userDetails }) {
   const [pastOrders, setPastOrders] = useState([]);
 
   // Fetch data
   useEffect(() => {
-    // fetch user details
-    Axios.get(apiRoute.GET_CUSTOMER_DETAIL_API + '/' + match.params.userid)
-      .then((res) => {
-        setUserDetails(res.data);
-      })
-      .catch((error) => {
-        console.log('Error getting user details!');
-        console.log(error);
-      });
-
       // fetch user's past orders
       Axios.get(apiRoute.GET_PAST_ORDER_API + '/' + match.params.userid)
       .then((res) => {
@@ -37,7 +27,7 @@ export default function UserProfile({ match }) {
     let pastOrdersArray = []
     for (let i = 0; i < pastOrders.length; i++) {
       pastOrdersArray.push(
-        <Link to={`/profile/${match.params.userid}/order/${pastOrders[i].ocid}`} key={pastOrders[i].ocid}>
+        <Link key={i} to={{pathname: `/profile/${match.params.userid}/order/${pastOrders[i].ocid}`, state: {pastOrderDetails: pastOrders[i]}}}>
             <p>order number: {pastOrders[i].ocid} | final price: {pastOrders[i].ofinal_price} | order time: {pastOrders[i].oorder_place_time} | order fulfiled: {pastOrders[i].oorder_arrives_customer == null ? "no" : "yes"}</p>
         </Link>
       )
@@ -58,3 +48,5 @@ export default function UserProfile({ match }) {
     </div>
   );
 }
+
+export default withRouter(UserProfile);

@@ -68,6 +68,28 @@ router
       .catch(err => console.log('Errorr', err));
   });
 
+// Get all rating and text reviews
+// [{
+//   "rest_rating": null,
+//   "review_text": "null",
+//   "ocid": 43,
+//   "rid": 2,
+//   "cid": 36
+// }, {..}]
+router
+  .route('/api/makeOrder/rating_review/restaurant/:rid')
+  .get(async (req, res) => {
+    const rid = req.params.rid;
+
+    pool
+      .query(`SELECT * FROM make_order WHERE rid = ${rid};`)
+      .then(result => {
+        res.setHeader('content-type', 'application/json');
+        res.send(JSON.stringify(result.rows));
+      })
+      .catch(err => console.log('Errorr', err));
+  });
+
 // Update rating(for delivery service) for a makeOrder row
 router
   .route('/api/makeOrder/rating/update/:ocid')
