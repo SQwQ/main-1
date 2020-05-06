@@ -498,7 +498,7 @@ BEGIN
     WHERE rid = NEW.rid) AS curr_wk;
     
     SELECT MAX(wkdate) INTO prev_last FROM (SELECT * FROM Schedule_FT_Hours
-    WHERE rid = NEW.rid AND is_last_shift = True) ;
+    WHERE rid = NEW.rid AND is_prev = True) ;
 
     SELECT COUNT(sfid) INTO total_days_in_range FROM Schedule_FT_Hours 
     WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '5 days';
@@ -518,17 +518,13 @@ BEGIN
 
     RAISE WARNING USING MESSAGE = 'Your work schedule must be 5 consecutive days!';
 
-    ELSEIF NEW.is_last_shift = True AND NEW.wkdate = latest_day THEN
+    ELSEIF NEW.is_last_shift = True THEN
     UPDATE Full_Timer 
     SET mth = mth + 1
     WHERE rid = NEW.rid;
     
-    ELSEIF NEW.is_last_shift = True AND NEW.wkdate != latest_day THEN
-    UPDATE Schedule_FT_Hours SET is_last_shift = True
-    WHERE rid = NEW.rid AND wkdate = latest_day;
-
-    UPDATE Full_Timer 
-    SET mth = mth + 1
+    UPDATE Schedule_FT_Hours 
+    SET is_prev = True 
     WHERE rid = NEW.rid;
 
     END IF;
