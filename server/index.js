@@ -9,7 +9,6 @@ app.use (cors ()); // CORS is a node.js package to allow cross site request.
 app.use (express.json ()); // express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object
 
 // Setup route handling
-const listingRoutes = require ('./routes/sampleCodes/listingRoutes.js');
 const customerRoutes = require ('./routes/customers/customerRoutes.js');
 const foodRoutes = require ('./routes/foods/foodRoutes.js');
 const categoryRoutes = require ('./routes/foods/categoryRoutes.js');
@@ -26,7 +25,6 @@ const login = require ('./routes/login/login.js');
 const searchRoutes = require('./routes/search/searchRoutes');
 
 app.use (login);
-app.use (listingRoutes);
 app.use (customerRoutes);
 app.use (riderRoutes);
 app.use (foodRoutes);
