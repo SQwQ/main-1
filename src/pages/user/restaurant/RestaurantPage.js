@@ -4,6 +4,7 @@ import Axios from 'axios';
 import FoodItem from "./foodItem/FoodItem"
 import CartItem from "./CartItem"
 import { withRouter } from 'react-router'
+import {Link} from 'react-router-dom';
 import "./restaurantPage.css"
 
 // match.params = {rid, fid}
@@ -14,6 +15,7 @@ function RestaurantPage({ match, incrementRewardPoints }) {
   const [restaurantDetails, setRestaurantDetails] = useState([]);
   const [foodCounts, setFoodCount] = useState([]);
   const [totalFoodCost, setTotalFoodCost] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [deliveryFee] = useState(5);
 
   // Fetch data
@@ -45,7 +47,6 @@ function RestaurantPage({ match, incrementRewardPoints }) {
   }, []);
 
   useEffect(() => {
-    console.log("calculate total cost")
     setTotalFoodCost(calculateTotalCost())
   }, [foodCounts]);
 
@@ -97,41 +98,52 @@ function RestaurantPage({ match, incrementRewardPoints }) {
   }
 
   function handleOrder() {
-    let finalCost = totalFoodCost + deliveryFee
+    if (checkOrderValidity()) {
+      let finalCost = totalFoodCost + deliveryFee
+      const foodIdArray = foodItems.map(foodItem => foodItem.fid);
+      const foodPriceArray = foodItems.map(foodItem => parseFloat(foodItem.fprice));
+
+      const newOrderDetails = {
+        "oorder_enroute_restaurant" : null,
+        "oorder_arrives_restaurant" : null,
+        "oorder_enroute_customer" : null,
+        "oorder_arrives_customer" : null,
+        "odelivery_fee" : 5,
+        "ofinal_price" : finalCost,
+        "opayment_type" : paymentMethod,
+        "orating" : 7,
+        "ostatus" : null,
+        "foodIdArray" : foodIdArray,
+        "foodPriceArray": foodPriceArray,
+        "foodCountArray" : foodCounts
+      }
+
+      // make api request to create order and update reward points
+      Axios.post(apiRoute.CREATE_ORDER_API + '/' + match.params.rid + '/' + match.params.userId, newOrderDetails)
+        .then((res) => {
+          incrementRewardPoints(finalCost)
+          console.log(paymentMethod)
+          alert("Database updated");
+        })
+        .catch((error) => {
+          console.log('Error creating an order!');
+          console.log(error);
+        });
+    }
+  }
+
+  function checkOrderValidity() {
+    let finalCost = totalFoodCost + deliveryFee;
     if (finalCost < restaurantDetails.rmincost) {
       alert(`Your order needs to be a minimum of $${restaurantDetails.rmincost} before proceeding.\n` +
             `You need to spend $${restaurantDetails.rmincost - (totalFoodCost + deliveryFee)} more.`);
-      return;
+      return false;
     }
-    const foodIdArray = foodItems.map(foodItem => foodItem.fid);
-    const foodPriceArray = foodItems.map(foodItem => parseFloat(foodItem.fprice));
-
-    const newOrderDetails = {
-      "oorder_enroute_restaurant" : null,
-      "oorder_arrives_restaurant" : null,
-      "oorder_enroute_customer" : null,
-      "oorder_arrives_customer" : null,
-      "odelivery_fee" : 5,
-      "ofinal_price" : finalCost,
-      "opayment_type" : null,
-      "orating" : 7,
-      "ostatus" : null,
-      "foodIdArray" : foodIdArray,
-      "foodPriceArray": foodPriceArray,
-      "foodCountArray" : foodCounts
+    if (paymentMethod == "") {
+      alert("Please select a payment method!")
+      return false;
     }
-
-    // make api request to create order and update reward points
-    Axios.post(apiRoute.CREATE_ORDER_API + '/' + match.params.rid + '/' + match.params.userId, newOrderDetails)
-      .then((res) => {
-        incrementRewardPoints(finalCost)
-        console.log("successful!")
-        alert("Database updated");
-      })
-      .catch((error) => {
-        console.log('Error creating an order!');
-        console.log(error);
-      });
+    return true;
   }
 
   return (
@@ -140,6 +152,7 @@ function RestaurantPage({ match, incrementRewardPoints }) {
         <h1>(to remove after testing) clicked food id: {match.params.fid}</h1>
         <h1>(to remove after testing) restaurant id: {match.params.rid}</h1>
         <h1>{restaurantDetails.rname}</h1>
+        <Link to={`/restaurant/reviews/${match.params.rid}`}>Check out our reviews here!</Link>
 
         {/* Menu */}
         <h1>Our Menu</h1>
@@ -152,6 +165,12 @@ function RestaurantPage({ match, incrementRewardPoints }) {
         <p>Delivery Charge: ${deliveryFee}</p>
         <p>Food Cost: ${totalFoodCost}</p>
         <p>Total: ${totalFoodCost + deliveryFee}</p>
+        <div>
+          <input type="radio" id="credit" name="payment_method" onClick={() => setPaymentMethod("credit")}/>
+          <label htmlFor="credit card">Credit card</label>
+          <input type="radio" id="cash" name="payment_method" onClick={() => setPaymentMethod("cash")} />
+          <label htmlFor="cash">Cash on delivery</label>
+        </div>
         <button onClick={handleOrder}>Order Now!</button>
     </div>
   );

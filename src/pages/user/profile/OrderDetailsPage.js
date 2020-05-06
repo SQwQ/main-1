@@ -4,13 +4,18 @@ import Axios from 'axios';
 
 // match.params = {userid, ocid}
 // reviewDetails = {rest_rating, review_text, ocid, rid, cid}
-export default function OrderDetailsPage({ match }) {
+export default function OrderDetailsPage({ match, location }) {
   const [reviewDetails, setReviewDetails] = useState({});
+  const [orderDetails, setOrderDetails] = useState({});
   const [rid, setRid] = useState(null);
   const [restDeliveryRating, setRestDeliveryRating] = useState(null);
   const [restReview, setRestReview] = useState(null);
 
+
   useEffect(() => {
+    // Get order details from previous page
+    setOrderDetails(location.state.pastOrderDetails);
+
     // Fetch order review
     Axios.get(apiRoute.GET_ORDER_REVIEW_AND_RATING + '/' + match.params.ocid)
       .then((res) => {

@@ -73,7 +73,7 @@ CREATE TABLE food_categorized (
 */
 CREATE TABLE Order_List (
 	ocid SERIAL NOT NULL PRIMARY KEY,
-	oorder_place_time TIMESTAMP,
+	oorder_place_time TIMESTAMP NOT NULL,
 	oorder_enroute_restaurant TIMESTAMP,
 	oorder_arrives_restaurant TIMESTAMP,
 	oorder_enroute_customer TIMESTAMP,
@@ -82,7 +82,7 @@ CREATE TABLE Order_List (
 	ofinal_price NUMERIC NOT NULL CHECK (ofinal_price >= 0),
 	ozipcode NUMERIC NOT NULL,
 	odelivery_address TEXT,
-	opayment_type TEXT
+	opayment_type TEXT NOT NULL
 );
 
 CREATE TABLE order_contains (
