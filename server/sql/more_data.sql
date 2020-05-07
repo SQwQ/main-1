@@ -1133,7 +1133,30 @@ insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_t
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (338, 83583987, 'qsargant5h', 'i3tfd9k', '2019-06-18 13:55:23', 51);
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (62, 82146567, 'hgiacoboni5i', 'zRXKJ9i', '2019-05-19 19:35:25', 106);
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (248, 91054134, 'eedmand5j', '1IQvck', '2020-02-14 06:42:21', 103);
-/* percentage promotion */
+/* Insert 10 credit cards */
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('6279897008691244', '2023-06-28', '903');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2635758762981183', '2023-11-06', '501');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('6236293555109328', '2023-01-27', '427');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2775841044591945', '2022-12-30', '965');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2077074784740775', '2021-08-12', '610');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('8736977535888996', '2024-04-25', '422');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('3809104583708476', '2022-01-12', '656');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2336421415478093', '2021-09-02', '146');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('3467341406899653', '2022-04-17', '820');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('9101479422148008', '2023-12-16', '656');
+
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('6279897008691244', '2023-06-28', '903', 1);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2635758762981183', '2023-11-06', '501', 1);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('6236293555109328', '2023-01-27', '427', 2);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2775841044591945', '2022-12-30', '965', 2);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2077074784740775', '2021-08-12', '610', 3);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('8736977535888996', '2024-04-25', '422', 3);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('3809104583708476', '2022-01-12', '656', 4);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2336421415478093', '2021-09-02', '146', 4);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('3467341406899653', '2022-04-17', '820', 5);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('9101479422148008', '2023-12-16', '656', 5);
+
+/* 10 percentage promotion */
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (19, 26, '2019-10-14 04:32:53', '2020-06-20 09:21:51', 61, 0, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (5, 3, '2019-09-04 20:40:36', '2020-07-04 13:15:29', 6, 0, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (3, 19, '2020-03-16 11:59:19', '2020-07-02 03:30:34', 4, 0, 'promo', 'good deal');
@@ -1145,7 +1168,7 @@ insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_act
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (11, 39, '2019-08-10 10:36:20', '2020-05-28 21:07:28', 38, 0, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (9, 40, '2019-05-17 07:58:31', '2020-06-18 04:05:33', 58, 0, 'promo', 'good deal');
 
-/* dollars discount */
+/* 10 food item discount */
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (8, 100, '2019-11-27 07:50:18', '2020-07-25 03:16:04', 47, 9, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (6, 100, '2019-08-25 22:54:04', '2020-07-11 21:53:56', 52, 7, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (19, 100, '2019-08-13 12:38:15', '2020-07-04 22:03:42', 2, 6, 'promo', 'good deal');
@@ -1157,3 +1180,109 @@ insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_act
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (8, 100, '2019-12-05 17:13:06', '2020-05-16 05:19:31', 16, 8, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (16, 100, '2019-09-02 13:24:09', '2020-05-25 21:13:34', 38, 8, 'promo', 'good deal');
 
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (20, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (19, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (11, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (15, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (12, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (14, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (16, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (17, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (13, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (18, false, false, false, false, false, false, false);
+
+insert into Offer_On (fid, pid) values (123, 11);
+insert into Offer_On (fid, pid) values (288, 12);
+insert into Offer_On (fid, pid) values (68, 13);
+insert into Offer_On (fid, pid) values (246, 14);
+insert into Offer_On (fid, pid) values (165, 15);
+insert into Offer_On (fid, pid) values (362, 17);
+insert into Offer_On (fid, pid) values (293, 16);
+insert into Offer_On (fid, pid) values (93, 18);
+insert into Offer_On (fid, pid) values (78, 19);
+insert into Offer_On (fid, pid) values (173, 20);
+
+
+/* 10 Coupons */
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (3, 100, '2/20/2020', '4/16/2020', 0, 11, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (5, 100, '2/28/2020', '4/7/2020', 0, 20, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (7, 100, '1/31/2020', '5/1/2020', 0, 14, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (12, 100, '2/13/2020', '5/31/2020', 0, 14, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (4, 100, '1/9/2020', '4/29/2020', 0, 16, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (1, 100, '1/27/2020', '5/7/2020', 0, 10, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (2, 100, '1/19/2020', '5/8/2020', 0, 16, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (6, 100, '2/1/2020', '4/11/2020', 0, 10, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (9, 100, '1/31/2020', '5/29/2020', 0, 14, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (10, 100, '2/13/2020', '5/10/2020', 0, 11, 'coupon', 'dollar discount');
+
+
+insert into Coupon (cid, couponCode) values (26, 'WtsphqSm15');
+insert into Coupon (cid, couponCode) values (27, 'Yk0a7CjB6L');
+insert into Coupon (cid, couponCode) values (28, 'axKQsBJvb5');
+insert into Coupon (cid, couponCode) values (23, 'HeItbH3Jbu');
+insert into Coupon (cid, couponCode) values (29, 'r1sUk6RfUL');
+insert into Coupon (cid, couponCode) values (24, 'sLjuKGLA5c');
+insert into Coupon (cid, couponCode) values (30, 'I4fucIjDZy');
+insert into Coupon (cid, couponCode) values (21, 'ZYokM8sS0y');
+insert into Coupon (cid, couponCode) values (22, 'UywZuQ5qwq');
+insert into Coupon (cid, couponCode) values (25, 'Brf4Taulwu');
+
+insert into coupon_wallet (custid, cid) values (10, 21);
+insert into coupon_wallet (custid, cid) values (9, 24);
+insert into coupon_wallet (custid, cid) values (10, 23);
+insert into coupon_wallet (custid, cid) values (9, 22);
+insert into coupon_wallet (custid, cid) values (8, 26);
+insert into coupon_wallet (custid, cid) values (1, 27);
+insert into coupon_wallet (custid, cid) values (5, 29);
+insert into coupon_wallet (custid, cid) values (7, 28);
+insert into coupon_wallet (custid, cid) values (4, 30);
+insert into coupon_wallet (custid, cid) values (2, 25);
+
+/* 10 Orders all from restaurant id 2 food id 10 */
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '012886', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '013746', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '012257', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '017550', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '013073', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '014498', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '010994', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '019706', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '013790', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '016938', 'cash');
+
+/* insert food items of order */
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 1);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 4);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 5);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 7);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 2);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 3);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 6);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 10);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 9);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 8);
+
+/* insert reviews for each order */
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (5, 'Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.', 1, 2, 4);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (9, 'In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit.', 2, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (8, 'Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti.', 3, 2, 1);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (3, 'Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 4, 2, 3);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (6, 'Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis.', 5, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (2, 'Donec dapibus. Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.', 6, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (1, 'Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue.', 7, 2, 5);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (6, 'Donec dapibus.', 9, 2, 5);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (2, 'In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.', 10, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (1, 'Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus. Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.', 8, 2, 1);
+
+/* delivery rating */
+
+insert into delivered_by  (drating , ocid , rid , cid ) values (2, 1, 1, 4);
+insert into delivered_by  (drating , ocid , rid , cid ) values (1, 2, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (8, 3, 1, 1);
+insert into delivered_by  (drating , ocid , rid , cid ) values (6, 4, 1, 3);
+insert into delivered_by  (drating , ocid , rid , cid ) values (6, 5, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (10, 6, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (4, 7, 1, 5);
+insert into delivered_by  (drating , ocid , rid , cid ) values (10, 8, 1, 5);
+insert into delivered_by  (drating , ocid , rid , cid ) values (4, 9, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (2, 10, 1, 1);

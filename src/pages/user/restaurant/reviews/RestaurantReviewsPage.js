@@ -26,11 +26,11 @@ function RestaurantReviewsPage({ match }) {
 
   function renderUserReviews() {
     return reviewDetails.map((reviewDetail) => {
-        if(reviewDetail.review_text == "null" & reviewDetail.rest_rating == null) {
-          return;
-        }
-        return <ReviewItem key={reviewDetail.ocid} reviewDetail={reviewDetail} />
-    });
+      if(reviewDetail.review_text == "null" && reviewDetail.rest_rating == null) {
+        return;
+      }
+      return <ReviewItem key={reviewDetail.ocid} reviewDetail={reviewDetail} />
+  });
   }
 
   return (

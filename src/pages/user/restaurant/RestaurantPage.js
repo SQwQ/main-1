@@ -9,7 +9,7 @@ import "./restaurantPage.css"
 
 // match.params = {rid, fid}
 // restaurantDetails = { rid, rname, raddress, rmincost, rimage }
-// foodItems = [{ fid, fname, fprice, favailable, flimit, fimage, rid }, {..}]
+// foodItems = [{ fid, fname, fprice, favailable, flimit, fimage, rid, cid, cname }, {..}]
 function RestaurantPage({ match, incrementRewardPoints }) {
   const [foodItems, setFoodItems] = useState([]);
   const [restaurantDetails, setRestaurantDetails] = useState([]);
@@ -69,6 +69,7 @@ function RestaurantPage({ match, incrementRewardPoints }) {
           flimit={foodItems[i].flimit} 
           fimage={foodItems[i].fimage} 
           foodName={foodItems[i].fname}
+          categoryName={foodItems[i].cname}
           incrementFoodCount={() => {
             foodCounts[i] += 1;
             setFoodCount([...foodCounts]);
@@ -111,11 +112,11 @@ function RestaurantPage({ match, incrementRewardPoints }) {
         "odelivery_fee" : 5,
         "ofinal_price" : finalCost,
         "opayment_type" : paymentMethod,
-        "orating" : 7,
-        "ostatus" : null,
         "foodIdArray" : foodIdArray,
         "foodPriceArray": foodPriceArray,
-        "foodCountArray" : foodCounts
+        "foodCountArray" : foodCounts,
+        "odelivery_address": null,
+        "ozipcode": 123456
       }
 
       // make api request to create order and update reward points
@@ -167,7 +168,7 @@ function RestaurantPage({ match, incrementRewardPoints }) {
         <p>Total: ${totalFoodCost + deliveryFee}</p>
         <div>
           <input type="radio" id="credit" name="payment_method" onClick={() => setPaymentMethod("credit")}/>
-          <label htmlFor="credit card">Credit card</label>
+          <label htmlFor="credit">Credit card</label>
           <input type="radio" id="cash" name="payment_method" onClick={() => setPaymentMethod("cash")} />
           <label htmlFor="cash">Cash on delivery</label>
         </div>

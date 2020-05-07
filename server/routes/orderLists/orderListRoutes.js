@@ -13,8 +13,8 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
   const odelivery_fee = req.body.odelivery_fee;
   const ofinal_price = req.body.ofinal_price;
   const opayment_type = req.body.opayment_type;
-  const orating = req.body.orating;
-  const ostatus = req.body.ostatus;
+  const ozipcode = req.body.ozipcode;
+  const odelivery_address = req.body.odelivery_address;
   const rest_rating = null;
   const review_text = null;
   const foodIdArray = req.body.foodIdArray;
@@ -28,17 +28,17 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
   pool
     .query(
       `BEGIN;
-      
+
       UPDATE Customer
       SET crewards_points=Customer.crewards_points + ${ofinal_price}
       WHERE cid = ${cid};
 
       WITH instance1 AS (
         INSERT INTO Order_List (oorder_place_time, oorder_enroute_restaurant, oorder_arrives_restaurant, 
-        oorder_enroute_customer, oorder_arrives_customer, odelivery_fee, ofinal_price, opayment_type, orating, ostatus) 
+        oorder_enroute_customer, oorder_arrives_customer, odelivery_fee, ofinal_price, opayment_type, ozipcode, odelivery_address) 
         VALUES(NOW(), ${oorder_enroute_restaurant}, ${oorder_arrives_restaurant},
           ${oorder_enroute_customer}, ${oorder_arrives_customer}, ${odelivery_fee}, ${ofinal_price}, 
-          '${opayment_type}', ${orating}, '${ostatus}') 
+          '${opayment_type}', ${ozipcode}, '${odelivery_address}') 
         RETURNING ocid AS orderIdCreated
       )
 
