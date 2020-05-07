@@ -4,7 +4,13 @@ const pool = require ('../../config/pool');
 // Get a specific food
 router.route ('/api/food/:fid').get (async (req, res) => {
   const fid = req.params.fid;
-  const queryString = `SELECT * FROM Food WHERE fid = '${fid}'`;
+  const queryString = 
+    `
+      SELECT * FROM Food F
+      JOIN food_categorized FC ON F.fid = FC.fid
+      JOIN Category C ON FC.cid = C.cid
+      WHERE F.fid = ${fid};
+    `;
 
   const result = await pool.query (queryString);
   res.setHeader ('content-type', 'application/json');
@@ -14,7 +20,12 @@ router.route ('/api/food/:fid').get (async (req, res) => {
 
 // Get all foods
 router.route ('/api/foods').get (async (req, res) => {
-  const queryString = 'SELECT * FROM Food';
+  const queryString = 
+    `
+      SELECT * FROM Food F
+      JOIN food_categorized FC ON F.fid = FC.fid
+      JOIN Category C ON FC.cid = C.cid;
+    `;
 
   const result = await pool.query (queryString);
   res.setHeader ('content-type', 'application/json');
@@ -25,7 +36,13 @@ router.route ('/api/foods').get (async (req, res) => {
 // Get all foods of a restaurant
 router.route ('/api/restaurant_food/:rid').get (async (req, res) => {
   const rid = req.params.rid;
-  const queryString = `SELECT * FROM Food where rid = ${rid}`;
+  const queryString = 
+  `
+    SELECT * FROM Food F
+    JOIN food_categorized FC ON F.fid = FC.fid
+    JOIN Category C ON FC.cid = C.cid
+    WHERE F.rid = ${rid};
+  `;
 
   const result = await pool.query (queryString);
   res.setHeader ('content-type', 'application/json');
@@ -33,7 +50,7 @@ router.route ('/api/restaurant_food/:rid').get (async (req, res) => {
   res.status (200).json ();
 });
 
-//Post a food
+//Post a food (to update)
 router.route ('/api/food/post/:rid').post ((req, res) => {
   const rid = req.params.rid;
   const fname = req.body.fname;
