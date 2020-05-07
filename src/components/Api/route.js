@@ -17,3 +17,6 @@ export const GET_ORDER_REVIEW_AND_RATING = "http://localhost:5000/api/makeOrder/
 export const UPDATE_RATING = "http://localhost:5000/api/makeOrder/rating/update";
 export const UPDATE_REVIEW = "http://localhost:5000/api/makeOrder/review/update";
 export const GET_ALL_ORDER_REVIEW_AND_RATING = "http://localhost:5000/api/makeOrder/rating_review/restaurant";
+export const GET_USER_CARDS = "http://localhost:5000/api/creditCards";
+export const POST_A_CARD = "http://localhost:5000/api/creditCards";
+export const CHANGE_DEFAULT_CARD = "http://localhost:5000/api/creditCard/current";
