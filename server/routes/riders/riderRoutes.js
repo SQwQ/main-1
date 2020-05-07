@@ -71,4 +71,22 @@ router.route('/api/profiles/rider').get(async (req, res) => {
         .catch (err => res.status (400).json('Error' + err));
   });
 
+  // Get whether a rider is full-timer or not
+  router.route('/api/rider/type/:rid').get(async (req, res) => {
+    const id = req.params.rid;
+
+    const queryStringFT = `SELECT * FROM Full_Timer WHERE rid = ${id};`
+    
+    let resultStr = ''
+
+    resultStr = await pool.query(queryStringFT);
+
+    const type = resultStr.rows.length ? "full_time" : "part_time";
+    
+    console.log(resultStr)
+
+    res.setHeader('content-type', 'application/json');
+    res.send(JSON.stringify(type));
+  });
+
 module.exports = router;
