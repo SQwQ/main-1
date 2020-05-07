@@ -7,7 +7,7 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
 import MainPage from "./pages/index";
 import UserPage from "./pages/user/user";
 import RiderPage from "./pages/rider/rider";
-import StaffPage from "./pages/staff";
+import StaffPage from "./pages/staff/staff";
 import ManagerPage from "./pages/manager/manager";
 
 // PrivateRoute to implement trivial auth with callbacks

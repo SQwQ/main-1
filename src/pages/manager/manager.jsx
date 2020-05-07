@@ -64,21 +64,9 @@ function ManagerPage({match, classes, unauthenticate}) {
           />
           <CssBaseline />
           <Switch>
-            <Switch>
-              <Route exact path="/manager/:id" component={Restaurants} />
-              {/* <Route
-                exact
-                path="/manager/:id"
-                render={() => (
-                  <HomePage userid={id} cname={userDetails.mname} />
-                )}
-              /> */}
-              <Route
-                exact
-                path="/manager/restaurant/:id"
-                component={RestaurantStaffs}
-              />
-            </Switch>
+            <Route exact path="/manager/:id" render={() => <HomePage userid={id} cname={userDetails.mname} />} />
+            <Route exact path="/managers/restaurants" component={Restaurants} />
+            <Route exact path="/managers/restaurants/:id" component={RestaurantStaffs} />
           </Switch>
         </Router>
       </div>

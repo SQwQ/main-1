@@ -8,7 +8,7 @@ import MUIDataTable from 'mui-datatables';
 import * as apiRoute from '../../../components/Api/route';
 import Axios from 'axios';
 import restaurantPicture from '../../../images/restaurant.jpg';
-import AddRestaurant from './AddRestaurant';
+import AddFood from './AddFood';
 import { withRouter } from 'react-router'
 
 import {withStyles} from '@material-ui/core/styles';
@@ -38,19 +38,19 @@ const styles = theme => ({
   },
 });
 
-class Restaurants extends Component {
+class Food extends Component {
   constructor (props) {
     super (props);
   }
   state = {
-    restaurants: [],
-    restaurant: [],
+    singleFood: [],
+    food: [],
     setOpen: false,
     rid: null,
     status: '',
     columns: [
       {
-        name: 'rid',
+        name: 'fid',
         label: 'Id',
         options: {
           filter: false,
@@ -58,7 +58,7 @@ class Restaurants extends Component {
         },
       },
       {
-        name: 'rimage',
+        name: 'fimage',
         label: 'Image',
         options: {
           filter: true,
@@ -76,7 +76,7 @@ class Restaurants extends Component {
         },
       },
       {
-        name: 'rname',
+        name: 'fname',
         label: 'Name',
         options: {
           filter: false,
@@ -84,16 +84,24 @@ class Restaurants extends Component {
         },
       },
       {
-        name: 'raddress',
-        label: 'Address',
+        name: 'fprice',
+        label: 'Price',
         options: {
           filter: false,
           sort: false,
         },
       },
       {
-        name: 'rmincost',
-        label: 'Minimum Cost',
+        name: 'flimit',
+        label: 'Sales Limit',
+        options: {
+          filter: false,
+          sort: false,
+        },
+      },
+      {
+        name: 'favailable',
+        label: 'Availability',
         options: {
           filter: false,
           sort: false,
@@ -157,16 +165,11 @@ class Restaurants extends Component {
             backgroundColor: '#e0f7fa',
           },
         },
-        MuiTableRow: {
-          root: {
-            cursor: 'pointer',
-          },
-        },
       },
     });
 
   componentDidMount () {
-    this.fetchRestaurants ();
+    this.fetchFood ();
   }
 
   updateSetOpen (value) {
@@ -176,23 +179,22 @@ class Restaurants extends Component {
   }
 
   deleteHandler (rowData) {
-    Axios.delete (apiRoute.GET_RESTAURANT_API + '/' + rowData[0], {
+    Axios.delete (apiRoute.GET_RESTAURANT_FOOD_API + '/' + rowData[0], {
       withCredentials: false,
     })
       .then (res => {
-        console.log ('These are my list of restaurants: ', res.data);
-        this.fetchRestaurants ();
+        this.fetchFood ();
       })
       .catch (error => {
         console.log (error);
       });
   }
 
-  createRestaurant () {
+  createFood () {
     this.setState ({
       rid: null,
       status: 'Create',
-      restaurant: [],
+      singleFood: [],
       setOpen: true,
     });
   }
@@ -200,36 +202,21 @@ class Restaurants extends Component {
   editHandler (rowData) {
     this.setState ({
       rid: rowData[0],
-      restaurant: rowData,
+      singleFood: rowData,
       status: 'Edit',
       setOpen: true,
     });
   }
 
-  onCellClick = (cellIndex, rowIndex, dataIndex) => {
-    const Obj = this.state.restaurants[rowIndex.dataIndex];
-    if (
-      rowIndex.colIndex === 0 ||
-      rowIndex.colIndex === 1 ||
-      rowIndex.colIndex === 2 ||
-      rowIndex.colIndex === 3
-    ) {
-      this.props.history.push ({
-        pathname: '/managers/restaurants/' + Obj.rid,
-        restaurant: Obj,
-      });
-    }
-  };
-
-  fetchRestaurants () {
-    console.log ('Getting restaurants list!');
-    Axios.get (apiRoute.GET_RESTAURANTS_API, {
+  fetchFood () {
+    console.log ('Getting food list!');
+    Axios.get (apiRoute.GET_RESTAURANT_FOOD_API + '/' + this.props.restaurantDetails.rid, {
       withCredentials: false,
     })
       .then (res => {
-        console.log ('These are my list of restaurants: ', res.data);
+        console.log ('These are my list of foods: ', res.data);
         this.setState ({
-          restaurants: res.data,
+          food: res.data,
         });
       })
       .catch (error => {
@@ -248,17 +235,17 @@ class Restaurants extends Component {
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => this.createRestaurant ()}
+                    onClick={() => this.createFood ()}
                   >
-                    Create Restaurant
+                    Create Food
                   </Button>
                 </Col>
               </Row>
               <Row>
                 <MuiThemeProvider theme={this.getMuiTheme ()}>
                   <MUIDataTable
-                    title={`List of Restaurants`}
-                    data={this.state.restaurants}
+                    title={`List of Food`}
+                    data={this.state.food}
                     columns={this.state.columns}
                     options={{
                       selectableRows: false, // <===== will turn off checkboxes in rows
@@ -266,7 +253,6 @@ class Restaurants extends Component {
                       download: false,
                       filter: false,
                       viewColumns: false,
-                      onCellClick: this.onCellClick,
                     }}
                   />
                 </MuiThemeProvider>
@@ -275,17 +261,17 @@ class Restaurants extends Component {
           </Card>
         </Row>
 
-        <AddRestaurant
-          fetchRestaurants={this.fetchRestaurants.bind (this)}
+        <AddFood
+          fetchFood={this.fetchFood.bind (this)}
           setOpen={this.state.setOpen}
           updateSetOpen={this.updateSetOpen.bind (this)}
           rid={this.state.rid}
           status={this.state.status}
-          restaurant={this.state.restaurant}
+          singleFood={this.state.singleFood}
         />
       </div>
     );
   }
 }
 
-export default withRouter (Restaurants);
+export default withRouter (Food);

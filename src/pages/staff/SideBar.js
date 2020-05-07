@@ -35,27 +35,22 @@ export default function SideBar({
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button key="Back" component={Link} to={`/manager/${userid}`}>
+        <ListItem button key="Back" component={Link} to={`/staff/${userid}`}>
           <b>HOME</b>
         </ListItem>
         <ListItem
           button
-          key="Dashboard"
+          key="Food"
           component={Link}
-          to={`/manager/${userid}`}
+          to={`/staffs/food`}
         >
           <ListItemIcon><ProfileIcon /></ListItemIcon>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary="Food" />
         </ListItem>
-        <ListItem
-          button
-          key="Restaurants"
-          component={Link}
-          to={`/managers/restaurants`}
-        >
-          <ListItemIcon><ProfileIcon /></ListItemIcon>
-          <ListItemText primary="Restaurants" />
-        </ListItem>
+        {/* <ListItem button key="Vouchers">
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary="Vouchers" />
+        </ListItem> */}
       </List>
       <Divider />
       <List>

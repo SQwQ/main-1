@@ -9,6 +9,7 @@ export const MANAGER_LOGIN_API = "http://localhost:5000/api/login/manager";
 export const MANAGER_API = "http://localhost:5000/api/manager";
 export const CUSTOMER_API = "http://localhost:5000/api/customer";
 export const STAFF_API = "http://localhost:5000/api/restaurantStaff";
+export const FOOD_API = "http://localhost:5000/api/food";
 export const CUSTOMER_LOGIN_API = "http://localhost:5000/api/login/user";
 export const SEARCH_RESTAURANT_API = "http://localhost:5000/api/search";
 export const GET_RESTAURANT_FOOD_API = "http://localhost:5000/api/restaurant_food";

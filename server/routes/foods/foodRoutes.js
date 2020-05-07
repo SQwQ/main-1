@@ -4,8 +4,7 @@ const pool = require ('../../config/pool');
 // Get a specific food
 router.route ('/api/food/:fid').get (async (req, res) => {
   const fid = req.params.fid;
-  const queryString = 
-    `
+  const queryString = `
       SELECT * FROM Food F
       JOIN food_categorized FC ON F.fid = FC.fid
       JOIN Category C ON FC.cid = C.cid
@@ -20,8 +19,7 @@ router.route ('/api/food/:fid').get (async (req, res) => {
 
 // Get all foods
 router.route ('/api/foods').get (async (req, res) => {
-  const queryString = 
-    `
+  const queryString = `
       SELECT * FROM Food F
       JOIN food_categorized FC ON F.fid = FC.fid
       JOIN Category C ON FC.cid = C.cid;
@@ -36,8 +34,7 @@ router.route ('/api/foods').get (async (req, res) => {
 // Get all foods of a restaurant
 router.route ('/api/restaurant_food/:rid').get (async (req, res) => {
   const rid = req.params.rid;
-  const queryString = 
-  `
+  const queryString = `
     SELECT * FROM Food F
     JOIN food_categorized FC ON F.fid = FC.fid
     JOIN Category C ON FC.cid = C.cid
@@ -50,6 +47,19 @@ router.route ('/api/restaurant_food/:rid').get (async (req, res) => {
   res.status (200).json ();
 });
 
+//Delete food
+router.route ('/api/restaurant_food/:fid').delete (async (req, res) => {
+  const fid = req.params.fid;
+  const queryString = `DELETE FROM Food WHERE fid = ${fid};`;
+
+  pool
+    .query (
+      `DELETE FROM Food WHERE fid = ${fid};`
+    )
+    .then (res.status (201).json ())
+    .catch (err => res.status (400).json ('Error' + err));
+});
+
 //Post a food (to update)
 router.route ('/api/food/post/:rid').post ((req, res) => {
   const rid = req.params.rid;
@@ -57,16 +67,34 @@ router.route ('/api/food/post/:rid').post ((req, res) => {
   const fprice = req.body.fprice;
   const favailable = req.body.favailable;
   const flimit = req.body.flimit;
-  const fimage = req.body.fimage;
 
   pool
     .query (
-      `INSERT INTO Food (fname, fprice, favailable, flimit, fimage, rid) 
-      VALUES('${fname}', ${fprice}, ${favailable}, ${flimit}, '${fimage}', ${rid});`
+      `INSERT INTO Food (fname, fprice, favailable, flimit, rid) 
+      VALUES('${fname}', ${fprice}, ${favailable}, ${flimit}, '${rid}');`
     )
     .then (res.status (201).json ())
     .catch (err => res.status (400).json ('Error' + err));
-  console.log('completed')
+});
+
+//Update a food (to update)
+router.route ('/api/food/update/:fid/:rid').post ((req, res) => {
+  const fid = req.params.fid;
+  const rid = req.params.rid;
+  const fname = req.body.fname;
+  const fprice = req.body.fprice;
+  const favailable = (req.body.favailable === 'true');
+  const flimit = req.body.flimit;
+
+  pool
+    .query (
+      `UPDATE Food 
+      SET fname = '${fname}', fprice = ${fprice}, favailable = ${favailable}, flimit = ${flimit}
+      WHERE fid = '${fid}';`
+    )
+    .then (res.status (201).json ())
+    .catch (err => res.status (400).json ('Error' + err));
+  console.log ('completed');
 });
 
 module.exports = router;

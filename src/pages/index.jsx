@@ -35,7 +35,7 @@ export default class MainPage extends Component {
             <div className="registrationSection">
             <UserRegisterForm />
             <RiderRegisterForm />
-            <StaffRegisterForm />
+            {/* <StaffRegisterForm /> */}
             </div>
             </center>
         </div>

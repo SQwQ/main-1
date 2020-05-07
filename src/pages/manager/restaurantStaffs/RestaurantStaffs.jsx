@@ -9,6 +9,7 @@ import * as apiRoute from '../../../components/Api/route';
 import Axios from 'axios';
 import restaurantPicture from '../../../images/restaurant.jpg';
 import AddRestaurantStaff from './AddRestaurantStaff';
+import { withRouter } from 'react-router'
 
 import {withStyles} from '@material-ui/core/styles';
 const drawerWidth = 240;
@@ -222,19 +223,7 @@ class RestaurantStaffs extends Component {
 
   render () {
     return (
-      <div>
-        <AppBar position="fixed" className={this.props.classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" noWrap>
-              {/* Conditional Title */}
-              These are my list of restaurant staffs
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
-        <main className={this.props.classes.content}>
-          <div className={this.props.classes.toolbar} />
-        </main>
+      <div className="wrapper_content_section">
         <Row>
           <Card style={{margin: 'auto', float: 'none', marginBottom: '10px'}}>
             <Card.Body>
@@ -282,4 +271,4 @@ class RestaurantStaffs extends Component {
   }
 }
 
-export default withStyles (styles, {withTheme: true}) (RestaurantStaffs);
+export default withRouter (RestaurantStaffs);
