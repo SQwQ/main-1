@@ -540,7 +540,7 @@ CREATE TABLE Schedule_PT_Hours (
     spid SERIAL NOT NULL PRIMARY KEY,
     rid SERIAL NOT NULL,
     wkday INT NOT NULL,
-    start_time TIMESTAMP UNIQUE NOT NULL,
+    start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
     is_last_shift BOOLEAN NOT NULL,
     FOREIGN KEY (rid) REFERENCES Part_Timer,
@@ -591,11 +591,11 @@ DECLARE prev_last TIMESTAMP;
 BEGIN
     
     SELECT MAX(end_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
-    WHERE rid = NEW.rid AND is_last_shift = True) ;
+    WHERE rid = NEW.rid AND is_last_shift = True) AS curr_wk;
     
     IF prev_last IS NULL THEN
     SELECT MIN(start_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
-    WHERE rid = NEW.rid); 
+    WHERE rid = NEW.rid) AS all_wks; 
     END IF;
 				 
     SELECT SUM(EXTRACT(HOURS FROM end_time) - EXTRACT(HOURS FROM start_time)) INTO total_hrs FROM Schedule_PT_Hours 
@@ -1093,7 +1093,7 @@ VALUES
 (21,7,4,5)
 
 /* Populate Schedules for each rider*/
-BEGIN;
+BEGIN
 /*Rider 1*/
 INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
 VALUES(1, '2016-06-25 18:00:25-07', True, False, 1);
