@@ -859,9 +859,6 @@ WITH ins1 AS
   INSERT INTO Part_Timer (rid, base_salary, wks)
   SELECT T_RID, 50, 0 FROM ins1;
 
-
-COMMIT;
-
 /* RIDER SAMPLE CREATED */
 
 /* Populate Schedule Count */
@@ -1090,10 +1087,10 @@ VALUES
 (19,7,4,5),
 (20,7,3,5),
 (20,7,4,5),
-(21,7,4,5)
+(21,7,4,5);
 
 /* Populate Schedules for each rider*/
-BEGIN
+
 /*Rider 1*/
 INSERT INTO Schedule_FT_Hours(rid, wkdate, is_prev, is_last_shift, shift)
 VALUES(1, '2016-06-25 18:00:25-07', True, False, 1);
