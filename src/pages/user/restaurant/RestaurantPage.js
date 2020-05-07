@@ -111,11 +111,11 @@ function RestaurantPage({ match, incrementRewardPoints }) {
         "odelivery_fee" : 5,
         "ofinal_price" : finalCost,
         "opayment_type" : paymentMethod,
-        "orating" : 7,
-        "ostatus" : null,
         "foodIdArray" : foodIdArray,
         "foodPriceArray": foodPriceArray,
-        "foodCountArray" : foodCounts
+        "foodCountArray" : foodCounts,
+        "odelivery_address": null,
+        "ozipcode": 123456
       }
 
       // make api request to create order and update reward points
