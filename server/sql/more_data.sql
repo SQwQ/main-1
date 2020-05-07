@@ -1213,3 +1213,52 @@ insert into coupon_wallet (custid, cid) values (5, 29);
 insert into coupon_wallet (custid, cid) values (7, 28);
 insert into coupon_wallet (custid, cid) values (4, 30);
 insert into coupon_wallet (custid, cid) values (2, 25);
+
+/* 10 Orders all from restaurant id 2 food id 10 */
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '012886', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '013746', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '012257', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '017550', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '013073', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '014498', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '010994', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '019706', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '013790', 'cash');
+insert into Order_List  (oorder_place_time , oorder_arrives_customer , odelivery_fee , ofinal_price , ozipcode , opayment_type ) values ('2020-05-07 00:00:00', '2020-05-07 10:00:00', 10, 18, '016938', 'cash');
+
+/* insert food items of order */
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 1);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 4);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 5);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 7);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 2);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 3);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 6);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 10);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 9);
+insert into order_contains  (unit_price , quantity , total_price , fid , ocid ) values (18, 1, 18, 10, 8);
+
+/* insert reviews for each order */
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (5, 'Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.', 1, 2, 4);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (9, 'In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi. Cras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit.', 2, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (8, 'Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti.', 3, 2, 1);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (3, 'Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat. Nulla nisl. Nunc nisl. Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa.', 4, 2, 3);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (6, 'Phasellus in felis. Donec semper sapien a libero. Nam dui. Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis.', 5, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (2, 'Donec dapibus. Duis at velit eu est congue elementum. In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros.', 6, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (1, 'Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel augue.', 7, 2, 5);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (6, 'Donec dapibus.', 9, 2, 5);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (2, 'In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.', 10, 2, 2);
+insert into make_order  (rest_rating , review_text , ocid , rid , cid ) values (1, 'Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus. Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.', 8, 2, 1);
+
+/* delivery rating */
+
+insert into delivered_by  (drating , ocid , rid , cid ) values (2, 1, 1, 4);
+insert into delivered_by  (drating , ocid , rid , cid ) values (1, 2, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (8, 3, 1, 1);
+insert into delivered_by  (drating , ocid , rid , cid ) values (6, 4, 1, 3);
+insert into delivered_by  (drating , ocid , rid , cid ) values (6, 5, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (10, 6, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (4, 7, 1, 5);
+insert into delivered_by  (drating , ocid , rid , cid ) values (10, 8, 1, 5);
+insert into delivered_by  (drating , ocid , rid , cid ) values (4, 9, 1, 2);
+insert into delivered_by  (drating , ocid , rid , cid ) values (2, 10, 1, 1);
