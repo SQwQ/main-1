@@ -9,7 +9,7 @@ A Food Delivery Service (FDS) mock up full stack application made in fulfillment
 
 ## Preview :sparkles:
 
-<img src="https://raw.githubusercontent.com/CS2102-Team-51/main/blob/master/preview/preview.png" alt="tapau." width="100%">
+<img src="https://raw.githubusercontent.com/CS2102-Team-51/main/master/preview/preview.png" alt="tapau." width="100%">
 
 ## Getting started :space_invader:
 
