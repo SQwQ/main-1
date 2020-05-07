@@ -62,33 +62,36 @@ class LoginModal extends Component {
         .then (
             response => {
                 console.log(response.data)
-                if (response.data.cid == null && response.data.rid == null && response.data.rsid ==null && response.data.fmid == null) {
+                if (response.data.cid == null && response.data.rid == null && response.data.rsid ==null && response.data.mid == null) {
                     console.log(this.state.title + " credentials not recognized!");
                     this.showInvalidCredentials();
                 } else {
-                    console.log(this.state.title + " with userID " + response.data.cid + " logged in.");
                     // 1. Set states for id, auth and close dialog
                     
 
                     // 2. Push history (set states first before pushing history:
                     // https://stackoverflow.com/a/57572888)
                     if (response.data.cid) {
+                        console.log(this.state.title + " with userID " + response.data.cid + " logged in.");
                         this.setState({id: response.data.cid});
                         this.props.authenticate();
                         this.setState ({setOpen: false});
                         this.handleLink("user");
                     } else if (response.data.rid) {
+                        console.log(this.state.title + " with userID " + response.data.rid + " logged in.");
                         this.setState({id: response.data.rid});
                         this.props.authenticate();
                         this.setState ({setOpen: false});
                         this.handleLink("rider");
                     } else if (response.data.rsid) {
+                        console.log(this.state.title + " with userID " + response.data.rsid + " logged in.");
                         this.setState({id: response.data.rsid});
                         this.props.authenticate();
                         this.setState ({setOpen: false});
                         this.handleLink("staff");
                     } else {
-                        this.setState({id: response.data.fmid});
+                        console.log(this.state.title + " with userID " + response.data.mid + " logged in.");
+                        this.setState({id: response.data.mid});
                         this.props.authenticate();
                         this.setState ({setOpen: false});
                         this.handleLink("manager");
