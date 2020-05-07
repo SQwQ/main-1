@@ -13,9 +13,7 @@ router.route ('/api/search/:input').get (async (req, res) => {
         `;
   
     const result = await pool.query (queryString);
-    res.setHeader ('content-type', 'application/json');
-    res.send (JSON.stringify (result.rows));
-    res.status (200).json ();
+    res.status(200).send (JSON.stringify (result.rows));
   });
 
 module.exports = router;
