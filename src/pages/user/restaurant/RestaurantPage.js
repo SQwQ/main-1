@@ -7,7 +7,7 @@ import { withRouter } from 'react-router'
 import {Link} from 'react-router-dom';
 import "./restaurantPage.css"
 
-// match.params = {rid, fid}
+// match.params = {rid, fid, userId}
 // restaurantDetails = { rid, rname, raddress, rmincost, rimage }
 // foodItems = [{ fid, fname, fprice, favailable, flimit, fimage, rid, cid, cname }, {..}]
 function RestaurantPage({ match, incrementRewardPoints }) {
@@ -16,10 +16,26 @@ function RestaurantPage({ match, incrementRewardPoints }) {
   const [foodCounts, setFoodCount] = useState([]);
   const [totalFoodCost, setTotalFoodCost] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [deliveryFee] = useState(5);
+  const [deliveryFee] = useState(4);
+  const [hasDefaultCard, setHasDefaultCard] = useState(false);
 
   // Fetch data
   useEffect(() => {
+    // Check if user has a default credit card selected
+    Axios
+      .get(apiRoute.GET_USER_CARDS + '/' + match.params.userId)
+      .then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].current == true) {
+            setHasDefaultCard(true);
+            return;
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     // fetch all restaurant food
     Axios.get(apiRoute.GET_RESTAURANT_FOOD_API + '/' + match.params.rid)
       .then((res) => {
@@ -104,32 +120,43 @@ function RestaurantPage({ match, incrementRewardPoints }) {
       const foodIdArray = foodItems.map(foodItem => foodItem.fid);
       const foodPriceArray = foodItems.map(foodItem => parseFloat(foodItem.fprice));
 
-      const newOrderDetails = {
-        "oorder_enroute_restaurant" : null,
-        "oorder_arrives_restaurant" : null,
-        "oorder_enroute_customer" : null,
-        "oorder_arrives_customer" : null,
-        "odelivery_fee" : 5,
-        "ofinal_price" : finalCost,
-        "opayment_type" : paymentMethod,
-        "foodIdArray" : foodIdArray,
-        "foodPriceArray": foodPriceArray,
-        "foodCountArray" : foodCounts,
-        "odelivery_address": null,
-        "ozipcode": 123456
-      }
+      // Get delivery rider
+      Axios.get(apiRoute.GET_FREE_RIDER)
+      .then((res) => {
+        const freeRider = res.data;
 
-      // make api request to create order and update reward points
-      Axios.post(apiRoute.CREATE_ORDER_API + '/' + match.params.rid + '/' + match.params.userId, newOrderDetails)
-        .then((res) => {
-          incrementRewardPoints(finalCost)
-          console.log(paymentMethod)
-          alert("Database updated");
+        // details needed to create order
+        const newOrderDetails = {
+          "oorder_enroute_restaurant" : null,
+          "oorder_arrives_restaurant" : null,
+          "oorder_enroute_customer" : null,
+          "oorder_arrives_customer" : null,
+          "odelivery_fee" : 5,
+          "ofinal_price" : finalCost,
+          "opayment_type" : paymentMethod,
+          "foodIdArray" : foodIdArray,
+          "foodPriceArray": foodPriceArray,
+          "foodCountArray" : foodCounts,
+          "odelivery_address": null,
+          "ozipcode": 123456,
+          "riderId": freeRider
+        }
+        
+        // make api request to create order and update reward points
+        Axios.post(apiRoute.CREATE_ORDER_API + '/' + match.params.rid + '/' + match.params.userId, newOrderDetails)
+          .then((res) => {
+            incrementRewardPoints(finalCost)
+            alert("Database updated");
+          })
+          .catch((error) => {
+            console.log('Food limit reached!');
+            console.log(error);
+          });
+          console.log(freeRider)
         })
-        .catch((error) => {
-          console.log('Error creating an order!');
-          console.log(error);
-        });
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 
@@ -142,6 +169,10 @@ function RestaurantPage({ match, incrementRewardPoints }) {
     }
     if (paymentMethod == "") {
       alert("Please select a payment method!")
+      return false;
+    }
+    if (paymentMethod == "credit" && hasDefaultCard == false) {
+      alert("You have not selected a default credit card yet!")
       return false;
     }
     return true;

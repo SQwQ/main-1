@@ -1,0 +1,12 @@
+.schedulePage {
+    padding-right: 5%;
+}
+
+.buttons {
+    display: inline-flex;
+    padding: 20px;
+}
+
+#clearButton, #saveButton {
+    margin: 10px;
+}

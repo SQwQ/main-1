@@ -1,4 +1,4 @@
-<h1 align="center">tapao.</h1>
+<h1 align="center">tapau.</h1>
 <p align="center">
 	<a href = "#"><img src="https://img.shields.io/badge/Powered by-Caffeine-6f4e37?logo=Buy-Me-A-Coffee"></a>
 	<a href = "https://github.com/CS2102-Team-51/main/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-informational"></a>
@@ -9,7 +9,7 @@ A Food Delivery Service (FDS) mock up full stack application made in fulfillment
 
 ## Preview :sparkles:
 
-**[TODO]**
+<img src="https://raw.githubusercontent.com/CS2102-Team-51/main/master/preview/preview.png" alt="tapau." width="100%">
 
 ## Getting started :space_invader:
 
@@ -31,9 +31,10 @@ To get our project up and running please clone the repository and follow the fol
     ```
     When prompted for your password, enter your postgres superuser account password.
 
-3. **[TODO]** Lastly, make sure you are in the directory of the cloned repository. Enter the following commands: 
+3. Lastly, make sure you are in the directory of the cloned repository. Enter the following commands: 
     ```
     \i 'projectDDL(update here).sql'
+    \i './server/sql/more_data.sql'
     ```
     This starts creating our schema, functions, triggers, and dummy data.
 

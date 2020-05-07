@@ -24,6 +24,7 @@ const promotionRoutes = require('./routes/promotions/promotionRoutes');
 const login = require ('./routes/login/login.js');
 const searchRoutes = require('./routes/search/searchRoutes');
 const managerRoutes = require('./routes/managers/managerRoutes');
+const deliveryRoutes = require('./routes/delivery/deliveryRoutes');
 
 app.use (managerRoutes);
 app.use (login);
@@ -41,6 +42,7 @@ app.use(partTimerRoutes);
 app.use(fullTimerRoutes);
 app.use(promotionRoutes);
 app.use (searchRoutes);
+app.use (deliveryRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

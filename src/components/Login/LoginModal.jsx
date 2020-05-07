@@ -67,8 +67,6 @@ class LoginModal extends Component {
                     this.showInvalidCredentials();
                 } else {
                     // 1. Set states for id, auth and close dialog
-                    
-
                     // 2. Push history (set states first before pushing history:
                     // https://stackoverflow.com/a/57572888)
                     if (response.data.cid) {

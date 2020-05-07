@@ -20,30 +20,37 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
   const foodIdArray = req.body.foodIdArray;
   const foodPriceArray = req.body.foodPriceArray;
   const foodCountArray = req.body.foodCountArray;
+  const riderId = req.body.riderId;
 
-  // 1) Insert into Order_List
-  // 2) Insert into make_order
-  // 3) Update reward points
-  // 4) Insert into order_contains
+  // 1) Update reward points
+  // 2) Insert into Order_List
+  // 3) Insert into make_order
+  // 4) Insert into deliver_by
+  // 5) Insert into order_contains
   pool
     .query(
       `BEGIN;
-
+      
       UPDATE Customer
       SET crewards_points=Customer.crewards_points + ${ofinal_price}
       WHERE cid = ${cid};
 
-      WITH instance1 AS (
+      WITH 
+      instance1 AS (
         INSERT INTO Order_List (oorder_place_time, oorder_enroute_restaurant, oorder_arrives_restaurant, 
         oorder_enroute_customer, oorder_arrives_customer, odelivery_fee, ofinal_price, opayment_type, ozipcode, odelivery_address) 
         VALUES(NOW(), ${oorder_enroute_restaurant}, ${oorder_arrives_restaurant},
           ${oorder_enroute_customer}, ${oorder_arrives_customer}, ${odelivery_fee}, ${ofinal_price}, 
           '${opayment_type}', ${ozipcode}, '${odelivery_address}') 
         RETURNING ocid AS orderIdCreated
+      ),
+      instance2 AS (
+        INSERT INTO make_order (ocid, rid, cid, rest_rating, review_text) 
+        SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1 returning ocid AS orderIdCreated2
       )
 
-      INSERT INTO make_order (ocid, rid, cid, rest_rating, review_text) 
-      SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1 returning ocid;
+      INSERT INTO delivered_by (ocid, rid, cid)
+      SELECT orderIdCreated2, ${riderId}, ${cid} FROM instance2 returning ocid;
     
       COMMIT;`
     )
@@ -77,6 +84,22 @@ router.route('/api/orderList/:ocid').get(async (req, res) => {
   res.status(200).json();
 });
 
+// Get a all food of an order id
+router.route('/api/food_ordered/:ocid').get(async (req, res) => {
+  const ocid = req.params.ocid;
+  const queryString = 
+  `
+    SELECT * FROM order_contains as OC
+    JOIN Food as F on F.fid = OC.fid
+    WHERE ocid = ${ocid}
+  `;
+
+  const result = await pool.query(queryString);
+  res.setHeader('content-type', 'application/json');
+  res.send(JSON.stringify(result.rows));
+  res.status(200).json();
+});
+
 // Get all order
 router.route('/api/orderLists').get(async (req, res) => {
   const queryString = 'SELECT * FROM Order_List';
@@ -86,6 +109,28 @@ router.route('/api/orderLists').get(async (req, res) => {
   res.send(JSON.stringify(result.rows));
   res.status(200).json();
 });
+
+// Get all unfinished order assigned to a Rider
+router.route('/api/orderLists/assigned/:rid').get(async (req, res) => {
+    const rid = req.params.rid;
+
+    const queryString = `SELECT Order_List.ocid, oorder_place_time, ofinal_price, 
+    Restaurant.raddress, ozipcode, oorder_enroute_restaurant, oorder_arrives_restaurant,
+	oorder_enroute_customer, oorder_arrives_customer
+    FROM Order_List 
+    JOIN delivered_by ON Order_List.ocid = delivered_by.ocid 
+    JOIN make_order ON Order_List.ocid = make_order.ocid
+    JOIN Restaurant ON make_order.rid = Restaurant.rid
+    WHERE delivered_by.rid = '${rid}'
+    AND Order_List.oorder_arrives_customer IS NULL
+    ;`;
+  
+    const result = await pool.query(queryString);
+    res.setHeader('content-type', 'application/json');
+    res.send(JSON.stringify(result.rows));
+    res.status(200).json();
+  });
+  
 
 // Update an order
 router.route('/api/orderList/update/:ocid').patch((req, res) => {
