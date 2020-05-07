@@ -27,3 +27,4 @@ export const GET_USER_CARDS = "http://localhost:5000/api/creditCards";
 export const POST_A_CARD = "http://localhost:5000/api/creditCards";
 export const CHANGE_DEFAULT_CARD = "http://localhost:5000/api/creditCard/current";
 export const GET_FREE_RIDER = "http://localhost:5000/api/delivery/rider/get";
+export const GET_FOODS_OF_ORDER = "http://localhost:5000/api/food_ordered";

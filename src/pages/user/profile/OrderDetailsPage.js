@@ -6,15 +6,27 @@ import Axios from 'axios';
 // reviewDetails = {rest_rating, review_text, ocid, rid, cid}
 export default function OrderDetailsPage({ match, location }) {
   const [reviewDetails, setReviewDetails] = useState({});
+  const [foods, setFoods] = useState([]);
   const [orderDetails, setOrderDetails] = useState({});
   const [rid, setRid] = useState(null);
-  const [restDeliveryRating, setRestDeliveryRating] = useState(null);
+  const [restRating, setRestRating] = useState(null);
   const [restReview, setRestReview] = useState(null);
 
 
   useEffect(() => {
     // Get order details from previous page
+    console.log(location.state.pastOrderDetails)
     setOrderDetails(location.state.pastOrderDetails);
+    
+    Axios.get(apiRoute.GET_FOODS_OF_ORDER + '/' + match.params.ocid)
+      .then((res) => {
+        console.log(res.data)
+        setFoods(res.data);
+      })
+      .catch((error) => {
+        console.log('Error getting food of the order!');
+        console.log(error);
+      });
 
     // Fetch order review
     Axios.get(apiRoute.GET_ORDER_REVIEW_AND_RATING + '/' + match.params.ocid)
@@ -30,13 +42,13 @@ export default function OrderDetailsPage({ match, location }) {
 
 
   function handleRateRider() {
-    const newRestDeliveryRating = {
-        "rest_rating": restDeliveryRating
+    const newRestRating = {
+        "rest_rating": restRating
     }
 
-    Axios.patch(apiRoute.UPDATE_RATING + '/' + match.params.ocid, newRestDeliveryRating)
+    Axios.patch(apiRoute.UPDATE_RATING + '/' + match.params.ocid, newRestRating)
     .then((res) => {
-        setReviewDetails({...reviewDetails, rest_rating: restDeliveryRating})
+        setReviewDetails({...reviewDetails, rest_rating: restRating})
     })
     .catch((error) => {
       console.log('Error updating delivery rating!');
@@ -61,12 +73,24 @@ export default function OrderDetailsPage({ match, location }) {
     });
   }
 
+  function renderFoodOrdered() {
+    return foods.map(food => {
+      return (
+        <div key={food.fid}>
+          <p><b>Food Name</b>: {food.fname}  <b>Quantity</b>: {food.quantity} <b>Price</b>: ${food.fprice}</p>
+        </div>
+        
+      )
+    });
+  }
+
+
   function renderRatingsSection() {
     return (
       <>
-        Your rating for the restaurant's delivery services:{' '}
+        <h1>Your rating for the restaurant:</h1>
         {reviewDetails.rest_rating == null
-          ? <div><h1>You have not rated the delivery service yet</h1><input onChange={e => setRestDeliveryRating(parseInt(e.target.value))} type="number"/><button onClick={handleRateRider}>submit rating</button></div>
+          ? <div>You have not rated the restaurant yet  <input onChange={e => setRestRating(parseInt(e.target.value))} type="number"/><button onClick={handleRateRider}>submit rating</button></div>
           : reviewDetails.rest_rating}
       </>
     );
@@ -75,9 +99,9 @@ export default function OrderDetailsPage({ match, location }) {
   function renderReviewSection() {
     return (
       <>
-        <div>Your review for the restaurant's food:</div>
+        <h1>Your review for the restaurant's food:</h1>
         {reviewDetails.review_text == "null"    
-          ? <div><h1>You have not rated the restaurant's food yet</h1><input onChange={e => setRestReview(e.target.value)} type="text"/><button onClick={handleReviewRestaurant}>submit review</button></div>
+          ? <div>You have not reviewed the restaurant's food yet  <input onChange={e => setRestReview(e.target.value)} type="text"/><button onClick={handleReviewRestaurant}>submit review</button></div>
           : reviewDetails.review_text}
       </>
     );
@@ -85,10 +109,17 @@ export default function OrderDetailsPage({ match, location }) {
 
   return (
     <div className="wrapper_content_section">
-      <p>this is order detail page(can list all order details here, fetch data from list_order)</p>
-      <p>order id: {match.params.ocid}</p>
-      <p>restaurant id: {rid}</p>
-      {renderRatingsSection()}
+      <p><b>Order ID</b>: {match.params.ocid}</p>
+      <p><b>Restaurant ID</b>: {rid}</p>
+      <p><b>Order Placed at</b>: {orderDetails.oorder_place_time}</p>
+      <p><b>Payment Type</b>: {orderDetails.opayment_type}</p>
+      {renderFoodOrdered()}
+      <p><b>Delivery Fee</b>: ${orderDetails.odelivery_fee}</p>
+      <p><b>Total Price</b>: ${orderDetails.ofinal_price}</p>
+      
+      
+      
+      {renderRatingsSection()}<br/>
       {renderReviewSection()}
     </div>
   );
