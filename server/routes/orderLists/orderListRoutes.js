@@ -20,30 +20,37 @@ router.route('/api/orderList/create/:rid/:cid').post((req, res) => {
   const foodIdArray = req.body.foodIdArray;
   const foodPriceArray = req.body.foodPriceArray;
   const foodCountArray = req.body.foodCountArray;
+  const riderId = req.body.riderId;
 
-  // 1) Insert into Order_List
-  // 2) Insert into make_order
-  // 3) Update reward points
-  // 4) Insert into order_contains
+  // 1) Update reward points
+  // 2) Insert into Order_List
+  // 3) Insert into make_order
+  // 4) Insert into deliver_by
+  // 5) Insert into order_contains
   pool
     .query(
       `BEGIN;
-
+      
       UPDATE Customer
       SET crewards_points=Customer.crewards_points + ${ofinal_price}
       WHERE cid = ${cid};
 
-      WITH instance1 AS (
+      WITH 
+      instance1 AS (
         INSERT INTO Order_List (oorder_place_time, oorder_enroute_restaurant, oorder_arrives_restaurant, 
         oorder_enroute_customer, oorder_arrives_customer, odelivery_fee, ofinal_price, opayment_type, ozipcode, odelivery_address) 
         VALUES(NOW(), ${oorder_enroute_restaurant}, ${oorder_arrives_restaurant},
           ${oorder_enroute_customer}, ${oorder_arrives_customer}, ${odelivery_fee}, ${ofinal_price}, 
           '${opayment_type}', ${ozipcode}, '${odelivery_address}') 
         RETURNING ocid AS orderIdCreated
+      ),
+      instance2 AS (
+        INSERT INTO make_order (ocid, rid, cid, rest_rating, review_text) 
+        SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1 returning ocid AS orderIdCreated2
       )
 
-      INSERT INTO make_order (ocid, rid, cid, rest_rating, review_text) 
-      SELECT orderIdCreated, ${rid}, ${cid}, ${rest_rating}, '${review_text}' FROM instance1 returning ocid;
+      INSERT INTO delivered_by (ocid, rid, cid)
+      SELECT orderIdCreated2, ${riderId}, ${cid} FROM instance2 returning ocid;
     
       COMMIT;`
     )
