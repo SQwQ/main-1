@@ -1133,6 +1133,28 @@ insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_t
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (338, 83583987, 'qsargant5h', 'i3tfd9k', '2019-06-18 13:55:23', 51);
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (62, 82146567, 'hgiacoboni5i', 'zRXKJ9i', '2019-05-19 19:35:25', 106);
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (248, 91054134, 'eedmand5j', '1IQvck', '2020-02-14 06:42:21', 103);
+/* Insert 10 credit cards */
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('6279897008691244', '2023-06-28', '903');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2635758762981183', '2023-11-06', '501');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('6236293555109328', '2023-01-27', '427');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2775841044591945', '2022-12-30', '965');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2077074784740775', '2021-08-12', '610');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('8736977535888996', '2024-04-25', '422');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('3809104583708476', '2022-01-12', '656');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('2336421415478093', '2021-09-02', '146');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('3467341406899653', '2022-04-17', '820');
+insert into Credit_Card (card_number , expiry_date , cvv ) values ('9101479422148008', '2023-12-16', '656');
+
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('6279897008691244', '2023-06-28', '903', 1);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2635758762981183', '2023-11-06', '501', 1);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('6236293555109328', '2023-01-27', '427', 2);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2775841044591945', '2022-12-30', '965', 2);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2077074784740775', '2021-08-12', '610', 3);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('8736977535888996', '2024-04-25', '422', 3);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('3809104583708476', '2022-01-12', '656', 4);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('2336421415478093', '2021-09-02', '146', 4);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('3467341406899653', '2022-04-17', '820', 5);
+insert into register_cc  (card_number , expiry_date , cvv , cid) values ('9101479422148008', '2023-12-16', '656', 5);
 
 /* 10 percentage promotion */
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (19, 26, '2019-10-14 04:32:53', '2020-06-20 09:21:51', 61, 0, 'promo', 'good deal');
