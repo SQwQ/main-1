@@ -1,4 +1,44 @@
+@font-face {
+    font-family: 'Raleway-ExtraLight';
+    src: url('../../fonts/Raleway-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway-Bold';
+    src: url('../../fonts/Raleway-Bold.ttf');
+}
+
 .MainPageBody {
     text-align: center;
-    min-width: 800px;
+    min-width: 650px;
+    margin-top: 5%;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 50px;
+    width: 80%;
+    padding: 20px;
+    padding-bottom: 50px;
+}
+
+.logo {
+    background-image: url(../../images/logo.png);
+    background-size: contain;
+    width: 150px;
+    height: 150px;
+}
+
+.title {
+    font-family: 'Raleway-Bold', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+.caption {
+    font-family: 'Raleway-ExtraLight', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+.registrationSection {
+    background-color: rgba(255,255,255,0.7);
+    width: fit-content;
+    padding: 15px;
+    border-radius: 10px;
 }

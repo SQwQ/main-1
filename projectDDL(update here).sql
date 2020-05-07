@@ -498,20 +498,25 @@ BEGIN
 
     SELECT COUNT(sfid) INTO total_days_in_range FROM Schedule_FT_Hours 
     WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '5 days';
-
+    
     SELECT COUNT(sfid) INTO total_days FROM Schedule_FT_Hours 
-    WHERE rid = NEW.rid AND latest_day- wkdate <= INTERVAL '7 days';
+    WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '7 days'
+    AND is_prev = False;
 
     IF NEW.is_last_shift = True AND 
     ((total_days_in_range != 5) OR (total_days > 5)) THEN
     DELETE FROM Schedule_FT_Hours 
-    WHERE rid = NEW.rid AND latest_day - wkdate <= INTERVAL '7 days';
+    WHERE rid = NEW.rid AND is_prev = False;
 
     RAISE WARNING USING MESSAGE = 'Your work schedule must be 5 consecutive days!';
 
     ELSEIF NEW.is_last_shift = True THEN
     UPDATE Full_Timer 
     SET mth = mth + 1
+    WHERE rid = NEW.rid;
+    
+    UPDATE Schedule_FT_Hours 
+    SET is_prev = True 
     WHERE rid = NEW.rid;
 
     END IF;
@@ -582,14 +587,24 @@ CREATE OR REPLACE FUNCTION net_total_hrs()
   RETURNS trigger AS
 $BODY$
 DECLARE total_hrs INT;
+DECLARE prev_last TIMESTAMP;
 BEGIN
+    
+    SELECT MAX(end_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
+    WHERE rid = NEW.rid AND is_last_shift = True) ;
+    
+    IF prev_last IS NULL THEN
+    SELECT MIN(start_time) INTO prev_last FROM (SELECT * FROM Schedule_PT_Hours
+    WHERE rid = NEW.rid); 
+    END IF;
+				 
     SELECT SUM(EXTRACT(HOURS FROM end_time) - EXTRACT(HOURS FROM start_time)) INTO total_hrs FROM Schedule_PT_Hours 
-    WHERE rid = NEW.rid AND NEW.end_time - start_time <= INTERVAL '7 days';
-
+    WHERE rid = NEW.rid AND start_time >= prev_last;
+				    
     IF NEW.is_last_shift = True AND 
     (total_hrs > 48 OR total_hrs < 10) THEN
     DELETE FROM Schedule_PT_Hours 
-    WHERE rid = NEW.rid AND NEW.end_time - start_time <= INTERVAL '7 days';
+    WHERE rid = NEW.rid AND start_time >= prev_last;
 
     RAISE WARNING USING MESSAGE = 'Your working hours per week must be between 10 and 48!';
 
