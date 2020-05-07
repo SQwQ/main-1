@@ -8,7 +8,7 @@ export default function OrderDetailsPage({ match, location }) {
   const [reviewDetails, setReviewDetails] = useState({});
   const [orderDetails, setOrderDetails] = useState({});
   const [rid, setRid] = useState(null);
-  const [restDeliveryRating, setRestDeliveryRating] = useState(null);
+  const [restRating, setRestRating] = useState(null);
   const [restReview, setRestReview] = useState(null);
 
 
@@ -30,13 +30,13 @@ export default function OrderDetailsPage({ match, location }) {
 
 
   function handleRateRider() {
-    const newRestDeliveryRating = {
-        "rest_rating": restDeliveryRating
+    const newRestRating = {
+        "rest_rating": restRating
     }
 
-    Axios.patch(apiRoute.UPDATE_RATING + '/' + match.params.ocid, newRestDeliveryRating)
+    Axios.patch(apiRoute.UPDATE_RATING + '/' + match.params.ocid, newRestRating)
     .then((res) => {
-        setReviewDetails({...reviewDetails, rest_rating: restDeliveryRating})
+        setReviewDetails({...reviewDetails, rest_rating: restRating})
     })
     .catch((error) => {
       console.log('Error updating delivery rating!');
@@ -64,9 +64,9 @@ export default function OrderDetailsPage({ match, location }) {
   function renderRatingsSection() {
     return (
       <>
-        Your rating for the restaurant's delivery services:{' '}
+        Your rating for the restaurant:{' '}
         {reviewDetails.rest_rating == null
-          ? <div><h1>You have not rated the delivery service yet</h1><input onChange={e => setRestDeliveryRating(parseInt(e.target.value))} type="number"/><button onClick={handleRateRider}>submit rating</button></div>
+          ? <div><h1>You have not rated the restaurant yet</h1><input onChange={e => setRestRating(parseInt(e.target.value))} type="number"/><button onClick={handleRateRider}>submit rating</button></div>
           : reviewDetails.rest_rating}
       </>
     );
@@ -77,7 +77,7 @@ export default function OrderDetailsPage({ match, location }) {
       <>
         <div>Your review for the restaurant's food:</div>
         {reviewDetails.review_text == "null"    
-          ? <div><h1>You have not rated the restaurant's food yet</h1><input onChange={e => setRestReview(e.target.value)} type="text"/><button onClick={handleReviewRestaurant}>submit review</button></div>
+          ? <div><h1>You have not reviewed the restaurant's food yet</h1><input onChange={e => setRestReview(e.target.value)} type="text"/><button onClick={handleReviewRestaurant}>submit review</button></div>
           : reviewDetails.review_text}
       </>
     );

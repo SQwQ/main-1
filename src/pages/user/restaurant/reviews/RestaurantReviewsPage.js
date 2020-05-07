@@ -15,7 +15,6 @@ function RestaurantReviewsPage({ match }) {
     // Fetch order review
     Axios.get(apiRoute.GET_ALL_ORDER_REVIEW_AND_RATING + '/' + match.params.rid)
       .then((res) => {
-        console.log(res.data);
         setReviewDetails(res.data);
       })
       .catch((error) => {
