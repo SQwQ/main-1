@@ -9,11 +9,14 @@ export const FT_RIDER_API = "http://localhost:5000/api/profiles/rider/full_timer
 export const RIDER_GET_ORDERS = "http://localhost:5000/api/orderLists";
 
 // User
+export const MANAGER_API = "http://localhost:5000/api/manager";
 export const CUSTOMER_API = "http://localhost:5000/api/customer";
+export const STAFF_API = "http://localhost:5000/api/restaurantStaff";
 export const CUSTOMER_LOGIN_API = "http://localhost:5000/api/login/user";
 export const SEARCH_RESTAURANT_API = "http://localhost:5000/api/search";
 export const GET_RESTAURANT_FOOD_API = "http://localhost:5000/api/restaurant_food";
 export const GET_RESTAURANT_API = "http://localhost:5000/api/restaurant";
+export const GET_RESTAURANTS_API = "http://localhost:5000/api/restaurants";
 export const CREATE_ORDER_API = "http://localhost:5000/api/orderList/create";
 export const GET_PAST_ORDER_API = "http://localhost:5000/api/all_order";
 export const GET_ORDER_REVIEW_AND_RATING = "http://localhost:5000/api/makeOrder/rating_review";

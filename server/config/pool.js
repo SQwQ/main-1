@@ -13,7 +13,7 @@ let connectionString = env === 'development' ? {
     password: keys.postgresPW,
     host: 'localhost',
     port: '5432',
-    database: 'mytestdb',
+    database: 'mytestdb2',
     max: 10,
     idleTimeoutMillis: 300,
     connectionTimeoutMillis: 200

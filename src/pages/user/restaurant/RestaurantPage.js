@@ -7,7 +7,7 @@ import { withRouter } from 'react-router'
 import {Link} from 'react-router-dom';
 import "./restaurantPage.css"
 
-// match.params = {rid, fid}
+// match.params = {rid, fid, userId}
 // restaurantDetails = { rid, rname, raddress, rmincost, rimage }
 // foodItems = [{ fid, fname, fprice, favailable, flimit, fimage, rid, cid, cname }, {..}]
 function RestaurantPage({ match, incrementRewardPoints }) {
@@ -17,9 +17,25 @@ function RestaurantPage({ match, incrementRewardPoints }) {
   const [totalFoodCost, setTotalFoodCost] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [deliveryFee] = useState(5);
+  const [hasDefaultCard, setHasDefaultCard] = useState(false);
 
   // Fetch data
   useEffect(() => {
+    // Check if user has a default credit card selected
+    Axios
+      .get(apiRoute.GET_USER_CARDS + '/' + match.params.userId)
+      .then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].current == true) {
+            setHasDefaultCard(true);
+            return;
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     // fetch all restaurant food
     Axios.get(apiRoute.GET_RESTAURANT_FOOD_API + '/' + match.params.rid)
       .then((res) => {
@@ -142,6 +158,10 @@ function RestaurantPage({ match, incrementRewardPoints }) {
     }
     if (paymentMethod == "") {
       alert("Please select a payment method!")
+      return false;
+    }
+    if (paymentMethod == "credit" && hasDefaultCard == false) {
+      alert("You have not selected a default credit card yet!")
       return false;
     }
     return true;

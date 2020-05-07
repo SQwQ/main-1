@@ -23,9 +23,6 @@ export default function SideBar({
   rewardPoints,
   unauthenticate,
 }) {
-  console.log ('This is my classes: ', classes);
-  console.log ('This is my userid: ', userid);
-  console.log ('This is my authenticate: ', unauthenticate);
   return (
     <Drawer
       className={classes.drawer}
@@ -38,29 +35,21 @@ export default function SideBar({
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button key="Back" component={Link} to={`/user/${userid}`}>
+        <ListItem button key="Back" component={Link} to={`/manager/${userid}`}>
           <b>HOME</b>
         </ListItem>
         <ListItem
           button
-          key="Profile"
+          key="Restaurants"
           component={Link}
-          to={`/profile/${userid}`}
+          to={`/manager/restaurants`}
         >
           <ListItemIcon><ProfileIcon /></ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItem>
-        <ListItem button key="Vouchers">
-          <ListItemIcon><MailIcon /></ListItemIcon>
-          <ListItemText primary="Vouchers" />
+          <ListItemText primary="Restaurants" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem key="Reward_Points">
-          <ListItemIcon><MonetizationOnIcon /></ListItemIcon>
-          <ListItemText primary={rewardPoints + ' Reward Point(s)'} />
-        </ListItem>
         <ListItem
           button
           key="Logout"

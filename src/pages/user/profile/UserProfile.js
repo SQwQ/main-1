@@ -56,12 +56,11 @@ function UserProfile({ match, userDetails, rewardPoints }) {
       card_number : inputNumber,
       expiry_date : inputExDate,
       cvv : inputCcv,
-      current : defaultCreditCardNumber == null ? true : false
+      current : false
     }
     Axios.post(apiRoute.POST_A_CARD + '/' + match.params.userid, newCardDetails)
     .then((res) => {
       setCreditCards([...creditCards, inputNumber])
-      setDefaultCreditCardNumber(inputNumber);
       console.log("updated")
     })
     .catch((error) => {
@@ -131,7 +130,7 @@ function UserProfile({ match, userDetails, rewardPoints }) {
       <label>Expiry Date: </label>
       <input type="date" value={inputExDate} onChange={(e) => setInputExDate(e.target.value)}/><br/>
       <button onClick={saveCardDetails}>Add</button>
-      <p>Your list of credit cards:</p>
+      <p>Your list of credit cards <b>(click to select default credit card used for payment)</b>:</p>
       {renderUserCreditCards()}
 
       {/* Past orders */}
