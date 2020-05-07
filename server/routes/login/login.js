@@ -18,7 +18,7 @@ router.route ('/api/login/user').post (async (req, res) => {
       queryString = `SELECT rsid FROM Restaurant_Staff WHERE rsusername = '${req.body.username}' AND rspassword = '${req.body.password}';`;
     break;
     default:
-      queryString = `SELECT fmid FROM FDS_Manager WHERE fmusername = '${req.body.username}' AND fmpassword = '${req.body.password}';`;
+      queryString = `SELECT mid FROM Manager WHERE musername = '${req.body.username}' AND mpassword = '${req.body.password}';`;
   }
 
   try {
