@@ -39,6 +39,8 @@ function UserPage({match, classes, unauthenticate}) {
   const [id, setId] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [rewardPoints, setRewardPoints] = useState({});
+  console.log("This is my match: ", match);
+  console.log("This is my classes: ", classes);
 
 
   useEffect(() => {

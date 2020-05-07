@@ -23,7 +23,9 @@ const fullTimerRoutes = require ('./routes/riders/fullTimerRoutes.js');
 const promotionRoutes = require('./routes/promotions/promotionRoutes');
 const login = require ('./routes/login/login.js');
 const searchRoutes = require('./routes/search/searchRoutes');
+const managerRoutes = require('./routes/managers/managerRoutes');
 
+app.use (managerRoutes);
 app.use (login);
 app.use (customerRoutes);
 app.use (riderRoutes);
