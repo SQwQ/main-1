@@ -492,29 +492,21 @@ $BODY$
 DECLARE total_days_in_range INT;
 DECLARE total_days INT;
 DECLARE latest_day TIMESTAMP;
-DECLARE prev_last TIMESTAMP;
 BEGIN
     SELECT MAX(wkdate) INTO latest_day FROM (SELECT * FROM Schedule_FT_Hours
     WHERE rid = NEW.rid) AS curr_wk;
-    
-    SELECT MAX(wkdate) INTO prev_last FROM (SELECT * FROM Schedule_FT_Hours
-    WHERE rid = NEW.rid AND is_prev = True) ;
 
     SELECT COUNT(sfid) INTO total_days_in_range FROM Schedule_FT_Hours 
     WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '5 days';
     
-    IF prev_last IS NULL THEN
-    prev_last := '2000-06-25 18:00:25-07';
-    END IF;	
-    
     SELECT COUNT(sfid) INTO total_days FROM Schedule_FT_Hours 
     WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '7 days'
-    AND wkdate > prev_last;
+    AND is_prev = False;
 
     IF NEW.is_last_shift = True AND 
     ((total_days_in_range != 5) OR (total_days > 5)) THEN
     DELETE FROM Schedule_FT_Hours 
-    WHERE rid = NEW.rid AND wkdate > prev_last;
+    WHERE rid = NEW.rid AND is_prev = False;
 
     RAISE WARNING USING MESSAGE = 'Your work schedule must be 5 consecutive days!';
 
