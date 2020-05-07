@@ -94,6 +94,28 @@ router.route('/api/orderLists').get(async (req, res) => {
   res.status(200).json();
 });
 
+// Get all unfinished order assigned to a Rider
+router.route('/api/orderLists/assigned/:rid').get(async (req, res) => {
+    const rid = req.params.rid;
+
+    const queryString = `SELECT Order_List.ocid, oorder_place_time, ofinal_price, 
+    Restaurant.raddress, ozipcode, oorder_enroute_restaurant, oorder_arrives_restaurant,
+	oorder_enroute_customer, oorder_arrives_customer
+    FROM Order_List 
+    JOIN delivered_by ON Order_List.ocid = delivered_by.ocid 
+    JOIN make_order ON Order_List.ocid = make_order.ocid
+    JOIN Restaurant ON make_order.rid = Restaurant.rid
+    WHERE delivered_by.rid = '${rid}'
+    AND Order_List.oorder_arrives_customer IS NULL
+    ;`;
+  
+    const result = await pool.query(queryString);
+    res.setHeader('content-type', 'application/json');
+    res.send(JSON.stringify(result.rows));
+    res.status(200).json();
+  });
+  
+
 // Update an order
 router.route('/api/orderList/update/:ocid').patch((req, res) => {
   const ocid = req.params.ocid;

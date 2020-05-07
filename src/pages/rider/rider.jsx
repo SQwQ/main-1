@@ -121,9 +121,24 @@ class RiderPage extends Component {
                         })                         
                     }
                 ).catch (error => {
-                    console.log("Error getting rider details!");
+                    console.log("Error getting rider schedule!");
                     console.log(error);
                 });
+
+        // Get rider's type
+        Axios.get(apiRoute.RIDER_API + "/type/" + this.id, {
+            withCredentials: false,
+        })
+            .then(
+                response => {
+                    this.setState({
+                        type: response.data
+                    })
+                }
+            ).catch(error => {
+                console.log("Error getting rider type!")
+                console.log(error);
+            });
     }
 
 
@@ -228,8 +243,8 @@ class RiderPage extends Component {
                 {/* PAGES */}
                 { this.state.showProfilePage && <RiderProfile id={this.id} name={this.state.rname } username={this.state.rusername} password={this.state.rpassword} /> }
                 { this.state.scheduleSet && this.state.showOrdersPage && <RiderOrders id={this.id} /> }
-                { this.state.showSchedulePage && <RiderScheduler id={this.id} /> }
-                { this.state.showStatsPage && <RiderStats id={this.id} /> } 
+                { this.state.showSchedulePage && <RiderScheduler id={this.id} type={this.state.type} /> }
+                { this.state.showStatsPage && <RiderStats id={this.id} type={this.state.type}/> } 
             </main>
             </div>
             </div>
