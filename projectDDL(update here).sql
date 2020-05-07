@@ -200,6 +200,30 @@ CREATE TABLE Customer (
 	crewards_points INT NOT NULL
 );
 
+/*
+	Customer Details
+*/
+-- Omitted due to redundancy
+--
+--CREATE TABLE Address (
+--	address_line TEXT NOT NULL,
+--	zipcode INT NOT NULL,
+--	cid SERIAL,
+--	FOREIGN KEY (cid) REFERENCES Customer(cid) ON DELETE CASCADE
+-- );
+--
+
+CREATE TABLE Credit_Card (
+	card_number BIGINT NOT NULL,
+	expiry_date DATE NOT NULL,
+	cvv INT NOT NULL,
+	cid SERIAL NOT NULL,
+	current BOOLEAN NOT NULL,
+	PRIMARY KEY(card_number),
+	FOREIGN KEY (cid) REFERENCES Customer(cid)
+);
+
+
 CREATE TABLE make_order (
 	rest_rating INTEGER,
 	review_text TEXT,
@@ -260,35 +284,6 @@ CREATE TABLE Offer_On (
 	pid SERIAL NOT NULL,
 	FOREIGN KEY (fid) REFERENCES Food(fid),
 	FOREIGN KEY (pid) REFERENCES Campaign(pid)
-);
-
-/*
-	Customer Details
-*/
--- Omitted due to redundancy
---
---CREATE TABLE Address (
---	address_line TEXT NOT NULL,
---	zipcode INT NOT NULL,
---	cid SERIAL,
---	FOREIGN KEY (cid) REFERENCES Customer(cid) ON DELETE CASCADE
--- );
---
-
-CREATE TABLE Credit_Card (
-	card_number BIGINT NOT NULL,
-	expiry_date DATE NOT NULL,
-	cvv INT NOT NULL,
-	PRIMARY KEY(card_number, expiry_date, cvv)
-);
-
-CREATE TABLE register_cc (
-	card_number BIGINT NOT NULL,
-	expiry_date DATE NOT NULL,
-	cvv INT NOT NULL,
-	cid SERIAL,
-	FOREIGN KEY (card_number, expiry_date, cvv) REFERENCES Credit_Card(card_number, expiry_date, cvv),
-	FOREIGN KEY (cid) REFERENCES Customer(cid)
 );
 
 /*
