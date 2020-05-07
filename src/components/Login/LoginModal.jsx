@@ -66,7 +66,7 @@ class LoginModal extends Component {
                     console.log(this.state.title + " credentials not recognized!");
                     this.showInvalidCredentials();
                 } else {
-                    console.log(this.state.title + " with userID " + response.data.cid + " logged in.");
+                    console.log(this.state.title + " with userID " + (response.data.cid || response.data.rid || response.data.rsid || response.data.fmid) + " logged in.");
                     // 1. Set states for id, auth and close dialog
                     
 
