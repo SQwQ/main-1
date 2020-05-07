@@ -84,6 +84,22 @@ router.route('/api/orderList/:ocid').get(async (req, res) => {
   res.status(200).json();
 });
 
+// Get a all food of an order id
+router.route('/api/food_ordered/:ocid').get(async (req, res) => {
+  const ocid = req.params.ocid;
+  const queryString = 
+  `
+    SELECT * FROM order_contains as OC
+    JOIN Food as F on F.fid = OC.fid
+    WHERE ocid = ${ocid}
+  `;
+
+  const result = await pool.query(queryString);
+  res.setHeader('content-type', 'application/json');
+  res.send(JSON.stringify(result.rows));
+  res.status(200).json();
+});
+
 // Get all order
 router.route('/api/orderLists').get(async (req, res) => {
   const queryString = 'SELECT * FROM Order_List';

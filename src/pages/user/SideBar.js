@@ -23,9 +23,7 @@ export default function SideBar({
   rewardPoints,
   unauthenticate,
 }) {
-  console.log ('This is my classes: ', classes);
-  console.log ('This is my userid: ', userid);
-  console.log ('This is my authenticate: ', unauthenticate);
+  
   return (
     <Drawer
       className={classes.drawer}
