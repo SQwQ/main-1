@@ -1133,7 +1133,8 @@ insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_t
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (338, 83583987, 'qsargant5h', 'i3tfd9k', '2019-06-18 13:55:23', 51);
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (62, 82146567, 'hgiacoboni5i', 'zRXKJ9i', '2019-05-19 19:35:25', 106);
 insert into Customer  (cname , ccontact_number , cusername , cpassword , cjoin_time , crewards_points ) values (248, 91054134, 'eedmand5j', '1IQvck', '2020-02-14 06:42:21', 103);
-/* percentage promotion */
+
+/* 10 percentage promotion */
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (19, 26, '2019-10-14 04:32:53', '2020-06-20 09:21:51', 61, 0, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (5, 3, '2019-09-04 20:40:36', '2020-07-04 13:15:29', 6, 0, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (3, 19, '2020-03-16 11:59:19', '2020-07-02 03:30:34', 4, 0, 'promo', 'good deal');
@@ -1145,7 +1146,7 @@ insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_act
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (11, 39, '2019-08-10 10:36:20', '2020-05-28 21:07:28', 38, 0, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (9, 40, '2019-05-17 07:58:31', '2020-06-18 04:05:33', 58, 0, 'promo', 'good deal');
 
-/* dollars discount */
+/* 10 food item discount */
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (8, 100, '2019-11-27 07:50:18', '2020-07-25 03:16:04', 47, 9, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (6, 100, '2019-08-25 22:54:04', '2020-07-11 21:53:56', 52, 7, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (19, 100, '2019-08-13 12:38:15', '2020-07-04 22:03:42', 2, 6, 'promo', 'good deal');
@@ -1157,3 +1158,58 @@ insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_act
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (8, 100, '2019-12-05 17:13:06', '2020-05-16 05:19:31', 16, 8, 'promo', 'good deal');
 insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (16, 100, '2019-09-02 13:24:09', '2020-05-25 21:13:34', 38, 8, 'promo', 'good deal');
 
+insert into Offer_On (fid, pid) values (123, 11);
+insert into Offer_On (fid, pid) values (288, 12);
+insert into Offer_On (fid, pid) values (68, 13);
+insert into Offer_On (fid, pid) values (246, 14);
+insert into Offer_On (fid, pid) values (165, 15);
+insert into Offer_On (fid, pid) values (362, 17);
+insert into Offer_On (fid, pid) values (293, 16);
+insert into Offer_On (fid, pid) values (93, 18);
+insert into Offer_On (fid, pid) values (78, 19);
+insert into Offer_On (fid, pid) values (173, 20);
+
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (20, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (19, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (11, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (15, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (12, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (14, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (16, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (17, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (13, false, false, false, false, false, false, false);
+insert into Campaign (pid, cMon, cTue, cWed, cThu, cFri, cSun, cSat) values (18, false, false, false, false, false, false, false);
+
+/* 10 Coupons */
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (345, 100, '2/20/2020', '4/16/2020', 0, 11, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (352, 100, '2/28/2020', '4/7/2020', 0, 20, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (257, 100, '1/31/2020', '5/1/2020', 0, 14, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (12, 100, '2/13/2020', '5/31/2020', 0, 14, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (54, 100, '1/9/2020', '4/29/2020', 0, 16, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (241, 100, '1/27/2020', '5/7/2020', 0, 10, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (221, 100, '1/19/2020', '5/8/2020', 0, 16, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (221, 100, '2/1/2020', '4/11/2020', 0, 10, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (236, 100, '1/31/2020', '5/29/2020', 0, 14, 'coupon', 'dollar discount');
+insert into Promotion (prid , percentage , pdatetime_active_from , pdatetime_active_to , pminSpend , pdiscount_val , pname , pdescription ) values (41, 100, '2/13/2020', '5/10/2020', 0, 11, 'coupon', 'dollar discount');
+
+insert into Coupon (cid, couponCode) values (26, 'WtsphqSm15');
+insert into Coupon (cid, couponCode) values (27, 'Yk0a7CjB6L');
+insert into Coupon (cid, couponCode) values (28, 'axKQsBJvb5');
+insert into Coupon (cid, couponCode) values (23, 'HeItbH3Jbu');
+insert into Coupon (cid, couponCode) values (29, 'r1sUk6RfUL');
+insert into Coupon (cid, couponCode) values (24, 'sLjuKGLA5c');
+insert into Coupon (cid, couponCode) values (30, 'I4fucIjDZy');
+insert into Coupon (cid, couponCode) values (21, 'ZYokM8sS0y');
+insert into Coupon (cid, couponCode) values (22, 'UywZuQ5qwq');
+insert into Coupon (cid, couponCode) values (25, 'Brf4Taulwu');
+
+insert into coupon_wallet (custid, cid) values (10, 21);
+insert into coupon_wallet (custid, cid) values (9, 24);
+insert into coupon_wallet (custid, cid) values (10, 23);
+insert into coupon_wallet (custid, cid) values (9, 22);
+insert into coupon_wallet (custid, cid) values (8, 26);
+insert into coupon_wallet (custid, cid) values (1, 27);
+insert into coupon_wallet (custid, cid) values (5, 29);
+insert into coupon_wallet (custid, cid) values (7, 28);
+insert into coupon_wallet (custid, cid) values (4, 30);
+insert into coupon_wallet (custid, cid) values (2, 25);
