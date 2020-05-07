@@ -12,9 +12,7 @@ export class riderOrdersPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            takenOrders: [],
-            takenOrdersStatus: [],
-            openOrders: [],            
+            assignedOrders: [],       
         }
         //getAllAcceptedOrders()
         this.getAllOrders()
@@ -23,13 +21,13 @@ export class riderOrdersPage extends Component {
     }
 
     getAllOrders() {
-        Axios.get(apiRoute.RIDER_GET_ORDERS, {
+        Axios.get(apiRoute.RIDER_GET_ORDERS + '/assigned/' + this.props.id , {
             withCredentials: false,
         })
             .then(
                 response => {
                     this.setState({
-                        openOrders: response.data
+                        assignedOrders: response.data
                     })
                 }
             ).catch(error => {
@@ -42,94 +40,93 @@ export class riderOrdersPage extends Component {
         console.log(event)
     }
 
+    _handleAcceptEnrouteR(e, id){ 
+
+    }
+    _handleAcceptArrivedR(e, id){ 
+
+    }
+    _handleAcceptEnrouteC(e, id){ 
+
+    }
+    _handleAcceptArrivedC(e, id){ 
+        
+    }
+
     render() {
         return (
             <div className="OrdersPage">
                 <center>
-                    {/*
-                    <h2>Taken Orders</h2>
+                    <h2>Assigned Orders</h2>
                     <Table className="openOrders">
                         <TableHead>
                             <TableRow>
-                            <TableCell>Order Id</TableCell>
-                            <TableCell>Enroute to Restaurant</TableCell>
-                            <TableCell>Arrived to Restaurant</TableCell>
-                            <TableCell>Enroute to Customer</TableCell>
-                            <TableCell>Delivered!</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                            <TableCell align="center">{ORDERID}</TableCell>
-                            <TableCell align="center"><Button
-                                variant="contained"
-                                id="saveButton"
-                                color="primary"
-                                size="small"
-                                startIcon={<ArrowForwardIcon />}
-                            >
-                            </Button>
-                            </TableCell>
-                            <TableCell align="center"><Button
-                                variant="contained"
-                                id="saveButton"
-                                color="primary"
-                                size="small"
-                                startIcon={<RestaurantIcon />}
-                            >
-                            </Button>
-                            </TableCell>
-                            <TableCell align="center"><Button
-                                variant="contained"
-                                id="saveButton"
-                                color="primary"
-                                size="small"
-                                startIcon={<ArrowForwardIcon />}
-                            >
-                            </Button>
-                            </TableCell>
-                            <TableCell align="center"><Button
-                                variant="contained"
-                                id="saveButton"
-                                color="primary"
-                                size="small"
-                                startIcon={<LocalMallIcon />}
-                            >
-                            </Button>
-                            </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                    */}
-                    <h2>Open Orders</h2>
-                    <Table className="openOrders">
-                        <TableHead>
-                            <TableRow>
-                            <TableCell>Accept Order</TableCell>
                             <TableCell>Order Id</TableCell>
                             <TableCell>Order Created</TableCell>
-                            <TableCell>Zipcode</TableCell>    
+                            <TableCell>Total Price</TableCell>
+                            <TableCell>Restaurant Address</TableCell>
+                            <TableCell>Customer Zipcode</TableCell>
+                            <TableCell>Enroute to Restaurant</TableCell>  
+                            <TableCell>Arrived at Restaurant</TableCell> 
+                            <TableCell>Enroute to Customer</TableCell> 
+                            <TableCell>Food Delivered</TableCell>   
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.openOrders.map((order) => (
+                            {this.state.assignedOrders.map((order) => (
                                 <TableRow key={order.ocid}>
-                                <TableCell align="center">
-                                    <Button
-                                    variant="contained"
-                                    id="OrderId"
-                                    color="primary"
-                                    size="small"
-                                    className="acceptButton"
-                                    startIcon={<CheckIcon />}
-                                    onClick={this._handleAccept}
-                                >
-                                Accept
-                                </Button>
-                                </TableCell>
                             <TableCell align="center">{order.ocid}</TableCell>
                             <TableCell align="center">{order.oorder_place_time}</TableCell>
+                            <TableCell align="center">${order.ofinal_price}</TableCell>
+                            <TableCell align="center">{order.raddress}</TableCell>
                             <TableCell align="center">{order.ozipcode}</TableCell>
+                            <TableCell align="center"><Button
+                                    variant="contained"
+                                    id={order.ocid + "-enroute-R"} 
+                                    color="primary"
+                                    size="small"
+                                    className="enrouteRButton"
+                                    startIcon={<ArrowForwardIcon />}
+                                    disabled={order.oorder_enroute_restaurant}
+                                    onClick={e => this._handleAcceptEnrouteR(e, order.ocid)}
+                                >
+                                On my way!
+                                </Button></TableCell>
+                            <TableCell align="center"><Button
+                                    variant="contained"
+                                    id={order.ocid + "-arrived-R"} 
+                                    color="primary"
+                                    size="small"
+                                    className="arrivedRButton"
+                                    startIcon={<RestaurantIcon />}
+                                    disabled={order.oorder_arrives_restaurant}
+                                    onClick={e => this._handleAcceptArrivedR(e, order.ocid)}
+                                >Picked Up!
+                                </Button></TableCell>
+                            <TableCell align="center"><Button
+                                    variant="contained"
+                                    id={order.ocid + "-enroute-C"} 
+                                    color="primary"
+                                    size="small"
+                                    className="enrouteCButton"
+                                    startIcon={<ArrowForwardIcon />}
+                                    disabled={order.oorder_enroute_customer}
+                                    onClick={e => this._handleAcceptEnrouteC(e, order.ocid)}
+                                >
+                                On my way!
+                                </Button></TableCell>
+                            <TableCell align="center"><Button
+                                    variant="contained"
+                                    id={order.ocid + "-arrived-C"} 
+                                    color="primary"
+                                    size="small"
+                                    className="arrivedCButton"
+                                    startIcon={<LocalMallIcon />}
+                                    disabled={order.oorder_arrives_customer}
+                                    onClick={e => this._handleAcceptArrivedC(e, order.ocid)}
+                                >
+                                Done!
+                                </Button></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

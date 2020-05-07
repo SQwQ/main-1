@@ -30,9 +30,9 @@ router.route('/api/profiles/rider/full_timer/shiftDayHours/:rid').get(async (req
 router.route('/api/profiles/rider/full_timer/stats/:rid').get(async (req, res) => {
     const id = req.params.rid;
 
-     // Assuming all deliveries are fixed at $4 as decided.
+     // Assuming all deliveries are fixed at $10 as decided.
      const queryString =
-     `SELECT month_no, CAST((salary-base_salary)/4 AS INTEGER) as numDelivered, 160 as numHoursWorked, salary FROM Monthly_Past_Salaries WHERE rid = ${id};`;
+     `SELECT month_no, CAST((salary-base_salary)/10 AS INTEGER) as numDelivered, 160 as numHoursWorked, salary FROM Monthly_Past_Salaries WHERE rid = ${id};`;
 
     const result = await pool.query(queryString);
     res.setHeader('content-type', 'application/json');
