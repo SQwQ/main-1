@@ -38,7 +38,7 @@ const styles = (theme) => ({
 function UserPage({match, classes, unauthenticate}) {
   const [id, setId] = useState();
   const [userDetails, setUserDetails] = useState({});
-  const [rewardPoints, setRewardPoints] = useState({});
+  const [rewardPoints, setRewardPoints] = useState(0);
 
 
   useEffect(() => {
@@ -48,6 +48,7 @@ function UserPage({match, classes, unauthenticate}) {
     .get(apiRoute.CUSTOMER_API + '/' + match.params.id, {withCredentials: false})
     .then((res) => {
       setUserDetails(res.data);
+      setRewardPoints(res.data.crewards_points);
     })
     .catch((error) => {
       console.log('Error getting customer details!');
@@ -63,14 +64,14 @@ function UserPage({match, classes, unauthenticate}) {
             <SideBar
               classes={classes}
               userid={id}
-              rewardPoints={userDetails.crewards_points}
+              rewardPoints={rewardPoints}
               unauthenticate={unauthenticate}
             />
             <CssBaseline />
             <Switch>
               <Route exact path='/user/:id' render={() => <HomePage userid={id} cname={userDetails.cname} /> } />
               <Route exact path='/restaurant/:rid/:fid/:userId' render={() => <RestaurantPage incrementRewardPoints={(points) => setRewardPoints(rewardPoints + points)} />} />
-              <Route exact path='/profile/:userid' render={() => <UserProfile userDetails={userDetails} /> } />
+              <Route exact path='/profile/:userid' render={() => <UserProfile userDetails={userDetails} rewardPoints={rewardPoints} /> } />
               <Route exact path='/profile/:userid/order/:ocid' component={OrderDetailsPage} />
               <Route exact path='/restaurant/reviews/:rid' component={RestaurantReviewsPage} />
             </Switch>

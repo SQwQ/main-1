@@ -6,7 +6,7 @@ import { withRouter } from 'react-router'
 
 // match.params = {rid, fid}
 // userDetails = { cid, cname, ccontact_number, cusername, cpassword, cjoin_time, crewards_points }
-function UserProfile({ match, userDetails }) {
+function UserProfile({ match, userDetails, rewardPoints }) {
   const [pastOrders, setPastOrders] = useState([]);
 
   // Fetch data
@@ -40,7 +40,7 @@ function UserProfile({ match, userDetails }) {
       <h1>userID: {userDetails.cid}</h1>
       <h1>customer name: {userDetails.cname}</h1>
       <h1>join time: {userDetails.cjoin_time}</h1>
-      <h1>reward points: {userDetails.crewards_points}</h1>
+      <h1>reward points: {rewardPoints}</h1>
 
       {/* Past orders */}
       <h1>A list of your past orders</h1>
