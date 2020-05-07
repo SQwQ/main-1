@@ -44,6 +44,7 @@ function UserPage({match, classes, unauthenticate}) {
   useEffect(() => {
     setId(match.params.id);
 
+    // Get user details
     Axios
     .get(apiRoute.CUSTOMER_API + '/' + match.params.id, {withCredentials: false})
     .then((res) => {
