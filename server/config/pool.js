@@ -10,10 +10,10 @@ env === 'development' ? console.log("Development environment detected.")
 
 let connectionString = env === 'development' ? {
     user: 'postgres',
-    password: keys.postgresPW,
+    password: 'password',
     host: 'localhost',
     port: '5432',
-    database: 'mytestdb2',
+    database: 'mytestdb',
     max: 10,
     idleTimeoutMillis: 300,
     connectionTimeoutMillis: 200
