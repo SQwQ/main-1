@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.7",
+    "@material-ui/core": "^4.9.8",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -12,6 +12,7 @@
     "concurrently": "^5.1.0",
     "cors": "^2.8.5",
     "moment": "^2.24.0",
+    "mui-datatables": "^2.14.0",
     "nodemon": "^2.0.2",
     "package.json": "^2.0.1",
     "pg-promise": "^10.4.4",
@@ -28,8 +29,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "cd server && yarn start",
-    "dev": "concurrently \"yarn start\" \"yarn server\""
+    "server": "cd server && npm run dev",
+    "dev": "concurrently \"npm start\" \"npm run server\"",
+    "heroku-postbuild": "npm run server"
   },
   "eslintConfig": {
     "extends": "react-app"

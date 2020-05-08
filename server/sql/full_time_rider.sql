@@ -1,8 +1,8 @@
 /* FULL-TIME RIDERS */
 
 /*add new full-time rider + update Full_Timer table*/
- WITH ins1 AS 
- (INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary) 
+ WITH ins1 AS
+ (INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary)
   VALUES ('a', 'bb', 'c', 999)
   RETURNING rid AS T_RID)
   INSERT INTO Full_Timer (rid, base_salary, mth)
@@ -89,7 +89,7 @@ CREATE TABLE Schedule_FT_Hours (
     is_prev BOOLEAN NOT NULL,
     is_last_shift BOOLEAN NOT NULL,
     shift INT NOT NULL,
-    FOREIGN KEY (rid) REFERENCES Full_Timer, 
+    FOREIGN KEY (rid) REFERENCES Full_Timer,
     CHECK (0 < shift AND shift < 5)
 );
 
@@ -105,15 +105,15 @@ BEGIN
     SELECT MAX(wkdate) INTO latest_day FROM (SELECT * FROM Schedule_FT_Hours
     WHERE rid = NEW.rid) AS curr_wk;
 
-    SELECT COUNT(sfid) INTO total_days_in_range FROM Schedule_FT_Hours 
+    SELECT COUNT(sfid) INTO total_days_in_range FROM Schedule_FT_Hours
     WHERE rid = NEW.rid AND latest_day - wkdate < INTERVAL '5 days';
 
-    SELECT COUNT(sfid) INTO total_days FROM Schedule_FT_Hours 
+    SELECT COUNT(sfid) INTO total_days FROM Schedule_FT_Hours
     WHERE rid = NEW.rid AND latest_day- wkdate <= INTERVAL '7 days';
 
-    IF NEW.is_last_shift = True AND 
+    IF NEW.is_last_shift = True AND
     ((total_days_in_range != 5) OR (total_days > 5)) THEN
-    DELETE FROM Schedule_FT_Hours 
+    DELETE FROM Schedule_FT_Hours
     WHERE rid = NEW.rid AND latest_day - wkdate <= INTERVAL '7 days';
 
     RAISE WARNING USING MESSAGE = 'Your work schedule must be 5 consecutive days!';

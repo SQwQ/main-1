@@ -24,21 +24,43 @@ router.route ('/api/restaurants').get (async (req, res) => {
 
 //Post a restaurant
 router.route ('/api/restaurant').post ((req, res) => {
-    console.log('ran');
+  console.log("These are my request body: ", req.body);
   const rname = req.body.rname;
   const raddress = req.body.raddress;
   const rmincost = req.body.rmincost;
-  const rimage = req.body.rimage;
-
-  console.log(rname);
-  console.log(raddress);
-  console.log(rmincost);
-  console.log(rimage);
 
   pool
     .query (
-      `INSERT INTO Restaurant (rname, raddress, rmincost, rimage) 
-      VALUES('${rname}', '${raddress}', ${rmincost}, '${rimage}');`
+      `INSERT INTO Restaurant (rname, raddress, rmincost) 
+      VALUES('${rname}', '${raddress}', ${rmincost});`
+    )
+    .then (res.status (201).json ())
+    .catch (err => res.status (400).json ('Error' + err));
+});
+
+//Update a restaurant
+router.route ('/api/restaurant/:rid').patch ((req, res) => {
+  console.log("These are my request body: ", req.body);
+  const rid = req.params.rid;
+  const rname = req.body.rname;
+  const raddress = req.body.raddress;
+  const rmincost = req.body.rmincost;
+
+  pool
+    .query (
+      `UPDATE Restaurant SET rname = '${rname}', raddress = '${raddress}', rmincost = ${rmincost} WHERE rid = '${rid}';`
+    )
+    .then (res.status (201).json ())
+    .catch (err => res.status (400).json ('Error' + err));
+});
+
+//Delete restaurant
+router.route ('/api/restaurant/:rid').delete ((req, res) => {
+  const rid = req.params.rid;
+
+  pool
+    .query (
+      `DELETE FROM Restaurant WHERE rid = '${rid}';`
     )
     .then (res.status (201).json ())
     .catch (err => res.status (400).json ('Error' + err));

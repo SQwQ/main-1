@@ -213,3 +213,12 @@ CREATE TABLE Hour_Block (
 	start_time INTEGER NOT NULL,
 	end_time INTEGER NOT NULL
 );
+
+CREATE TABLE Manager (
+	mid SERIAL NOT NULL PRIMARY KEY,
+	mname VARCHAR(50) NOT NULL,
+	musername VARCHAR(50) NOT NULL UNIQUE,
+	mpassword VARCHAR(50) NOT NULL
+);
+
+INSERT INTO MANAGER (mid, mname, musername, mpassword) VALUES (0, 'System Admin', 'admin', 'password');

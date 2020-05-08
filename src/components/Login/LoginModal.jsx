@@ -18,7 +18,8 @@ class LoginModal extends Component {
     super (props);
     this.state = {
       setOpen: false,
-      showInvalidCredentialsWarning: false
+      showInvalidCredentialsWarning: false,
+      showConnectionErrorWarning: false
     };
 
     //this._handleChange = this._handleChange.bind(this);
@@ -49,7 +50,8 @@ class LoginModal extends Component {
   _handleClose = () => {
     this.setState({
         setOpen: false,
-        showInvalidCredentialsWarning: false
+        showInvalidCredentialsWarning: false,
+        showConnectionErrorWarning: false
     });
   };
 
@@ -59,48 +61,72 @@ class LoginModal extends Component {
     })
         .then (
             response => {
-                if (response.data.cid == null) {
+                console.log(response.data)
+                if (response.data.cid == null && response.data.rid == null && response.data.rsid ==null && response.data.mid == null) {
                     console.log(this.state.title + " credentials not recognized!");
                     this.showInvalidCredentials();
                 } else {
-                    console.log(this.state.title + " with userID " + response.data.cid + " logged in.");
                     // 1. Set states for id, auth and close dialog
-                    this.setState({id: response.data.cid});
-                    this.props.authenticate();
-                    this.setState ({setOpen: false});
-
                     // 2. Push history (set states first before pushing history:
                     // https://stackoverflow.com/a/57572888)
-                    this.handleLink("user");
+                    if (response.data.cid) {
+                        console.log(this.state.title + " with userID " + response.data.cid + " logged in.");
+                        this.setState({id: response.data.cid});
+                        this.props.authenticate();
+                        this.setState ({setOpen: false});
+                        this.handleLink("user");
+                    } else if (response.data.rid) {
+                        console.log(this.state.title + " with userID " + response.data.rid + " logged in.");
+                        this.setState({id: response.data.rid});
+                        this.props.authenticate();
+                        this.setState ({setOpen: false});
+                        this.handleLink("rider");
+                    } else if (response.data.rsid) {
+                        console.log(this.state.title + " with userID " + response.data.rsid + " logged in.");
+                        this.setState({id: response.data.rsid});
+                        this.props.authenticate();
+                        this.setState ({setOpen: false});
+                        this.handleLink("staff");
+                    } else {
+                        console.log(this.state.title + " with userID " + response.data.mid + " logged in.");
+                        this.setState({id: response.data.mid});
+                        this.props.authenticate();
+                        this.setState ({setOpen: false});
+                        this.handleLink("manager");
+                    }
                 }
             }
         ).catch (error => {
+            this.showConnectionError();
             console.log(error);
         });
   };
 
   _handleSubmit = () => {
     let user = {
-        cusername: this.state.username,
-        cpassword: this.state.password
+        username: this.state.username,
+        password: this.state.password,
+        type: this.state.title
     };
 
     // Debugging : print user login details
     console.log("Login attempt with details", user)
 
-    if (this.state.title === 'Customer') {
-        this.handleLogin(apiRoute.CUSTOMER_LOGIN_API, user);
-    } else if (this.state.title === 'Rider') {
-        this.handleLogin(apiRoute.RIDER_LOGIN_API, user);
-    } else if (this.state.title === 'Staff') {
-        this.handleLogin(apiRoute.STAFF_LOGIN_API, user);
-    } else if (this.state.title === 'Manager') {
-        this.handleLogin(apiRoute.MANAGER_LOGIN_API, user);
-    }
+    this.handleLogin(apiRoute.CUSTOMER_LOGIN_API, user);
   };
 
+  showConnectionError() {
+        this.setState({
+            showConnectionErrorWarning: true,
+            showInvalidCredentialsWarning: false
+        });
+  }
+
   showInvalidCredentials() {
-      this.setState({showInvalidCredentialsWarning: true});
+      this.setState({
+            showInvalidCredentialsWarning: true,
+            showConnectionErrorWarning: false
+        });
   }
 
   handleLink (reroute) {
@@ -156,6 +182,11 @@ class LoginModal extends Component {
                     Wrong username/password!
                 </DialogContentText>
             }
+            {this.state.showConnectionErrorWarning && 
+                <DialogContentText className="connectionWarning">
+                    Failed to get a connection to the server!
+                </DialogContentText>
+            }
           <DialogContent>
             <TextField
               margin="dense"
@@ -164,6 +195,11 @@ class LoginModal extends Component {
               id="username"
               label="Username"
               variant="outlined"
+              onKeyPress={(ev) => {
+                  if (ev.key === 'Enter') {
+                      this._handleSubmit()
+                  }
+              }}
               required
               fullWidth
             />
@@ -175,6 +211,11 @@ class LoginModal extends Component {
               label="Password"
               type="password"
               variant="outlined"
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                    this._handleSubmit()
+                }
+              }}
               required
               fullWidth
             />

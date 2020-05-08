@@ -1,0 +1,33 @@
+.wrapper_food_item {
+    width: 210px;
+    height: 270px;
+    padding: 0px 20px 0px 20px;
+    border: 1px solid rgb(218, 218, 218);
+    background-color: rgba(240, 255, 250, 0.603);
+    border-radius: 6px;
+    margin: 10px;
+}
+
+.add_to_card_btn {
+    outline: none;
+    text-decoration: none;
+}
+
+.food_name_text{
+
+}
+
+.food_price_text{
+    
+}
+
+.food_avail_text {
+
+}
+
+.category_text {
+    
+}
+
+.flex_food_item {
+}

@@ -1,8 +1,8 @@
 /* PART-TIME RIDERS */ 
 
 /* Add new part-time rider + update part_timer table */
- WITH ins1 AS 
- (INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary) 
+ WITH ins1 AS
+ (INSERT INTO  Rider (rname, rusername, rpassword, rtotal_salary)
   VALUES ('a', 'b', 'c', 999)
   RETURNING rid AS T_RID)
   INSERT INTO Part_Timer (rid, base_salary, wks)
@@ -56,17 +56,17 @@ BEGIN
 
    IF (SELECT spid FROM Schedule_PT_Hours WHERE rid = NEW.rid AND end_time = NEW.start_time
    AND NEW.end_time - start_time <= INTERVAL '4 hours') IS NOT NULL THEN
-   UPDATE Schedule_PT_Hours 
+   UPDATE Schedule_PT_Hours
    SET end_time = NEW.end_time
    WHERE spid IN (SELECT spid FROM Schedule_PT_Hours WHERE rid = NEW.rid AND end_time = NEW.start_time
    AND NEW.end_time - start_time <= INTERVAL '4 hours');
-   DELETE FROM Schedule_PT_Hours 
+   DELETE FROM Schedule_PT_Hours
    WHERE spid = NEW.spid;
 
    ELSEIF  (SELECT spid FROM  Schedule_PT_Hours WHERE rid = NEW.rid AND end_time = NEW.start_time
    AND NEW.end_time - start_time > INTERVAL '4 hours') IS NOT NULL THEN
    RAISE EXCEPTION USING MESSAGE = 'Your work hours are too long!';
-   
+
    END IF;
    RETURN NULL;
 END;
@@ -87,18 +87,18 @@ CREATE OR REPLACE FUNCTION net_total_hrs()
 $BODY$
 DECLARE total_hrs INT;
 BEGIN
-    SELECT SUM(EXTRACT(HOURS FROM end_time) - EXTRACT(HOURS FROM start_time)) INTO total_hrs FROM Schedule_PT_Hours 
+    SELECT SUM(EXTRACT(HOURS FROM end_time) - EXTRACT(HOURS FROM start_time)) INTO total_hrs FROM Schedule_PT_Hours
     WHERE rid = NEW.rid AND NEW.end_time - start_time <= INTERVAL '7 days';
 
-    IF NEW.is_last_shift = True AND 
+    IF NEW.is_last_shift = True AND
     (total_hrs > 48 OR total_hrs < 10) THEN
-    DELETE FROM Schedule_PT_Hours 
+    DELETE FROM Schedule_PT_Hours
     WHERE rid = NEW.rid AND NEW.end_time - start_time <= INTERVAL '7 days';
 
     RAISE WARNING USING MESSAGE = 'Your working hours per week must be between 10 and 48!';
 
     ELSEIF NEW.is_last_shift = True THEN
-    UPDATE Part_Timer 
+    UPDATE Part_Timer
     SET wks = wks + 1;
     WHERE rid = NEW.rid
 

@@ -5,9 +5,9 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
 
 //Pages
 import MainPage from "./pages/index";
-import UserPage from "./pages/user";
-import StaffPage from "./pages/staff";
-import RiderPage from "./pages/rider";
+import UserPage from "./pages/user/user";
+import RiderPage from "./pages/rider/rider";
+import StaffPage from "./pages/staff/staff";
 import ManagerPage from "./pages/manager/manager";
 
 // PrivateRoute to implement trivial auth with callbacks
@@ -72,7 +72,7 @@ class App extends Component {
                         authenticate={this.setAuth}
                         unauthenticate={this.setUnAuth}
                         />
-                    <PrivateRoute exact path="/rider/:id" component={RiderPage} 
+                    <PrivateRoute exact path="/rider/:id" component={RiderPage}
                         authenticateState={this.state.isAuthenticated}
                         authenticate={this.setAuth}
                         unauthenticate={this.setUnAuth}

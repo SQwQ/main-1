@@ -5,7 +5,7 @@ const pool = require ('../../config/pool');
 router.route ('/api/customer/:cid').get (async (req, res) => {
   const cid = req.params.cid;
 
-  const result = await pool.query (`SELECT * FROM Customer WHERE id=${cid}`);
+  const result = await pool.query (`SELECT * FROM Customer WHERE cid=${cid}`);
   res.setHeader ('content-type', 'application/json');
   res.send (JSON.stringify (result.rows[0]));
 });
@@ -14,7 +14,7 @@ router.route ('/api/customer/:cid').get (async (req, res) => {
 router.route ('/api/customers').get (async (req, res) => {
   const result = await pool.query (`SELECT * FROM Customer`);
   res.setHeader ('content-type', 'application/json');
-  res.send (JSON.stringify (result.rows[0]));
+  res.send (JSON.stringify (result.rows));
 });
 
 //Post an customer
@@ -35,17 +35,15 @@ router.route ('/api/customer').post (async (req, res) => {
   }
 });
 
-//Update an order
-router.route ('/api/customer/:cid').patch ((req, res) => {
+//Update reward points (not used, updating is done when creating order)
+router.route ('/api/customer/reward_points/:cid').patch ((req, res) => {
   const cid = req.params.cid;
   const crewards_points = req.body.crewards_points;
-
-  console.log (req.body);
 
   pool
     .query (
       `UPDATE Customer 
-       SET crewards_points=${crewards_points}
+       SET crewards_points=Customer.crewards_points + ${crewards_points}
        WHERE cid = ${cid};`
     )
     .then (res.status (204).json ())

@@ -1,68 +1,70 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">tapau.</h1>
+<p align="center">
+	<a href = "#"><img src="https://img.shields.io/badge/Powered by-Caffeine-6f4e37?logo=Buy-Me-A-Coffee"></a>
+	<a href = "https://github.com/CS2102-Team-51/main/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-informational"></a>
+</p>
 
-## Available Scripts
+A Food Delivery Service (FDS) mock up full stack application made in fulfillment of the Project component for NUS CS2102 AY19/20 S2.
+  
 
-In the project directory, you can run:
+## Preview :sparkles:
 
-### `npm start`
+<img src="https://raw.githubusercontent.com/CS2102-Team-51/main/master/preview/preview.png" alt="tapau." width="100%">
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Getting started :space_invader:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Currently this app only runs locally. The project structure is structured as three parts:
+* src/ - Node.js Server to run API's for queries to the PostgreSQL server.
+* server/ - React Frontend.
+* Locally hosted PostgreSQL server.
 
-### `npm test`
+To get our project up and running please clone the repository and follow the following steps:
+### Installing all dependencies
+- [Node.js](https://nodejs.org/en/)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Getting the PostgreSQL server running
+1. Please download the PostgreSQL 12.2 from [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads), and follow the installer, during which please note down the password you used for your postgres superuser account.
 
-### `npm run build`
+2. Once installed, we need to create tapauDB which will be a PostgreSQL DB for us to store our applpication data. To do this open your terminal and enter the following commands:
+    ```
+    createdb -h localhost -p 5432 -u postgres tapauDB
+    ```
+    When prompted for your password, enter your postgres superuser account password.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Lastly, make sure you are in the directory of the cloned repository. Enter the following commands: 
+    ```
+    \i 'projectDDL(update here).sql'
+    \i './server/sql/more_data.sql'
+    ```
+    This starts creating our schema, functions, triggers, and dummy data.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Getting the backend configured for the PostgreSQL server:
+1. Open up the `pool.js` file in server/config and change the user, host, port, database name if you have configured it differently.
+2. Create a file called `keys.js` in the same file and insert the following line in:
+    ```
+    module.exports = {
+        postgresPW: "<PASSWORD>",   
+    }
+    ```
+    replacing \<PASSWORD\> with your postgres superuser password.
+3. Save the file.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Getting the Node.js server and React Front End to run:
+1. While still in the server/ folder, run the command
+    ```
+    npm install
+    ```
+2. Once done, change your directory to the root project folder (main/) and repeat the same command. These 2 steps install all the npm packages we need to run the application.
+3. Finally, enter the following command to run both the client and server simultaneously:
+    ```
+    npm run dev
+    ```
+4. Visiting localhost:3000 should display the mockup website.
 
-### `npm run eject`
+### Other notes:
+* The only current fixed FDS Manager account has the username of '`admin`' and a password of '`password`'.
+* As of right now, the dummy data is incomplete. You will have to create users through registration or through direct insertion into the tables using psql to log in.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## License :pencil:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+ This project is licensed under the MIT License - see the [LICENSE](https://github.com/CS2102-Team-51/main/blob/master/LICENSE) file for details.
